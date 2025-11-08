@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Content Viewer App
+
+A minimal markdown viewer with folder-based navigation. No colors, no animations—just text.
+
+## Features
+
+- **Two-panel layout**: Folder tree on left, content on right
+- **Auto-discovery**: Automatically detects new markdown files added to `content/` directory
+- **Simple navigation**: Click files to view, folders to expand/collapse
+- **Create files**: Use the "+ New" button to create new markdown files
+- **Minimal design**: Black text on white background with gray accents
 
 ## Getting Started
 
-First, run the development server:
+1. Make sure the `content/` directory exists at `../content/` (one level up from this project)
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Usage
+
+### Viewing Files
+- Click on any file in the left sidebar to view its content
+- Current file is highlighted in gray
+- File path shown in footer
+
+### Creating New Files
+1. Click the "+ New" button in the top right
+2. Enter a filename (will auto-add `.md` extension if not provided)
+3. Select a folder or leave as root
+4. Click "Create"
+5. File will appear in the tree and automatically open
+
+### Auto-Discovery
+The app automatically refreshes the file tree every 2 seconds. Just add a markdown file to any folder in `content/` and it will appear automatically.
+
+## Project Structure
+
+```
+content-viewer/
+├── app/
+│   ├── api/files/          # API routes for file operations
+│   │   ├── list/           # List all files and folders
+│   │   ├── read/           # Read file content
+│   │   └── create/         # Create new file
+│   ├── page.tsx            # Main app page
+│   ├── layout.tsx          # Root layout
+│   └── globals.css         # Minimal global styles
+├── components/
+│   ├── FolderTree.tsx      # Left sidebar file tree
+│   ├── ContentViewer.tsx   # Right panel markdown viewer
+│   └── NewFileForm.tsx     # Modal for creating files
+└── types/
+    └── index.ts            # TypeScript type definitions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety
+- **react-markdown** - Markdown rendering
+- **Node.js fs** - File system operations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design Principles
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- No colors (except gray for accents)
+- No animations or transitions
+- No visual clutter
+- Auto-discovery of content changes
+- Folder structure matches disk structure
