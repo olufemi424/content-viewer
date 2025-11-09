@@ -1,7 +1,6 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
-import matter from "gray-matter";
 
 interface ContentViewerProps {
   content: string;
@@ -10,21 +9,69 @@ interface ContentViewerProps {
   onNewFile?: () => void;
 }
 
-function normalizeFrontmatter(raw: string): { body: string; data: Record<string, any> } {
-  // If frontmatter is accidentally wrapped in a code fence at the very top,
-  // unwrap it so the parser can detect and extract it.
-  if (raw.startsWith("```")) {
-    const fenced = raw.match(/^```[^\n]*\n(---[\s\S]*?---)\n```[\r\n]*/);
-    if (fenced) {
-      const fm = fenced[1]; // includes the --- lines
-      const rest = raw.slice(fenced[0].length);
-      const reconstructed = `${fm}\n${rest}`;
-      const parsed = matter(reconstructed);
-      return { body: parsed.content, data: parsed.data as Record<string, any> };
+function parseValue(raw: string): any {
+  const trimmed = raw.trim();
+  if (trimmed === "") return "";
+  if (trimmed === "true") return true;
+  if (trimmed === "false") return false;
+  if (/^-?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+  // JSON-like arrays, e.g., ["X","LinkedIn"]
+  if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      // fallback: split by comma and strip quotes/spaces
+      return trimmed
+        .slice(1, -1)
+        .split(",")
+        .map((s) => s.trim().replace(/^['"]|['"]$/g, ""));
     }
   }
-  const parsed = matter(raw);
-  return { body: parsed.content, data: parsed.data as Record<string, any> };
+  return trimmed;
+}
+
+function simpleYamlParse(yamlBlock: string): Record<string, any> {
+  const data: Record<string, any> = {};
+  const lines = yamlBlock
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0 && !l.startsWith("#"));
+  for (const line of lines) {
+    const m = line.match(/^([A-Za-z0-9_]+)\s*:\s*(.*)$/);
+    if (!m) continue;
+    const key = m[1];
+    const value = m[2];
+    data[key] = parseValue(value);
+  }
+  return data;
+}
+
+function normalizeFrontmatter(raw: string): { body: string; data: Record<string, any> } {
+  let text = raw;
+  // Unwrap code-fenced frontmatter at the very top if present
+  if (text.startsWith("```")) {
+    const fenced = text.match(/^```[^\n]*\n(---[\s\S]*?---)\n```[\r\n]*/);
+    if (fenced) {
+      text = `${fenced[1]}\n${text.slice(fenced[0].length)}`;
+    }
+  }
+  // Extract leading --- frontmatter ---
+  if (text.startsWith("---")) {
+    const match = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
+    if (match) {
+      const yaml = match[1];
+      const data = simpleYamlParse(yaml);
+      const body = text.slice(match[0].length);
+      return { body, data };
+    }
+  }
+  return { body: text, data: {} };
 }
 
 export default function ContentViewer({
