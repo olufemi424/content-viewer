@@ -20,12 +20,14 @@ function buildFileTree(dirPath: string, relativePath: string = ''): FileNode[] {
 
       if (entry.isDirectory()) {
         const children = buildFileTree(fullPath, relPath);
-        items.push({
-          name: entry.name,
-          path: relPath,
-          type: 'folder',
-          children: children
-        });
+        if (children.length > 0) {
+          items.push({
+            name: entry.name,
+            path: relPath,
+            type: 'folder',
+            children: children
+          });
+        }
       } else if (entry.name.endsWith('.md')) {
         items.push({
           name: entry.name,

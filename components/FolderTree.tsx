@@ -17,7 +17,7 @@ interface TreeNodeProps {
 }
 
 function TreeNode({ node, selectedFile, onFileSelect, level }: TreeNodeProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const indent = level * 16;
   const isSelected = selectedFile === node.path;
@@ -28,13 +28,14 @@ function TreeNode({ node, selectedFile, onFileSelect, level }: TreeNodeProps) {
         <div
           style={{
             cursor: "pointer",
-            padding: "4px 8px",
+            padding: "6px 8px",
             paddingLeft: `${indent + 8}px`,
+            userSelect: "none",
           }}
           onClick={() => setIsExpanded(!isExpanded)}
         >
-          <span style={{ marginRight: "6px" }}>{isExpanded ? "▼" : "▶"}</span>
-          <span>{node.name}/</span>
+          <span style={{ marginRight: "6px" }}>{isExpanded ? "📂" : "📁"}</span>
+          <span>{node.name}</span>
         </div>
         {isExpanded && node.children && (
           <div>
@@ -56,14 +57,15 @@ function TreeNode({ node, selectedFile, onFileSelect, level }: TreeNodeProps) {
   return (
     <div
       style={{
-        padding: "4px 8px",
+        padding: "6px 8px",
         paddingLeft: `${indent + 8}px`,
         cursor: "pointer",
-        backgroundColor: isSelected ? "#e5e5e5" : "transparent",
+        backgroundColor: isSelected ? "#e9ecef" : "transparent",
+        borderRadius: "4px",
       }}
       onClick={() => onFileSelect(node.path)}
     >
-      <span style={{ marginRight: "6px" }}>•</span>
+      <span style={{ marginRight: "6px" }}>📝</span>
       <span>{node.name}</span>
     </div>
   );
@@ -77,14 +79,14 @@ export default function FolderTree({
   return (
     <div
       style={{
-        padding: "8px 0",
+        padding: "8px 4px",
         fontSize: "14px",
         lineHeight: "1.5",
       }}
     >
       <div
         style={{
-          padding: "8px 16px",
+          padding: "10px 12px",
           fontWeight: "bold",
           borderBottom: "1px solid #e5e5e5",
           marginBottom: "8px",

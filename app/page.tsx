@@ -13,6 +13,7 @@ export default function Home() {
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [showNewFileForm, setShowNewFileForm] = useState(false);
   const [folders, setFolders] = useState<string[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Load file tree
   const loadFileTree = async () => {
@@ -91,17 +92,39 @@ export default function Home() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          position: "sticky",
+          top: 0,
+          backgroundColor: "white",
+          zIndex: 10,
         }}
       >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: "18px",
-            fontWeight: "bold",
-          }}
-        >
-          Content Viewer
-        </h1>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button
+            onClick={() => setIsSidebarOpen((v) => !v)}
+            aria-label="Toggle navigation"
+            aria-pressed={isSidebarOpen}
+            style={{
+              padding: "6px 10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              backgroundColor: "white",
+              cursor: "pointer",
+              fontSize: "16px",
+              lineHeight: 1,
+            }}
+          >
+            ☰
+          </button>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "18px",
+              fontWeight: "bold",
+            }}
+          >
+            Content Viewer
+          </h1>
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <FontSwitcher />
           <button
@@ -131,17 +154,20 @@ export default function Home() {
         {/* Left sidebar - File tree */}
         <div
           style={{
-            width: "250px",
-            borderRight: "1px solid #e5e5e5",
-            overflow: "auto",
+            width: isSidebarOpen ? "260px" : "0px",
+            borderRight: isSidebarOpen ? "1px solid #e5e5e5" : "none",
+            overflow: "hidden",
             backgroundColor: "#fafafa",
+            transition: "width 200ms ease",
           }}
         >
-          <FolderTree
-            tree={fileTree}
-            selectedFile={selectedFile}
-            onFileSelect={handleFileSelect}
-          />
+          {isSidebarOpen && (
+            <FolderTree
+              tree={fileTree}
+              selectedFile={selectedFile}
+              onFileSelect={handleFileSelect}
+            />
+          )}
         </div>
 
         {/* Right panel - Content viewer */}
@@ -155,6 +181,8 @@ export default function Home() {
           <ContentViewer
             content={fileContent?.content || ""}
             filename={fileContent?.name || ""}
+            onOpenSidebar={() => setIsSidebarOpen(true)}
+            onNewFile={() => setShowNewFileForm(true)}
           />
         </div>
       </div>

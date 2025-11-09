@@ -9,71 +9,6 @@ interface ContentViewerProps {
   onNewFile?: () => void;
 }
 
-function parseValue(raw: string): any {
-  const trimmed = raw.trim();
-  if (trimmed === "") return "";
-  if (trimmed === "true") return true;
-  if (trimmed === "false") return false;
-  if (/^-?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
-  if (
-    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-    (trimmed.startsWith("'") && trimmed.endsWith("'"))
-  ) {
-    return trimmed.slice(1, -1);
-  }
-  // JSON-like arrays, e.g., ["X","LinkedIn"]
-  if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
-    try {
-      return JSON.parse(trimmed);
-    } catch {
-      // fallback: split by comma and strip quotes/spaces
-      return trimmed
-        .slice(1, -1)
-        .split(",")
-        .map((s) => s.trim().replace(/^['"]|['"]$/g, ""));
-    }
-  }
-  return trimmed;
-}
-
-function simpleYamlParse(yamlBlock: string): Record<string, any> {
-  const data: Record<string, any> = {};
-  const lines = yamlBlock
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter((l) => l.length > 0 && !l.startsWith("#"));
-  for (const line of lines) {
-    const m = line.match(/^([A-Za-z0-9_]+)\s*:\s*(.*)$/);
-    if (!m) continue;
-    const key = m[1];
-    const value = m[2];
-    data[key] = parseValue(value);
-  }
-  return data;
-}
-
-function normalizeFrontmatter(raw: string): { body: string; data: Record<string, any> } {
-  let text = raw;
-  // Unwrap code-fenced frontmatter at the very top if present
-  if (text.startsWith("```")) {
-    const fenced = text.match(/^```[^\n]*\n(---[\s\S]*?---)\n```[\r\n]*/);
-    if (fenced) {
-      text = `${fenced[1]}\n${text.slice(fenced[0].length)}`;
-    }
-  }
-  // Extract leading --- frontmatter ---
-  if (text.startsWith("---")) {
-    const match = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
-    if (match) {
-      const yaml = match[1];
-      const data = simpleYamlParse(yaml);
-      const body = text.slice(match[0].length);
-      return { body, data };
-    }
-  }
-  return { body: text, data: {} };
-}
-
 export default function ContentViewer({
   content,
   filename,
@@ -167,8 +102,6 @@ export default function ContentViewer({
     );
   }
 
-  const { body, data } = normalizeFrontmatter(content);
-
   return (
     <div
       style={{
@@ -177,23 +110,6 @@ export default function ContentViewer({
         margin: "0 auto",
       }}
     >
-      {data?.title && (
-        <h1
-          style={{
-            fontSize: "2.2em",
-            fontWeight: 800,
-            marginBottom: "0.25em",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {String(data.title)}
-        </h1>
-      )}
-      {data?.date && (
-        <div style={{ color: "#666", marginBottom: "1.25em", fontSize: 14 }}>
-          {String(data.date)}
-        </div>
-      )}
       <ReactMarkdown
         components={{
           h1: ({ children }) => (
@@ -362,7 +278,7 @@ export default function ContentViewer({
           ),
         }}
       >
-        {body}
+        {content}
       </ReactMarkdown>
     </div>
   );
