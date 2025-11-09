@@ -1,7 +1,7 @@
-# YouTube Script: What I Learned Earning My First $1,000,000 in Software (5 Moves)
+# YouTube Script: What I Learned Earning My First $1,000,000 in As A Software Engineer (5 Moves)
 
 ## Hook (0:00–0:25)
-"I made my first $1,000,000 from software over six years—not overnight, not with luck, but with a system. In this video I’ll share the five things that actually moved the needle, plus five moves I’d use to do it again in half the time."
+"I earned my first $1,000,000 by creating software, but it didn’t happen quickly or by luck. It took me six years, and I used a clear plan to do it. In this video, I will tell you the five most important things that helped me make that money—plus I’ll share how I’d do it even faster if I started again."
 
 ## Creds in 1 Breath (0:25–0:40)
 "Quick context: salaried dev → tech lead/consultant → productized services → micro‑SaaS/licensing. Mix of salary, freelance retainers, rev‑share, and product revenue."

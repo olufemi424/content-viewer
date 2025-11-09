@@ -14,6 +14,7 @@ export default function Home() {
   const [showNewFileForm, setShowNewFileForm] = useState(false);
   const [folders, setFolders] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Load file tree
   const loadFileTree = async () => {
@@ -67,6 +68,17 @@ export default function Home() {
     setTimeout(() => {
       handleFileSelect(path);
     }, 100);
+  };
+
+  const handleCopyFooterLink = async () => {
+    if (!selectedFile) return;
+    try {
+      await navigator.clipboard.writeText(selectedFile);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (e) {
+      console.error("Clipboard copy failed:", e);
+    }
   };
 
   // Auto-refresh file tree every 2 seconds
@@ -196,9 +208,46 @@ export default function Home() {
             fontSize: "12px",
             color: "#666",
             backgroundColor: "#fafafa",
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {selectedFile}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              flex: 1,
+              minWidth: 0,
+            }}
+          >
+            <span
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "inline-block",
+              }}
+              title={selectedFile}
+            >
+              {selectedFile}
+            </span>
+            <button
+              onClick={handleCopyFooterLink}
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                fontSize: 14,
+                color: "#444",
+                padding: 2,
+              }}
+              aria-label="Copy file path to clipboard"
+              title="Copy path"
+            >
+              {copied ? "✓" : "⧉"}
+            </button>
+          </div>
         </div>
       )}
 
