@@ -9,12 +9,33 @@ keywords: []
 
 # What it takes to be a software engineer
 
-Being a software engineer requires a unique set of skills and personality traits. In order to be successful in this field, a person must be highly analytical, detail-oriented, and have excellent problem-solving abilities. In addition, they must be able to work well in a team environment, as most software development projects involve collaboration with other engineers, designers, and project managers.
+Being a software engineer means you use computers to solve real problems. You don’t need big words. You need clear thinking and good habits.
 
-One of the most important skills for a software engineer is the ability to write clean, efficient, and well-documented code. This requires a strong foundation in computer science and proficiency in one or more programming languages. In addition to knowing the technical details of a language, a software engineer must also be able to think logically and break down complex problems into manageable chunks that can be solved with code.
+## What kind of person does well?
+- You like puzzles and hard problems.
+- You stay patient when things break.
+- You can explain your idea in simple words.
+- You work well with others.
 
-Another important aspect of being a software engineer is the ability to constantly learn and adapt to new technologies and methodologies. The field of software engineering is constantly evolving, with new languages, frameworks, and tools being developed all the time. A successful software engineer must be willing to constantly learn and stay up-to-date with the latest developments in their field in order to remain competitive and effective.
+## Core skills
+- Write clean code: short, clear, and tested.
+- Know the basics: variables, loops, data, networks.
+- Learn one language well. Then learn a little of another.
+- Break big tasks into small steps you can finish today.
 
-In addition to technical skills, a software engineer must also have strong communication and interpersonal skills. They must be able to clearly communicate their ideas and plans to their team members, as well as explain complex technical concepts to non-technical stakeholders. They must also be able to work well with others and contribute to a positive team dynamic.
+## Keep learning
+- Tech changes fast. Read, try, repeat.
+- Make small projects to practice.
+- Ask “why” and “how” a lot.
 
-Overall, being a software engineer requires a combination of technical expertise, problem-solving ability, and strong communication and interpersonal skills. It is a challenging and rewarding career that can provide opportunities for growth and advancement for those who are dedicated and passionate about their work.
+## Communicate simply
+- Talk with your team and users.
+- Ask clear questions and listen.
+- Show your work with a short demo or screenshot.
+
+## Daily habits
+- Plan your day.
+- Ship small changes often.
+- Write notes about what you learned.
+
+Software is a team sport. If you keep learning, keep shipping, and keep your words simple, you’ll do great.
