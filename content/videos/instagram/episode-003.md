@@ -63,3 +63,39 @@ You won't master React in a week. Give yourself permission to be a beginner. Eve
 Which one hits home for you?
 
 See you next time.
+
+---
+
+## 3rd Version
+
+Hello Guys,
+
+Learning a new skill can be tough. I've been there. Whether it's picking up a new language, learning to play an instrument, mastering a craft, or diving into something completely new.
+
+After years of learning and teaching, I've discovered 5 things that will make your learning journey easier.
+
+Number 1: Embrace the Discomfort
+
+You're going to feel awkward. You're going to feel like you're not making progress. That's normal. The discomfort means you're pushing your boundaries. If it feels easy, you're not learning.
+
+Number 2: Focus on Fundamentals First
+
+Don't jump to the advanced techniques or the flashy shortcuts. Master the basics. The core principles. The foundation. These are the building blocks. Everything else builds on top of them.
+
+Number 3: Practice in Real Situations
+
+Lessons and tutorials are great for getting started, but you don't really learn until you apply it yourself. Start small. Use it in a real scenario. Make mistakes. Then fix them. That's where the real learning happens.
+
+Number 4: Teach What You Learn
+
+The best way to know if you understand something is to explain it to someone else. Write about it. Record yourself. Explain it to a friend. If you can't explain it simply, you don't understand it well enough.
+
+Number 5: Be Patient with Yourself
+
+Learning takes time. You're not going to master anything in a week. Or even a month. Give yourself permission to be a beginner. Everyone starts somewhere. The expert in anything was once a beginner.
+
+Remember: Everyone you admire in that field was once where you are now. They just kept going.
+
+Which of these resonates with you? Let me know in the comments.
+
+See you in the next video.
