@@ -47,6 +47,10 @@ slug: "episode-005"
 keywords: ["learning", "skill acquisition", "daily practice", "consistency"]
 ---
 
+## Video Description
+
+Every “overnight expert” I’ve met was secretly following one simple rule: 30 minutes of intentional practice—every single day. In this video I break down how that tiny daily commitment compounds into skill mastery, the exact moment it clicked for me, and the five-step Daily Practice Lifestyle you can start this week. If you’re tired of grinding for hours with no progress, this is the mindset shift that finally sticks; drop the skill you’re committing to in the comments so we can track it together.
+
 ## I. Opening & Core Proposition (The Hook)
 
 ### 🎯 Immediate Hook
