@@ -1,10 +1,15 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
+import { formatDate } from "@/lib/frontmatter";
 
 interface ContentViewerProps {
   content: string;
   filename: string;
+  title?: string;
+  date?: string;
+  readingTime?: number;
+  tags?: string[];
   onOpenSidebar?: () => void;
   onNewFile?: () => void;
 }
@@ -12,6 +17,10 @@ interface ContentViewerProps {
 export default function ContentViewer({
   content,
   filename,
+  title,
+  date,
+  readingTime,
+  tags,
   onOpenSidebar,
   onNewFile,
 }: ContentViewerProps) {
@@ -110,6 +119,60 @@ export default function ContentViewer({
         margin: "0 auto",
       }}
     >
+      {/* Article header with metadata */}
+      {title && (
+        <header style={{ marginBottom: "32px" }}>
+          <h1
+            style={{
+              fontSize: "2em",
+              fontWeight: "bold",
+              marginBottom: "12px",
+              marginTop: "0",
+              lineHeight: 1.2,
+            }}
+          >
+            {title}
+          </h1>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "16px",
+              fontSize: "14px",
+              color: "#666",
+            }}
+          >
+            {date && <span>{formatDate(date)}</span>}
+            {readingTime && <span>{readingTime} min read</span>}
+          </div>
+          {tags && tags.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "8px",
+                marginTop: "12px",
+              }}
+            >
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    padding: "2px 8px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    color: "#555",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <hr style={{ border: "none", borderTop: "1px solid #eee", marginTop: "24px" }} />
+        </header>
+      )}
       <ReactMarkdown
         components={{
           h1: ({ children }) => (

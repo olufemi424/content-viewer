@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const CONTENT_DIR = path.join(process.cwd(), '.', 'content');
+// Content directory can be configured via CONTENT_PATH environment variable
+const CONTENT_DIR = process.env.CONTENT_PATH
+  ? path.isAbsolute(process.env.CONTENT_PATH)
+    ? process.env.CONTENT_PATH
+    : path.join(process.cwd(), process.env.CONTENT_PATH)
+  : path.join(process.cwd(), 'content');
 
 export async function POST(request: NextRequest) {
   try {

@@ -16,3 +16,15 @@ export interface CreateFileRequest {
   filename: string;
   content?: string;
 }
+
+export interface Post {
+  slug: string;
+  filePath: string;
+  title: string;
+  date?: string;
+  description?: string;
+  tags?: string[];
+  draft?: boolean;
+  content: string;
+  readingTime: number;
+}

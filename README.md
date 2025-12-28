@@ -12,18 +12,45 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 
 ## Getting Started
 
-1. Make sure the `content/` directory exists at `../content/` (one level up from this project)
-2. Install dependencies:
+1. Install dependencies:
    ```bash
-   npm install
+   pnpm install
+   ```
+
+2. (Optional) Configure a custom content directory:
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local and set CONTENT_PATH to your desired directory
    ```
 
 3. Run the development server:
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Configuration
+
+### Custom Content Directory
+
+By default, the app reads markdown files from the `content/` folder in the project root. You can configure a different directory by setting the `CONTENT_PATH` environment variable:
+
+```bash
+# In .env.local or as an environment variable
+CONTENT_PATH=/path/to/your/markdown/files
+```
+
+**Examples:**
+- `CONTENT_PATH=./content` - Relative path (default)
+- `CONTENT_PATH=/Users/username/notes` - Absolute path on macOS
+- `CONTENT_PATH=/home/user/documents` - Absolute path on Linux
+- `CONTENT_PATH=/var/www/content` - Server deployment path
+
+This is useful for:
+- **Server deployments**: Link to content stored outside the app
+- **Docker**: Mount volumes to any container path
+- **Development**: Test with different content directories
 
 ## Usage
 

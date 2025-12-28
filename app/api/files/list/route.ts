@@ -3,7 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { FileNode } from '@/types';
 
-const CONTENT_DIR = path.join(process.cwd(), '.', 'content');
+// Content directory can be configured via CONTENT_PATH environment variable
+// Supports absolute paths (e.g., /home/user/my-content) or relative paths (e.g., ./content)
+const CONTENT_DIR = process.env.CONTENT_PATH
+  ? path.isAbsolute(process.env.CONTENT_PATH)
+    ? process.env.CONTENT_PATH
+    : path.join(process.cwd(), process.env.CONTENT_PATH)
+  : path.join(process.cwd(), 'content');
 
 function buildFileTree(dirPath: string, relativePath: string = ''): FileNode[] {
   const items: FileNode[] = [];

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import FolderTree from "@/components/FolderTree";
 import ContentViewer from "@/components/ContentViewer";
 import NewFileForm from "@/components/NewFileForm";
