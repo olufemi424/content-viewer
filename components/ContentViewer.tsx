@@ -1,10 +1,12 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
+import { Metadata } from "@/types";
 
 interface ContentViewerProps {
   content: string;
   filename: string;
+  metadata?: Metadata;
   onOpenSidebar?: () => void;
   onNewFile?: () => void;
 }
@@ -12,6 +14,7 @@ interface ContentViewerProps {
 export default function ContentViewer({
   content,
   filename,
+  metadata,
   onOpenSidebar,
   onNewFile,
 }: ContentViewerProps) {
@@ -110,6 +113,58 @@ export default function ContentViewer({
         margin: "0 auto",
       }}
     >
+      {metadata && (metadata.status || metadata.priority || metadata.tags?.length) && (
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          marginBottom: "24px",
+          paddingBottom: "16px",
+          borderBottom: "1px solid #e5e5e5",
+          alignItems: "center",
+        }}>
+          {metadata.status && (
+            <span style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              border: "1px solid #ccc",
+              borderRadius: "12px",
+              background: metadata.status === 'done' ? '#f0f0f0' : metadata.status === 'in-progress' ? '#fafafa' : 'white',
+              color: metadata.status === 'done' ? '#666' : '#333',
+            }}>
+              {metadata.status}
+            </span>
+          )}
+          {metadata.priority && (
+            <span style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              border: "1px solid #ccc",
+              borderRadius: "12px",
+              color: metadata.priority === 'high' ? '#333' : '#555',
+              fontWeight: metadata.priority === 'high' ? 600 : 400,
+            }}>
+              ↑ {metadata.priority}
+            </span>
+          )}
+          {metadata.tags?.map(tag => (
+            <span key={tag} style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              background: "#f5f5f5",
+              borderRadius: "12px",
+              color: "#555",
+            }}>
+              #{tag}
+            </span>
+          ))}
+          {metadata.modified && (
+            <span style={{ fontSize: "12px", color: "#999", marginLeft: "auto" }}>
+              modified {metadata.modified}
+            </span>
+          )}
+        </div>
+      )}
       <ReactMarkdown
         components={{
           h1: ({ children }) => (

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
+import { parseFrontmatter } from '@/lib/frontmatter';
 
 const CONTENT_DIR = path.join(process.cwd(), '.', 'content');
 
@@ -34,13 +35,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Read file content
-    const content = fs.readFileSync(fullPath, 'utf-8');
+    // Read and parse file content
+    const raw = fs.readFileSync(fullPath, 'utf-8');
+    const { metadata, body } = parseFrontmatter(raw);
 
     return NextResponse.json({
       path: filePath,
       name: path.basename(filePath),
-      content
+      content: body,
+      metadata,
     });
   } catch (error) {
     console.error('Error reading file:', error);

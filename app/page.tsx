@@ -5,6 +5,7 @@ import FolderTree from "@/components/FolderTree";
 import ContentViewer from "@/components/ContentViewer";
 import NewFileForm from "@/components/NewFileForm";
 import FontSwitcher from "@/components/FontSwitcher";
+import FilterPanel from "@/components/FilterPanel";
 import { FileNode, FileContent } from "@/types";
 
 export default function Home() {
@@ -13,8 +14,13 @@ export default function Home() {
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [showNewFileForm, setShowNewFileForm] = useState(false);
   const [folders, setFolders] = useState<string[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const [tagFilter, setTagFilter] = useState<string[]>([]);
 
   // Load file tree
   const loadFileTree = async () => {
@@ -22,6 +28,7 @@ export default function Home() {
       const response = await fetch("/api/files/list");
       const data = await response.json();
       setFileTree(data.tree || []);
+      setAllTags(data.allTags || []);
 
       // Extract folder paths
       const folderPaths: string[] = [];
@@ -86,6 +93,18 @@ export default function Home() {
     loadFileTree();
     const interval = setInterval(loadFileTree, 2000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Cmd+N / Ctrl+N to open new file form
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "n") {
+        e.preventDefault();
+        setShowNewFileForm(true);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, []);
 
   return (
@@ -171,14 +190,50 @@ export default function Home() {
             overflow: "hidden",
             backgroundColor: "#fafafa",
             transition: "width 200ms ease",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {isSidebarOpen && (
-            <FolderTree
-              tree={fileTree}
-              selectedFile={selectedFile}
-              onFileSelect={handleFileSelect}
-            />
+            <>
+              <div style={{ padding: "8px 10px", borderBottom: "1px solid #e5e5e5" }}>
+                <input
+                  type="search"
+                  placeholder="Search…"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "6px 8px",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                    fontSize: "13px",
+                    boxSizing: "border-box",
+                    background: "white",
+                  }}
+                />
+              </div>
+              <FilterPanel
+                allTags={allTags}
+                statusFilter={statusFilter}
+                priorityFilter={priorityFilter}
+                tagFilter={tagFilter}
+                onStatusChange={setStatusFilter}
+                onPriorityChange={setPriorityFilter}
+                onTagChange={setTagFilter}
+              />
+              <div style={{ flex: 1, overflow: "auto" }}>
+                <FolderTree
+                  tree={fileTree}
+                  selectedFile={selectedFile}
+                  onFileSelect={handleFileSelect}
+                  searchQuery={searchQuery}
+                  statusFilter={statusFilter}
+                  priorityFilter={priorityFilter}
+                  tagFilter={tagFilter}
+                />
+              </div>
+            </>
           )}
         </div>
 
@@ -193,6 +248,7 @@ export default function Home() {
           <ContentViewer
             content={fileContent?.content || ""}
             filename={fileContent?.name || ""}
+            metadata={fileContent?.metadata}
             onOpenSidebar={() => setIsSidebarOpen(true)}
             onNewFile={() => setShowNewFileForm(true)}
           />
@@ -255,6 +311,7 @@ export default function Home() {
       {showNewFileForm && (
         <NewFileForm
           folders={folders}
+          allTags={allTags}
           onClose={() => setShowNewFileForm(false)}
           onSuccess={handleNewFileSuccess}
         />
