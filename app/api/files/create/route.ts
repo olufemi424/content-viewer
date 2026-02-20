@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
+import { serializeFrontmatter, today } from '@/lib/frontmatter';
+import { Metadata } from '@/types';
 
 const CONTENT_DIR = path.join(process.cwd(), '.', 'content');
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { folder, filename, content = '# New File\n\n' } = body;
+    const { folder, filename, content, metadata } = body;
 
     if (!filename) {
       return NextResponse.json(
@@ -18,6 +20,7 @@ export async function POST(request: NextRequest) {
 
     // Ensure filename ends with .md
     const mdFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
+    const baseName = mdFilename.replace(/\.md$/, '');
 
     // Security: prevent directory traversal
     if (folder && folder.includes('..')) {
@@ -44,8 +47,19 @@ export async function POST(request: NextRequest) {
       fs.mkdirSync(targetDir, { recursive: true });
     }
 
-    // Write file
-    fs.writeFileSync(fullPath, content, 'utf-8');
+    // Build file content: frontmatter + body
+    const meta: Metadata = {
+      title: metadata?.title || baseName,
+      status: metadata?.status || 'draft',
+      priority: metadata?.priority,
+      tags: metadata?.tags?.length ? metadata.tags : undefined,
+      created: today(),
+      modified: today(),
+    };
+    const body_content = content || `# ${meta.title}\n\n`;
+    const fileContent = serializeFrontmatter(meta, body_content);
+
+    fs.writeFileSync(fullPath, fileContent, 'utf-8');
 
     const relativePath = folder ? `${folder}/${mdFilename}` : mdFilename;
 
