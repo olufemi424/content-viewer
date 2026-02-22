@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FolderTree from "@/components/FolderTree";
 import ContentViewer from "@/components/ContentViewer";
+import FolderIndex from "@/components/FolderIndex";
 import NewFileForm from "@/components/NewFileForm";
 import FontSwitcher from "@/components/FontSwitcher";
 import FilterPanel from "@/components/FilterPanel";
 import { FileNode, FileContent } from "@/types";
+import { flattenFileList, getPrevNext, getFolderChildren } from "@/lib/fileList";
 
 export default function Home() {
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
@@ -21,6 +23,13 @@ export default function Home() {
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
   const [tagFilter, setTagFilter] = useState<string[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+
+  const flatFiles = useMemo(() => flattenFileList(fileTree), [fileTree]);
+  const { prev, next } = useMemo(
+    () => selectedFile ? getPrevNext(flatFiles, selectedFile) : { prev: null, next: null },
+    [flatFiles, selectedFile]
+  );
 
   // Load file tree
   const loadFileTree = async () => {
@@ -66,7 +75,28 @@ export default function Home() {
   // Handle file selection
   const handleFileSelect = (path: string) => {
     setSelectedFile(path);
+    setSelectedFolder(null);
     loadFileContent(path);
+  };
+
+  // Handle navigation from breadcrumbs, prev/next, or folder index
+  const handleNavigate = (path: string) => {
+    if (!path) {
+      // root
+      setSelectedFolder('');
+      setSelectedFile(null);
+      setFileContent(null);
+      return;
+    }
+    // Determine if path is a file or folder
+    const isFile = flatFiles.some(f => f.path === path);
+    if (isFile) {
+      handleFileSelect(path);
+    } else {
+      setSelectedFolder(path);
+      setSelectedFile(null);
+      setFileContent(null);
+    }
   };
 
   // Handle new file creation success
@@ -227,6 +257,7 @@ export default function Home() {
                   tree={fileTree}
                   selectedFile={selectedFile}
                   onFileSelect={handleFileSelect}
+                  onFolderSelect={(path) => handleNavigate(path)}
                   searchQuery={searchQuery}
                   statusFilter={statusFilter}
                   priorityFilter={priorityFilter}
@@ -237,7 +268,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Right panel - Content viewer */}
+        {/* Right panel - Content viewer or Folder index */}
         <div
           style={{
             flex: 1,
@@ -245,13 +276,26 @@ export default function Home() {
             backgroundColor: "white",
           }}
         >
-          <ContentViewer
-            content={fileContent?.content || ""}
-            filename={fileContent?.name || ""}
-            metadata={fileContent?.metadata}
-            onOpenSidebar={() => setIsSidebarOpen(true)}
-            onNewFile={() => setShowNewFileForm(true)}
-          />
+          {selectedFolder !== null ? (
+            <FolderIndex
+              folderPath={selectedFolder}
+              children={getFolderChildren(fileTree, selectedFolder)}
+              onFileSelect={handleFileSelect}
+              onFolderSelect={(path) => handleNavigate(path)}
+            />
+          ) : (
+            <ContentViewer
+              content={fileContent?.content || ""}
+              filename={fileContent?.name || ""}
+              filePath={selectedFile || undefined}
+              metadata={fileContent?.metadata}
+              prev={prev}
+              next={next}
+              onOpenSidebar={() => setIsSidebarOpen(true)}
+              onNewFile={() => setShowNewFileForm(true)}
+              onNavigate={handleNavigate}
+            />
+          )}
         </div>
       </div>
 

@@ -19,6 +19,7 @@ interface FileTreeNodeProps {
   node: FileNode;
   selectedFile: string | null;
   onFileSelect: (path: string) => void;
+  onFolderSelect?: (path: string) => void;
   level: number;
 }
 
@@ -26,6 +27,7 @@ export default function FileTreeNode({
   node,
   selectedFile,
   onFileSelect,
+  onFolderSelect,
   level,
 }: FileTreeNodeProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -46,6 +48,8 @@ export default function FileTreeNode({
             gap: "6px",
           }}
           onClick={() => setIsExpanded(!isExpanded)}
+          onDoubleClick={() => onFolderSelect?.(node.path)}
+          title="Double-click to view folder index"
         >
           <span>{isExpanded ? "📂" : "📁"}</span>
           <span>{node.name}</span>
@@ -58,6 +62,7 @@ export default function FileTreeNode({
                 node={child}
                 selectedFile={selectedFile}
                 onFileSelect={onFileSelect}
+                onFolderSelect={onFolderSelect}
                 level={level + 1}
               />
             ))}

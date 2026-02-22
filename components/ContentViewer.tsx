@@ -1,22 +1,32 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
-import { Metadata } from "@/types";
+import { Metadata, FileNode } from "@/types";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import TableOfContents from "@/components/TableOfContents";
 
 interface ContentViewerProps {
   content: string;
   filename: string;
+  filePath?: string;
   metadata?: Metadata;
+  prev?: FileNode | null;
+  next?: FileNode | null;
   onOpenSidebar?: () => void;
   onNewFile?: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export default function ContentViewer({
   content,
   filename,
+  filePath,
   metadata,
+  prev,
+  next,
   onOpenSidebar,
   onNewFile,
+  onNavigate,
 }: ContentViewerProps) {
   if (!content) {
     return (
@@ -106,14 +116,13 @@ export default function ContentViewer({
   }
 
   return (
-    <div
-      style={{
-        padding: "40px",
-        maxWidth: "800px",
-        margin: "0 auto",
-      }}
-    >
-      {metadata && (metadata.status || metadata.priority || metadata.tags?.length) && (
+    <div style={{ display: "flex", padding: "40px 40px 40px 40px", gap: "32px", maxWidth: "1100px", margin: "0 auto" }}>
+      {/* Main content */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {filePath && onNavigate && (
+          <Breadcrumbs path={filePath} onNavigate={onNavigate} />
+        )}
+        {metadata && (metadata.status || metadata.priority || metadata.tags?.length) && (
         <div style={{
           display: "flex",
           flexWrap: "wrap",
@@ -335,6 +344,45 @@ export default function ContentViewer({
       >
         {content}
       </ReactMarkdown>
+
+      {/* Prev / Next navigation */}
+      {(prev || next) && (
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "48px",
+          paddingTop: "24px",
+          borderTop: "1px solid #e5e5e5",
+          gap: "12px",
+        }}>
+          {prev ? (
+            <button onClick={() => onNavigate?.(prev.path)} style={navBtnStyle("left")}>
+              <span style={{ fontSize: "12px", color: "#999", display: "block", marginBottom: "2px" }}>← Previous</span>
+              <span style={{ fontSize: "14px" }}>{prev.metadata?.title || prev.name.replace(/\.md$/, '')}</span>
+            </button>
+          ) : <div />}
+          {next ? (
+            <button onClick={() => onNavigate?.(next.path)} style={navBtnStyle("right")}>
+              <span style={{ fontSize: "12px", color: "#999", display: "block", marginBottom: "2px" }}>Next →</span>
+              <span style={{ fontSize: "14px" }}>{next.metadata?.title || next.name.replace(/\.md$/, '')}</span>
+            </button>
+          ) : <div />}
+        </div>
+      )}
+      </div>
+
+      {/* Table of Contents (right panel) */}
+      <TableOfContents content={content} />
     </div>
   );
 }
+
+const navBtnStyle = (align: "left" | "right"): React.CSSProperties => ({
+  padding: "12px 16px",
+  border: "1px solid #e5e5e5",
+  borderRadius: "6px",
+  background: "white",
+  cursor: "pointer",
+  textAlign: align,
+  maxWidth: "45%",
+});

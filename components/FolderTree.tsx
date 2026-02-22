@@ -8,6 +8,7 @@ interface FolderTreeProps {
   tree: FileNode[];
   selectedFile: string | null;
   onFileSelect: (path: string) => void;
+  onFolderSelect?: (path: string) => void;
   searchQuery?: string;
   statusFilter?: string[];
   priorityFilter?: string[];
@@ -39,6 +40,7 @@ export default function FolderTree({
   tree,
   selectedFile,
   onFileSelect,
+  onFolderSelect,
   searchQuery = "",
   statusFilter = [],
   priorityFilter = [],
@@ -63,6 +65,7 @@ export default function FolderTree({
           node={node}
           selectedFile={selectedFile}
           onFileSelect={onFileSelect}
+          onFolderSelect={onFolderSelect}
           level={0}
         />
       ))}
