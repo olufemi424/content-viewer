@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileNode } from "@/types";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -14,6 +14,14 @@ const PRIORITY_SYMBOLS: Record<string, string> = {
   medium: "→",
   low: "↓",
 };
+
+/** Returns true if this folder contains the selected file anywhere in its subtree. */
+function containsSelected(node: FileNode, selectedFile: string | null): boolean {
+  if (!selectedFile || node.type === "file") return false;
+  return (node.children ?? []).some(
+    child => child.path === selectedFile || containsSelected(child, selectedFile)
+  );
+}
 
 interface FileTreeNodeProps {
   node: FileNode;
@@ -30,9 +38,15 @@ export default function FileTreeNode({
   onFolderSelect,
   level,
 }: FileTreeNodeProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const shouldBeOpen = node.type === "folder" && containsSelected(node, selectedFile);
+  const [isExpanded, setIsExpanded] = useState(shouldBeOpen);
   const indent = level * 16;
   const isSelected = selectedFile === node.path;
+
+  // Auto-expand when the selected file moves into this folder's subtree
+  useEffect(() => {
+    if (shouldBeOpen) setIsExpanded(true);
+  }, [shouldBeOpen]);
 
   if (node.type === "folder") {
     return (
