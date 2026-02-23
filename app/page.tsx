@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FolderTree from "@/components/FolderTree";
 import ContentViewer from "@/components/ContentViewer";
+import FolderIndex from "@/components/FolderIndex";
 import NewFileForm from "@/components/NewFileForm";
 import FontSwitcher from "@/components/FontSwitcher";
+import FilterPanel from "@/components/FilterPanel";
 import { FileNode, FileContent } from "@/types";
+import { flattenFileList, getPrevNext, getFolderChildren } from "@/lib/fileList";
 
 export default function Home() {
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
@@ -13,8 +16,20 @@ export default function Home() {
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [showNewFileForm, setShowNewFileForm] = useState(false);
   const [folders, setFolders] = useState<string[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const [tagFilter, setTagFilter] = useState<string[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+
+  const flatFiles = useMemo(() => flattenFileList(fileTree), [fileTree]);
+  const { prev, next } = useMemo(
+    () => selectedFile ? getPrevNext(flatFiles, selectedFile) : { prev: null, next: null },
+    [flatFiles, selectedFile]
+  );
 
   // Load file tree
   const loadFileTree = async () => {
@@ -22,6 +37,7 @@ export default function Home() {
       const response = await fetch("/api/files/list");
       const data = await response.json();
       setFileTree(data.tree || []);
+      setAllTags(data.allTags || []);
 
       // Extract folder paths
       const folderPaths: string[] = [];
@@ -59,7 +75,28 @@ export default function Home() {
   // Handle file selection
   const handleFileSelect = (path: string) => {
     setSelectedFile(path);
+    setSelectedFolder(null);
     loadFileContent(path);
+  };
+
+  // Handle navigation from breadcrumbs, prev/next, or folder index
+  const handleNavigate = (path: string) => {
+    if (!path) {
+      // root
+      setSelectedFolder('');
+      setSelectedFile(null);
+      setFileContent(null);
+      return;
+    }
+    // Determine if path is a file or folder
+    const isFile = flatFiles.some(f => f.path === path);
+    if (isFile) {
+      handleFileSelect(path);
+    } else {
+      setSelectedFolder(path);
+      setSelectedFile(null);
+      setFileContent(null);
+    }
   };
 
   // Handle new file creation success
@@ -86,6 +123,18 @@ export default function Home() {
     loadFileTree();
     const interval = setInterval(loadFileTree, 2000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Cmd+N / Ctrl+N to open new file form
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "n") {
+        e.preventDefault();
+        setShowNewFileForm(true);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, []);
 
   return (
@@ -171,18 +220,55 @@ export default function Home() {
             overflow: "hidden",
             backgroundColor: "#fafafa",
             transition: "width 200ms ease",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {isSidebarOpen && (
-            <FolderTree
-              tree={fileTree}
-              selectedFile={selectedFile}
-              onFileSelect={handleFileSelect}
-            />
+            <>
+              <div style={{ padding: "8px 10px", borderBottom: "1px solid #e5e5e5" }}>
+                <input
+                  type="search"
+                  placeholder="Search…"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "6px 8px",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                    fontSize: "13px",
+                    boxSizing: "border-box",
+                    background: "white",
+                  }}
+                />
+              </div>
+              <FilterPanel
+                allTags={allTags}
+                statusFilter={statusFilter}
+                priorityFilter={priorityFilter}
+                tagFilter={tagFilter}
+                onStatusChange={setStatusFilter}
+                onPriorityChange={setPriorityFilter}
+                onTagChange={setTagFilter}
+              />
+              <div style={{ flex: 1, overflow: "auto" }}>
+                <FolderTree
+                  tree={fileTree}
+                  selectedFile={selectedFile}
+                  onFileSelect={handleFileSelect}
+                  onFolderSelect={(path) => handleNavigate(path)}
+                  searchQuery={searchQuery}
+                  statusFilter={statusFilter}
+                  priorityFilter={priorityFilter}
+                  tagFilter={tagFilter}
+                />
+              </div>
+            </>
           )}
         </div>
 
-        {/* Right panel - Content viewer */}
+        {/* Right panel - Content viewer or Folder index */}
         <div
           style={{
             flex: 1,
@@ -190,12 +276,26 @@ export default function Home() {
             backgroundColor: "white",
           }}
         >
-          <ContentViewer
-            content={fileContent?.content || ""}
-            filename={fileContent?.name || ""}
-            onOpenSidebar={() => setIsSidebarOpen(true)}
-            onNewFile={() => setShowNewFileForm(true)}
-          />
+          {selectedFolder !== null ? (
+            <FolderIndex
+              folderPath={selectedFolder}
+              children={getFolderChildren(fileTree, selectedFolder)}
+              onFileSelect={handleFileSelect}
+              onFolderSelect={(path) => handleNavigate(path)}
+            />
+          ) : (
+            <ContentViewer
+              content={fileContent?.content || ""}
+              filename={fileContent?.name || ""}
+              filePath={selectedFile || undefined}
+              metadata={fileContent?.metadata}
+              prev={prev}
+              next={next}
+              onOpenSidebar={() => setIsSidebarOpen(true)}
+              onNewFile={() => setShowNewFileForm(true)}
+              onNavigate={handleNavigate}
+            />
+          )}
         </div>
       </div>
 
@@ -255,6 +355,7 @@ export default function Home() {
       {showNewFileForm && (
         <NewFileForm
           folders={folders}
+          allTags={allTags}
           onClose={() => setShowNewFileForm(false)}
           onSuccess={handleNewFileSuccess}
         />

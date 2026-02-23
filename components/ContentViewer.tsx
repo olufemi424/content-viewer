@@ -1,19 +1,32 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
+import { Metadata, FileNode } from "@/types";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import TableOfContents from "@/components/TableOfContents";
 
 interface ContentViewerProps {
   content: string;
   filename: string;
+  filePath?: string;
+  metadata?: Metadata;
+  prev?: FileNode | null;
+  next?: FileNode | null;
   onOpenSidebar?: () => void;
   onNewFile?: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export default function ContentViewer({
   content,
   filename,
+  filePath,
+  metadata,
+  prev,
+  next,
   onOpenSidebar,
   onNewFile,
+  onNavigate,
 }: ContentViewerProps) {
   if (!content) {
     return (
@@ -103,13 +116,64 @@ export default function ContentViewer({
   }
 
   return (
-    <div
-      style={{
-        padding: "40px",
-        maxWidth: "800px",
-        margin: "0 auto",
-      }}
-    >
+    <div style={{ display: "flex", padding: "40px 40px 40px 40px", gap: "32px", maxWidth: "1100px", margin: "0 auto" }}>
+      {/* Main content */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {filePath && onNavigate && (
+          <Breadcrumbs path={filePath} onNavigate={onNavigate} />
+        )}
+        {metadata && (metadata.status || metadata.priority || metadata.tags?.length) && (
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          marginBottom: "24px",
+          paddingBottom: "16px",
+          borderBottom: "1px solid #e5e5e5",
+          alignItems: "center",
+        }}>
+          {metadata.status && (
+            <span style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              border: "1px solid #ccc",
+              borderRadius: "12px",
+              background: metadata.status === 'done' ? '#f0f0f0' : metadata.status === 'in-progress' ? '#fafafa' : 'white',
+              color: metadata.status === 'done' ? '#666' : '#333',
+            }}>
+              {metadata.status}
+            </span>
+          )}
+          {metadata.priority && (
+            <span style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              border: "1px solid #ccc",
+              borderRadius: "12px",
+              color: metadata.priority === 'high' ? '#333' : '#555',
+              fontWeight: metadata.priority === 'high' ? 600 : 400,
+            }}>
+              ↑ {metadata.priority}
+            </span>
+          )}
+          {metadata.tags?.map(tag => (
+            <span key={tag} style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              background: "#f5f5f5",
+              borderRadius: "12px",
+              color: "#555",
+            }}>
+              #{tag}
+            </span>
+          ))}
+          {metadata.modified && (
+            <span style={{ fontSize: "12px", color: "#999", marginLeft: "auto" }}>
+              modified {metadata.modified}
+            </span>
+          )}
+        </div>
+      )}
       <ReactMarkdown
         components={{
           h1: ({ children }) => (
@@ -280,6 +344,45 @@ export default function ContentViewer({
       >
         {content}
       </ReactMarkdown>
+
+      {/* Prev / Next navigation */}
+      {(prev || next) && (
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "48px",
+          paddingTop: "24px",
+          borderTop: "1px solid #e5e5e5",
+          gap: "12px",
+        }}>
+          {prev ? (
+            <button onClick={() => onNavigate?.(prev.path)} style={navBtnStyle("left")}>
+              <span style={{ fontSize: "12px", color: "#999", display: "block", marginBottom: "2px" }}>← Previous</span>
+              <span style={{ fontSize: "14px" }}>{prev.metadata?.title || prev.name.replace(/\.md$/, '')}</span>
+            </button>
+          ) : <div />}
+          {next ? (
+            <button onClick={() => onNavigate?.(next.path)} style={navBtnStyle("right")}>
+              <span style={{ fontSize: "12px", color: "#999", display: "block", marginBottom: "2px" }}>Next →</span>
+              <span style={{ fontSize: "14px" }}>{next.metadata?.title || next.name.replace(/\.md$/, '')}</span>
+            </button>
+          ) : <div />}
+        </div>
+      )}
+      </div>
+
+      {/* Table of Contents (right panel) */}
+      <TableOfContents content={content} />
     </div>
   );
 }
+
+const navBtnStyle = (align: "left" | "right"): React.CSSProperties => ({
+  padding: "12px 16px",
+  border: "1px solid #e5e5e5",
+  borderRadius: "6px",
+  background: "white",
+  cursor: "pointer",
+  textAlign: align,
+  maxWidth: "45%",
+});

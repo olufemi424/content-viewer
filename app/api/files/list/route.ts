@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
 import { FileNode } from '@/types';
+import { parseFrontmatter } from '@/lib/frontmatter';
 
 const CONTENT_DIR = path.join(process.cwd(), '.', 'content');
 
@@ -29,10 +30,13 @@ function buildFileTree(dirPath: string, relativePath: string = ''): FileNode[] {
           });
         }
       } else if (entry.name.endsWith('.md')) {
+        const raw = fs.readFileSync(fullPath, 'utf-8');
+        const { metadata } = parseFrontmatter(raw);
         items.push({
           name: entry.name,
           path: relPath,
-          type: 'file'
+          type: 'file',
+          metadata,
         });
       }
     }
@@ -55,7 +59,18 @@ function buildFileTree(dirPath: string, relativePath: string = ''): FileNode[] {
 export async function GET() {
   try {
     const fileTree = buildFileTree(CONTENT_DIR);
-    return NextResponse.json({ tree: fileTree });
+
+    // Aggregate all tags from all files
+    const tagSet = new Set<string>();
+    function collectTags(nodes: FileNode[]) {
+      for (const node of nodes) {
+        if (node.type === 'file') node.metadata?.tags?.forEach(t => tagSet.add(t));
+        if (node.children) collectTags(node.children);
+      }
+    }
+    collectTags(fileTree);
+
+    return NextResponse.json({ tree: fileTree, allTags: Array.from(tagSet).sort() });
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to read content directory' },
