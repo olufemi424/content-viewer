@@ -13,6 +13,7 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 - **Today Focus panel**: Quick view of what to draft, record, and post next
 - **Week Dashboard**: Stage breakdown and completion view for the selected week folder
 - **Quick stage updates**: Move a post through idea → drafted → recorded → posted → analyzed from the viewer
+- **Seed Week**: Generate a full weekly plan folder with scaffolded talking-head post files
 - **Minimal design**: Black text on white background with gray accents
 
 ## Getting Started
