@@ -44,7 +44,7 @@ export default function FilterPanel({
   return (
     <div style={{ padding: "8px 12px", borderBottom: "1px solid #e5e5e5", fontSize: "12px" }}>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "4px" }}>
-        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>status</span>
+        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>Status</span>
         {(["draft", "in-progress", "done"] as const).map(s => (
           <button key={s} style={chipStyle(statusFilter.includes(s))} onClick={() => onStatusChange(toggle(statusFilter, s))}>
             {s}
@@ -52,7 +52,7 @@ export default function FilterPanel({
         ))}
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: allTags.length ? "4px" : 0 }}>
-        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>priority</span>
+        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>Priority</span>
         {(["high", "medium", "low"] as const).map(p => (
           <button key={p} style={chipStyle(priorityFilter.includes(p))} onClick={() => onPriorityChange(toggle(priorityFilter, p))}>
             {p}
@@ -60,7 +60,7 @@ export default function FilterPanel({
         ))}
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: allTags.length ? "4px" : 0 }}>
-        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>stage</span>
+        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>Stage</span>
         {(["idea", "drafted", "recorded", "posted", "analyzed"] as const).map(s => (
           <button key={s} style={chipStyle(stageFilter.includes(s))} onClick={() => onStageChange(toggle(stageFilter, s))}>
             {s}
@@ -69,7 +69,7 @@ export default function FilterPanel({
       </div>
       {allTags.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
-          <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>tags</span>
+          <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>Tags</span>
           {allTags.map(tag => (
             <button key={tag} style={chipStyle(tagFilter.includes(tag))} onClick={() => onTagChange(toggle(tagFilter, tag))}>
               #{tag}
@@ -82,7 +82,7 @@ export default function FilterPanel({
           onClick={() => { onStatusChange([]); onPriorityChange([]); onStageChange([]); onTagChange([]); }}
           style={{ marginTop: "6px", fontSize: "11px", color: "#999", background: "none", border: "none", cursor: "pointer", padding: 0 }}
         >
-          clear filters
+          Clear filters
         </button>
       )}
     </div>

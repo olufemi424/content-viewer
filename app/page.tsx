@@ -190,7 +190,7 @@ export default function Home() {
               fontWeight: "bold",
             }}
           >
-            Content Viewer
+            Content OS
           </h1>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -287,7 +287,7 @@ export default function Home() {
           }}
         >
           <TodayFocusPanel summary={todayFocus} onOpenFile={handleFileSelect} />
-          <WeekDashboardPanel summary={weekDashboard} onOpenFile={handleFileSelect} />
+          <WeekDashboardPanel summary={weekDashboard} onOpenFile={handleFileSelect} onNavigate={handleNavigate} />
           {selectedFolder !== null ? (
             <FolderIndex
               folderPath={selectedFolder}

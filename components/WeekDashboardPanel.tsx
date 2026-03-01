@@ -5,9 +5,10 @@ import { WeekDashboardSummary } from "@/lib/weekDashboard";
 interface WeekDashboardPanelProps {
   summary: WeekDashboardSummary;
   onOpenFile: (path: string) => void;
+  onNavigate?: (path: string) => void;
 }
 
-export default function WeekDashboardPanel({ summary, onOpenFile }: WeekDashboardPanelProps) {
+export default function WeekDashboardPanel({ summary, onOpenFile, onNavigate }: WeekDashboardPanelProps) {
   return (
     <div
       style={{
@@ -23,8 +24,26 @@ export default function WeekDashboardPanel({ summary, onOpenFile }: WeekDashboar
         <div style={{ fontSize: "13px", fontWeight: 600 }}>
           Week Dashboard {summary.weekPath ? `· ${summary.weekPath}` : ""}
         </div>
-        <div style={{ fontSize: "12px", color: "#666" }}>
-          completion: {summary.completionRate}%
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          {summary.weekPath && onNavigate && (
+            <button
+              onClick={() => onNavigate(summary.weekPath || "")}
+              style={{ border: "1px solid #ddd", background: "white", borderRadius: 4, padding: "3px 8px", fontSize: 11, cursor: "pointer" }}
+            >
+              Open week
+            </button>
+          )}
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate("")}
+              style={{ border: "1px solid #ddd", background: "white", borderRadius: 4, padding: "3px 8px", fontSize: 11, cursor: "pointer" }}
+            >
+              Root
+            </button>
+          )}
+          <div style={{ fontSize: "12px", color: "#666" }}>
+            {summary.completionRate}% complete
+          </div>
         </div>
       </div>
 
