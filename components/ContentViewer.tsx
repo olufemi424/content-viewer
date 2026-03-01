@@ -124,13 +124,13 @@ export default function ContentViewer({
         {filePath && onNavigate && (
           <Breadcrumbs path={filePath} onNavigate={onNavigate} />
         )}
-        {metadata && (metadata.status || metadata.priority || metadata.tags?.length) && (
+        {metadata && (metadata.status || metadata.priority || metadata.tags?.length || metadata.stage) && (
         <div style={{
           display: "flex",
           flexWrap: "wrap",
-          gap: "8px",
-          marginBottom: "24px",
-          paddingBottom: "16px",
+          gap: "6px",
+          marginBottom: "16px",
+          paddingBottom: "12px",
           borderBottom: "1px solid #e5e5e5",
           alignItems: "center",
         }}>
@@ -158,7 +158,7 @@ export default function ContentViewer({
               ↑ {metadata.priority}
             </span>
           )}
-          {metadata.tags?.map(tag => (
+          {metadata.tags?.slice(0, 3).map(tag => (
             <span key={tag} style={{
               fontSize: "12px",
               padding: "2px 8px",
@@ -169,6 +169,9 @@ export default function ContentViewer({
               #{tag}
             </span>
           ))}
+          {(metadata.tags?.length || 0) > 3 && (
+            <span style={{ fontSize: "12px", color: "#777" }}>+{(metadata.tags?.length || 0) - 3} tags</span>
+          )}
           {metadata.stage && (
             <span style={{
               fontSize: "12px",

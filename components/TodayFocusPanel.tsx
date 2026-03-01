@@ -60,7 +60,7 @@ export default function TodayFocusPanel({ summary, onOpenFile }: TodayFocusPanel
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <div style={{ fontSize: "13px", fontWeight: 600 }}>Today Focus</div>
         <div style={{ fontSize: "12px", color: "#666" }}>
-          Total: {summary.total} · drafted: {summary.drafted} · recorded: {summary.recorded} · posted: {summary.posted} · analyzed: {summary.analyzed}
+          Drafted {summary.drafted} · Recorded {summary.recorded} · Posted {summary.posted} · Analyzed {summary.analyzed}
         </div>
       </div>
 
