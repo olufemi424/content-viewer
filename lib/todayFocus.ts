@@ -24,6 +24,55 @@ function sortByPublishDate(a: FileNode, b: FileNode): number {
   return da.localeCompare(db);
 }
 
+function monthSlug(monthIndex: number): string {
+  const slugs = [
+    '01-january',
+    '02-february',
+    '03-march',
+    '04-april',
+    '05-may',
+    '06-june',
+    '07-july',
+    '08-august',
+    '09-september',
+    '10-october',
+    '11-november',
+    '12-december',
+  ];
+  return slugs[monthIndex] || '';
+}
+
+function isoWeek(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+}
+
+function currentWeekPrefix(now = new Date()): string {
+  const year = now.getFullYear();
+  const month = monthSlug(now.getMonth());
+  const week = String(isoWeek(now)).padStart(2, '0');
+  return `${year}/${month}/week-${week}/`;
+}
+
+function pickNextByStage(files: FileNode[], stage: string): FileNode | null {
+  const prefix = currentWeekPrefix();
+
+  const inCurrentWeek = files
+    .filter((f) => (f.metadata?.stage || 'idea') === stage && f.path.startsWith(prefix))
+    .sort(sortByPublishDate);
+
+  if (inCurrentWeek.length > 0) return inCurrentWeek[0];
+
+  const upcoming = files
+    .filter((f) => (f.metadata?.stage || 'idea') === stage)
+    .sort(sortByPublishDate);
+
+  return upcoming[0] || null;
+}
+
 export function getTodayFocus(files: FileNode[]): TodayFocusSummary {
   const onlyPosts = files.filter((f) => f.type === 'file');
   const drafted = onlyPosts.filter((f) => f.metadata?.stage === 'drafted').length;
@@ -35,17 +84,11 @@ export function getTodayFocus(files: FileNode[]): TodayFocusSummary {
     .filter((f) => isToday(f.metadata?.publish_date) && f.metadata?.stage !== 'analyzed')
     .sort(sortByPublishDate);
 
-  const nextToDraft = onlyPosts
-    .filter((f) => (f.metadata?.stage || 'idea') === 'idea')
-    .sort(sortByPublishDate)[0] || null;
+  const nextToDraft = pickNextByStage(onlyPosts, 'idea');
 
-  const nextToRecord = onlyPosts
-    .filter((f) => f.metadata?.stage === 'drafted')
-    .sort(sortByPublishDate)[0] || null;
+  const nextToRecord = pickNextByStage(onlyPosts, 'drafted');
 
-  const nextToPost = onlyPosts
-    .filter((f) => f.metadata?.stage === 'recorded')
-    .sort(sortByPublishDate)[0] || null;
+  const nextToPost = pickNextByStage(onlyPosts, 'recorded');
 
   return {
     total: onlyPosts.length,
