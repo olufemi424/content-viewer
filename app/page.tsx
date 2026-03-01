@@ -15,13 +15,13 @@ export default function Home() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [showNewFileForm, setShowNewFileForm] = useState(false);
-  const [folders, setFolders] = useState<string[]>([]);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const [stageFilter, setStageFilter] = useState<string[]>([]);
   const [tagFilter, setTagFilter] = useState<string[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
 
@@ -39,21 +39,6 @@ export default function Home() {
       setFileTree(data.tree || []);
       setAllTags(data.allTags || []);
 
-      // Extract folder paths
-      const folderPaths: string[] = [];
-      const extractFolders = (nodes: FileNode[], prefix = "") => {
-        nodes.forEach((node) => {
-          if (node.type === "folder") {
-            const folderPath = prefix ? `${prefix}/${node.name}` : node.name;
-            folderPaths.push(folderPath);
-            if (node.children) {
-              extractFolders(node.children, folderPath);
-            }
-          }
-        });
-      };
-      extractFolders(data.tree || []);
-      setFolders(folderPaths);
     } catch (error) {
       console.error("Failed to load file tree:", error);
     }
@@ -248,8 +233,10 @@ export default function Home() {
                 statusFilter={statusFilter}
                 priorityFilter={priorityFilter}
                 tagFilter={tagFilter}
+                stageFilter={stageFilter}
                 onStatusChange={setStatusFilter}
                 onPriorityChange={setPriorityFilter}
+                onStageChange={setStageFilter}
                 onTagChange={setTagFilter}
               />
               <div style={{ flex: 1, overflow: "auto" }}>
@@ -262,6 +249,7 @@ export default function Home() {
                   statusFilter={statusFilter}
                   priorityFilter={priorityFilter}
                   tagFilter={tagFilter}
+                  stageFilter={stageFilter}
                 />
               </div>
             </>
@@ -354,7 +342,6 @@ export default function Home() {
       {/* New file modal */}
       {showNewFileForm && (
         <NewFileForm
-          folders={folders}
           allTags={allTags}
           onClose={() => setShowNewFileForm(false)}
           onSuccess={handleNewFileSuccess}

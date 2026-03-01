@@ -1,29 +1,52 @@
 "use client";
 
-import { useState } from "react";
-import { ContentStatus, ContentPriority } from "@/types";
+import { useMemo, useState } from "react";
+import { ContentPriority, ContentStage, ContentStatus } from "@/types";
 
 interface NewFileFormProps {
-  folders: string[];
   allTags?: string[];
   onClose: () => void;
   onSuccess: (path: string) => void;
 }
 
+const MONTHS = [
+  "01-january",
+  "02-february",
+  "03-march",
+  "04-april",
+  "05-may",
+  "06-june",
+  "07-july",
+  "08-august",
+  "09-september",
+  "10-october",
+  "11-november",
+  "12-december",
+];
+
 export default function NewFileForm({
-  folders,
   allTags = [],
   onClose,
   onSuccess,
 }: NewFileFormProps) {
+  const now = new Date();
+  const currentYear = String(now.getFullYear());
+  const currentMonth = MONTHS[now.getMonth()];
+
   const [filename, setFilename] = useState("");
   const [title, setTitle] = useState("");
-  const [selectedFolder, setSelectedFolder] = useState("");
+  const [year, setYear] = useState(currentYear);
+  const [month, setMonth] = useState(currentMonth);
+  const [week, setWeek] = useState("week-01");
   const [status, setStatus] = useState<ContentStatus>("draft");
   const [priority, setPriority] = useState<ContentPriority | "">("");
+  const [stage, setStage] = useState<ContentStage>("idea");
+  const [ctaKeyword, setCtaKeyword] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const selectedFolder = useMemo(() => `${year}/${month}/${week}`, [year, month, week]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,8 +74,10 @@ export default function NewFileForm({
           metadata: {
             title: title.trim() || filename.trim().replace(/\.md$/, ""),
             status,
+            stage,
             priority: priority || undefined,
             tags: tags.length ? tags : undefined,
+            cta_keyword: ctaKeyword.trim() || undefined,
           },
         }),
       });
@@ -101,17 +126,39 @@ export default function NewFileForm({
           backgroundColor: "white",
           padding: "24px",
           borderRadius: "4px",
-          width: "440px",
+          width: "520px",
           maxWidth: "90%",
           maxHeight: "90vh",
           overflowY: "auto",
         }}
       >
         <h2 style={{ margin: "0 0 20px 0", fontSize: "1.25em", fontWeight: "bold" }}>
-          New File
+          New Post
         </h2>
 
         <form onSubmit={handleSubmit}>
+          <div style={{ display: "flex", gap: "12px", marginBottom: "14px" }}>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Year:</label>
+              <input type="text" value={year} onChange={(e) => setYear(e.target.value)} style={inputStyle} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Month:</label>
+              <select value={month} onChange={(e) => setMonth(e.target.value)} style={inputStyle}>
+                {MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Week:</label>
+              <input type="text" value={week} onChange={(e) => setWeek(e.target.value)} placeholder="week-09" style={inputStyle} />
+            </div>
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Target folder:</label>
+            <code style={{ fontSize: "12px", color: "#555" }}>{selectedFolder}</code>
+          </div>
+
           <div style={fieldStyle}>
             <label style={labelStyle}>Title:</label>
             <input
@@ -130,7 +177,7 @@ export default function NewFileForm({
               type="text"
               value={filename}
               onChange={(e) => setFilename(e.target.value)}
-              placeholder="my-file.md"
+              placeholder="2026-03-02-my-topic.md"
               style={inputStyle}
             />
           </div>
@@ -145,6 +192,16 @@ export default function NewFileForm({
               </select>
             </div>
             <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Stage:</label>
+              <select value={stage} onChange={(e) => setStage(e.target.value as ContentStage)} style={inputStyle}>
+                <option value="idea">idea</option>
+                <option value="drafted">drafted</option>
+                <option value="recorded">recorded</option>
+                <option value="posted">posted</option>
+                <option value="analyzed">analyzed</option>
+              </select>
+            </div>
+            <div style={{ flex: 1 }}>
               <label style={labelStyle}>Priority:</label>
               <select value={priority} onChange={(e) => setPriority(e.target.value as ContentPriority | "")} style={inputStyle}>
                 <option value="">—</option>
@@ -155,13 +212,26 @@ export default function NewFileForm({
             </div>
           </div>
 
+          <div style={{ display: "flex", gap: "12px", marginBottom: "14px" }}>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>CTA keyword:</label>
+              <input
+                type="text"
+                value={ctaKeyword}
+                onChange={(e) => setCtaKeyword(e.target.value)}
+                placeholder="PLAN"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
           <div style={fieldStyle}>
             <label style={labelStyle}>Tags <span style={{ color: "#999" }}>(comma-separated)</span>:</label>
             <input
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              placeholder="youtube, tutorial, react"
+              placeholder="facebook, talking-head, authority"
               style={inputStyle}
               list="known-tags"
             />
@@ -170,16 +240,6 @@ export default function NewFileForm({
                 {allTags.map(t => <option key={t} value={t} />)}
               </datalist>
             )}
-          </div>
-
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Folder:</label>
-            <select value={selectedFolder} onChange={(e) => setSelectedFolder(e.target.value)} style={inputStyle}>
-              <option value="">Root (content/)</option>
-              {folders.map((folder) => (
-                <option key={folder} value={folder}>{folder}/</option>
-              ))}
-            </select>
           </div>
 
           {error && (

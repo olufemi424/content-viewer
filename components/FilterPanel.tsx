@@ -4,9 +4,11 @@ interface FilterPanelProps {
   allTags: string[];
   statusFilter: string[];
   priorityFilter: string[];
+  stageFilter: string[];
   tagFilter: string[];
   onStatusChange: (values: string[]) => void;
   onPriorityChange: (values: string[]) => void;
+  onStageChange: (values: string[]) => void;
   onTagChange: (values: string[]) => void;
 }
 
@@ -19,11 +21,13 @@ export default function FilterPanel({
   statusFilter,
   priorityFilter,
   tagFilter,
+  stageFilter,
   onStatusChange,
   onPriorityChange,
+  onStageChange,
   onTagChange,
 }: FilterPanelProps) {
-  const hasFilters = statusFilter.length || priorityFilter.length || tagFilter.length;
+  const hasFilters = statusFilter.length || priorityFilter.length || stageFilter.length || tagFilter.length;
 
   const chipStyle = (active: boolean): React.CSSProperties => ({
     fontSize: "11px",
@@ -55,6 +59,14 @@ export default function FilterPanel({
           </button>
         ))}
       </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: allTags.length ? "4px" : 0 }}>
+        <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>stage</span>
+        {(["idea", "drafted", "recorded", "posted", "analyzed"] as const).map(s => (
+          <button key={s} style={chipStyle(stageFilter.includes(s))} onClick={() => onStageChange(toggle(stageFilter, s))}>
+            {s}
+          </button>
+        ))}
+      </div>
       {allTags.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
           <span style={{ color: "#999", marginRight: "4px", alignSelf: "center" }}>tags</span>
@@ -67,7 +79,7 @@ export default function FilterPanel({
       )}
       {hasFilters > 0 && (
         <button
-          onClick={() => { onStatusChange([]); onPriorityChange([]); onTagChange([]); }}
+          onClick={() => { onStatusChange([]); onPriorityChange([]); onStageChange([]); onTagChange([]); }}
           style={{ marginTop: "6px", fontSize: "11px", color: "#999", background: "none", border: "none", cursor: "pointer", padding: 0 }}
         >
           clear filters

@@ -7,8 +7,9 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 - **Two-panel layout**: Folder tree on left, content on right
 - **Auto-discovery**: Automatically detects new markdown files added to `content/` directory
 - **Simple navigation**: Click files to view, folders to expand/collapse
-- **Create files**: Use the "+ New" button to create new markdown files
+- **Guided New Post flow**: Use the "+ New" button to create posts into Year/Month/Week folders
 - **Talking-head post template**: New files are scaffolded with post details + script sections
+- **Stage filters**: Filter sidebar content by execution stage (idea → analyzed)
 - **Minimal design**: Black text on white background with gray accents
 
 ## Getting Started
