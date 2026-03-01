@@ -7,8 +7,10 @@ import FolderIndex from "@/components/FolderIndex";
 import NewFileForm from "@/components/NewFileForm";
 import FontSwitcher from "@/components/FontSwitcher";
 import FilterPanel from "@/components/FilterPanel";
+import TodayFocusPanel from "@/components/TodayFocusPanel";
 import { FileNode, FileContent } from "@/types";
 import { flattenFileList, getPrevNext, getFolderChildren } from "@/lib/fileList";
+import { getTodayFocus } from "@/lib/todayFocus";
 
 export default function Home() {
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
@@ -30,6 +32,7 @@ export default function Home() {
     () => selectedFile ? getPrevNext(flatFiles, selectedFile) : { prev: null, next: null },
     [flatFiles, selectedFile]
   );
+  const todayFocus = useMemo(() => getTodayFocus(flatFiles), [flatFiles]);
 
   // Load file tree
   const loadFileTree = async () => {
@@ -264,6 +267,7 @@ export default function Home() {
             backgroundColor: "white",
           }}
         >
+          <TodayFocusPanel summary={todayFocus} onOpenFile={handleFileSelect} />
           {selectedFolder !== null ? (
             <FolderIndex
               folderPath={selectedFolder}
