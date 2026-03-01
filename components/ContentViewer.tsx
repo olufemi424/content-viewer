@@ -15,6 +15,7 @@ interface ContentViewerProps {
   onOpenSidebar?: () => void;
   onNewFile?: () => void;
   onNavigate?: (path: string) => void;
+  onStageUpdate?: (stage: "idea" | "drafted" | "recorded" | "posted" | "analyzed") => void;
 }
 
 export default function ContentViewer({
@@ -27,6 +28,7 @@ export default function ContentViewer({
   onOpenSidebar,
   onNewFile,
   onNavigate,
+  onStageUpdate,
 }: ContentViewerProps) {
   if (!content) {
     return (
@@ -167,11 +169,45 @@ export default function ContentViewer({
               #{tag}
             </span>
           ))}
+          {metadata.stage && (
+            <span style={{
+              fontSize: "12px",
+              padding: "2px 8px",
+              border: "1px solid #ccc",
+              borderRadius: "12px",
+              background: "#fff",
+            }}>
+              stage: {metadata.stage}
+            </span>
+          )}
           {metadata.modified && (
             <span style={{ fontSize: "12px", color: "#999", marginLeft: "auto" }}>
               modified {metadata.modified}
             </span>
           )}
+        </div>
+      )}
+
+      {filePath && onStageUpdate && (
+        <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
+          {(["idea", "drafted", "recorded", "posted", "analyzed"] as const).map((stage) => (
+            <button
+              key={stage}
+              onClick={() => onStageUpdate(stage)}
+              style={{
+                fontSize: "11px",
+                padding: "4px 8px",
+                border: "1px solid",
+                borderColor: metadata?.stage === stage ? "#111" : "#ddd",
+                borderRadius: "10px",
+                background: metadata?.stage === stage ? "#111" : "#fff",
+                color: metadata?.stage === stage ? "#fff" : "#444",
+                cursor: "pointer",
+              }}
+            >
+              {stage}
+            </button>
+          ))}
         </div>
       )}
       <ReactMarkdown
