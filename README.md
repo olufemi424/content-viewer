@@ -10,6 +10,8 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 - **Guided New Post flow**: Use the "+ New" button to create posts into Year/Month/Week folders
 - **Talking-head post template**: New files are scaffolded with post details + script sections
 - **Stage filters**: Filter sidebar content by execution stage (idea → analyzed)
+- **Today Focus panel**: Quick view of what to draft, record, and post next
+- **Week Dashboard**: Stage breakdown and completion view for the selected week folder
 - **Minimal design**: Black text on white background with gray accents
 
 ## Getting Started
