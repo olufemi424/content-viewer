@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
 import { serializeFrontmatter, today } from '@/lib/frontmatter';
+import { buildTalkingHeadTemplate } from '@/lib/contentTemplate';
 import { Metadata } from '@/types';
 
 const CONTENT_DIR = path.join(process.cwd(), '.', 'content');
@@ -55,8 +56,25 @@ export async function POST(request: NextRequest) {
       tags: metadata?.tags?.length ? metadata.tags : undefined,
       created: today(),
       modified: today(),
+
+      platform: metadata?.platform || 'facebook',
+      content_type: metadata?.content_type || 'talking_head',
+      pillar: metadata?.pillar || 'authority',
+      goal: metadata?.goal || 'engagement',
+      stage: metadata?.stage || 'idea',
+      publish_date: metadata?.publish_date || today(),
+      cta_keyword: metadata?.cta_keyword,
+      hook_score: metadata?.hook_score,
+      retention_target: metadata?.retention_target,
+      kpi_comments: metadata?.kpi_comments,
+      kpi_saves: metadata?.kpi_saves,
+      kpi_profile_visits: metadata?.kpi_profile_visits,
+      actual_comments: metadata?.actual_comments,
+      actual_saves: metadata?.actual_saves,
+      actual_profile_visits: metadata?.actual_profile_visits,
+      lesson_learned: metadata?.lesson_learned,
     };
-    const body_content = content || `# ${meta.title}\n\n`;
+    const body_content = content || buildTalkingHeadTemplate(meta);
     const fileContent = serializeFrontmatter(meta, body_content);
 
     fs.writeFileSync(fullPath, fileContent, 'utf-8');

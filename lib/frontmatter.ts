@@ -43,6 +43,25 @@ export interface ParsedFile {
   body: string;
 }
 
+const EXTRA_FIELDS: Array<keyof Metadata> = [
+  'platform',
+  'content_type',
+  'pillar',
+  'goal',
+  'stage',
+  'publish_date',
+  'cta_keyword',
+  'hook_score',
+  'retention_target',
+  'kpi_comments',
+  'kpi_saves',
+  'kpi_profile_visits',
+  'actual_comments',
+  'actual_saves',
+  'actual_profile_visits',
+  'lesson_learned',
+];
+
 /** Extract frontmatter metadata and body from markdown content. */
 export function parseFrontmatter(content: string): ParsedFile {
   const match = content.match(FRONTMATTER_REGEX);
@@ -64,6 +83,13 @@ export function parseFrontmatter(content: string): ParsedFile {
   if (typeof raw.created === 'string') metadata.created = raw.created;
   if (typeof raw.modified === 'string') metadata.modified = raw.modified;
 
+  for (const field of EXTRA_FIELDS) {
+    const value = raw[field];
+    if (typeof value === 'string') {
+      metadata[field] = value as never;
+    }
+  }
+
   const body = content.slice(match[0].length).replace(/^\r?\n/, '');
   return { metadata, body };
 }
@@ -80,6 +106,14 @@ export function serializeFrontmatter(metadata: Metadata, body: string): string {
   }
   if (metadata.created)  lines.push(`created: ${metadata.created}`);
   if (metadata.modified) lines.push(`modified: ${metadata.modified}`);
+
+  for (const field of EXTRA_FIELDS) {
+    const value = metadata[field];
+    if (typeof value === 'string' && value.trim()) {
+      lines.push(`${field}: ${value}`);
+    }
+  }
+
   lines.push('---');
   return `${lines.join('\n')}\n\n${body}`;
 }
