@@ -8,6 +8,7 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 - **Auto-discovery**: Automatically detects new markdown files added to `content/` directory
 - **Simple navigation**: Click files to view, folders to expand/collapse
 - **Create files**: Use the "+ New" button to create new markdown files
+- **Talking-head post template**: New files are scaffolded with post details + script sections
 - **Minimal design**: Black text on white background with gray accents
 
 ## Getting Started
@@ -41,6 +42,20 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 
 ### Auto-Discovery
 The app automatically refreshes the file tree every 2 seconds. Just add a markdown file to any folder in `content/` and it will appear automatically.
+
+## Suggested Content Folder Convention
+
+Use this structure inside `content/` to organize by year, month, and week:
+
+```txt
+content/
+  2026/
+    03-march/
+      week-10/
+        2026-03-02-my-topic.md
+```
+
+This makes weekly planning and monthly review easy in the sidebar tree.
 
 ## Project Structure
 
