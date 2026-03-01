@@ -70,6 +70,22 @@ export default function Home() {
     loadFileContent(path);
   };
 
+  const handleStageUpdate = async (stage: "idea" | "drafted" | "recorded" | "posted" | "analyzed") => {
+    if (!selectedFile) return;
+    try {
+      const response = await fetch('/api/files/update-stage', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: selectedFile, stage }),
+      });
+      if (!response.ok) return;
+      await loadFileTree();
+      await loadFileContent(selectedFile);
+    } catch (error) {
+      console.error('Failed to update stage:', error);
+    }
+  };
+
   // Handle navigation from breadcrumbs, prev/next, or folder index
   const handleNavigate = (path: string) => {
     if (!path) {
@@ -290,6 +306,7 @@ export default function Home() {
               onOpenSidebar={() => setIsSidebarOpen(true)}
               onNewFile={() => setShowNewFileForm(true)}
               onNavigate={handleNavigate}
+              onStageUpdate={handleStageUpdate}
             />
           )}
         </div>
