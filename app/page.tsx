@@ -8,9 +8,11 @@ import NewFileForm from "@/components/NewFileForm";
 import FontSwitcher from "@/components/FontSwitcher";
 import FilterPanel from "@/components/FilterPanel";
 import TodayFocusPanel from "@/components/TodayFocusPanel";
+import WeekDashboardPanel from "@/components/WeekDashboardPanel";
 import { FileNode, FileContent } from "@/types";
 import { flattenFileList, getPrevNext, getFolderChildren } from "@/lib/fileList";
 import { getTodayFocus } from "@/lib/todayFocus";
+import { getWeekDashboard } from "@/lib/weekDashboard";
 
 export default function Home() {
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
@@ -33,6 +35,7 @@ export default function Home() {
     [flatFiles, selectedFile]
   );
   const todayFocus = useMemo(() => getTodayFocus(flatFiles), [flatFiles]);
+  const weekDashboard = useMemo(() => getWeekDashboard(flatFiles, selectedFolder), [flatFiles, selectedFolder]);
 
   // Load file tree
   const loadFileTree = async () => {
@@ -268,6 +271,7 @@ export default function Home() {
           }}
         >
           <TodayFocusPanel summary={todayFocus} onOpenFile={handleFileSelect} />
+          <WeekDashboardPanel summary={weekDashboard} onOpenFile={handleFileSelect} />
           {selectedFolder !== null ? (
             <FolderIndex
               folderPath={selectedFolder}
