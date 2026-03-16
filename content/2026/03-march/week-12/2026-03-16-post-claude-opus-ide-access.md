@@ -19,26 +19,26 @@ tags:
 ---
 
 ## Hook
-If your team uses Copilot across multiple editors, model consistency just became a practical advantage.
+If your team codes across different IDEs, this Copilot update can remove a lot of workflow inconsistency.
 
 ## 3 Key Points
-1. **What changed:** GitHub announced that **Claude Opus 4.6** is generally available in Copilot across GitHub.com, mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
-2. **Why it matters:** Teams can now test and standardize one model across different environments instead of having workflow quality vary by editor.
-3. **Practical move today:** Run a 3-task benchmark (bug fix, refactor, test generation) with your current default model vs Claude Opus 4.6 before changing team defaults.
+1. **What changed:** GitHub announced **Claude Opus 4.6** as generally available in Copilot on GitHub.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
+2. **Why it matters:** Teams can evaluate one model across the same real tasks, instead of getting different quality depending on editor or environment.
+3. **Practical move today:** Run a same-day benchmark: one bug fix, one refactor, and one test-generation task using your current default vs Claude Opus 4.6.
 
 ## Full Script (60-90 seconds)
-If your team is already using GitHub Copilot, this update is worth a quick test this week.
+Quick one for engineering teams using GitHub Copilot in more than one editor.
 
-GitHub’s changelog says Claude Opus 4.6 is now generally available in Copilot across GitHub.com, mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
+GitHub’s changelog confirms Claude Opus 4.6 is now generally available in Copilot, including GitHub.com, mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
 
-Why this matters: model choice is now a workflow lever, not just a personal preference. If your team works across different editors, using one high-capability model can make reviews more predictable and reduce prompt rewrites between tools.
+The practical point is consistency. When teams use mixed tools, AI output quality can vary and create review friction. A cross-IDE rollout lets you test one model against your existing workflows instead of relying on assumptions.
 
-Here’s the practical move: don’t switch on hype. Pick three real tasks from your backlog today—one bug fix, one refactor, and one test-writing task. Compare output quality, edit distance, and time-to-merge against your current default model.
+Here’s the play: pick three tasks from your current sprint today—a bug fix, a refactor, and test generation. Compare time-to-first-good-output, edit distance before merge, and reviewer comments. If Claude Opus 4.6 is clearly better, make it your default for those task types. If not, keep it as an escalation model for harder tickets.
 
-If the results are clearly better, standardize. If not, keep it as an option for harder tickets. Either way, make the decision with data from your own codebase.
+Don’t switch because it’s new. Switch because your own repo data says it improves throughput and code quality.
 
 ## CTA
-Comment **MODELCHECK** and I’ll share a lightweight scorecard you can use to compare AI models on real engineering tasks.
+Comment **MODELCHECK** and I’ll share a simple benchmark template for comparing Copilot models in real team workflows.
 
 ## Sources
 - https://github.blog/changelog/2026-02-18-claude-opus-4-6-is-now-available-in-visual-studio-jetbrains-ides-xcode-and-eclipse/
