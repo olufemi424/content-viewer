@@ -1,5 +1,5 @@
 ---
-title: Copilot + Claude Opus 4.6: rollout checklist before you flip the default
+title: Copilot + Claude Opus 4.6: rollout checklist before you switch defaults
 status: draft
 stage: idea
 platform: facebook
@@ -15,38 +15,38 @@ tags:
   - talking-head
   - week-12
   - github-copilot
-  - rollout
-  - model-governance
+  - model-rollout
+  - engineering-ops
 ---
 
 ## Hook
-If your team just got Claude Opus 4.6 in Copilot, don’t switch everyone at once—run a controlled rollout and measure it like any other production change.
+If you just got Claude Opus 4.6 in Copilot, treat it like a production rollout—not a same-day default switch.
 
 ## 3 Key Points
-1. **What’s confirmed:** GitHub officially announced Claude Opus 4.6 availability in Copilot Chat across GitHub.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
-2. **Critical admin detail:** For Copilot Business and Enterprise, admins must enable the Claude Opus 4.6 policy before users can select it.
-3. **Execution plan:** Validate model availability by plan/surface, run a one-sprint pilot on real tasks, then expand only where your repo metrics improve.
+1. **Confirmed release:** GitHub’s changelog says Claude Opus 4.6 is available in Copilot Chat across GitHub.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
+2. **Admin dependency:** For Copilot Business and Enterprise, admins must enable the Opus 4.6 policy before users can access it.
+3. **Practical rollout move:** GitHub’s model docs note availability can vary by plan and surface, so teams should validate access and benchmark on real tasks before broad rollout.
 
 ## Full Script (60-90 seconds)
-Quick update for engineering leads using GitHub Copilot across multiple editors.
+Quick rollout note for engineering teams using GitHub Copilot.
 
-GitHub’s official changelog confirms Claude Opus 4.6 is now available in Copilot Chat across major surfaces—GitHub.com, mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
+GitHub’s official changelog confirms Claude Opus 4.6 is now in Copilot Chat across major surfaces—GitHub.com, mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
 
-But here’s what matters operationally: on Copilot Business and Enterprise, admins must explicitly enable the Opus 4.6 policy. So if your team can’t see it yet, check org policy first.
+The part most teams miss: if you’re on Copilot Business or Enterprise, admins must enable the Opus 4.6 policy first. No policy, no model in the picker.
 
-GitHub’s Copilot model documentation also states model availability can vary by plan and product surface. So before rollout, verify where your users actually have access.
+GitHub’s supported-models documentation also says model access can differ by plan and product surface. So before you announce a default-model change, verify where your team can actually use Opus 4.6.
 
-Practical play: run a one-sprint pilot, not an org-wide default switch. Use three task types from your current sprint—one bug fix, one refactor, and one test-generation task. Compare your current default model versus Opus 4.6 on:
-- time to first acceptable output,
-- number of manual edits before merge,
-- reviewer-requested fixes.
+Simple rollout playbook:
+- Pick three real tasks from this sprint: one bug fix, one refactor, one test task.
+- Compare your current default model vs Opus 4.6.
+- Track three metrics: time to first acceptable output, number of manual edits before merge, and reviewer-requested fixes.
 
-If Opus 4.6 improves those metrics in your own repo, expand by task category. If not, keep it as an escalation model for harder tickets.
+If Opus 4.6 wins on your repo metrics, expand by task type. If not, keep it as an escalation model for harder tickets.
 
-Treat this like a normal engineering rollout: enable, test, measure, then scale.
+New model hype is cheap. Controlled rollout data is what keeps velocity and quality stable.
 
 ## CTA
-Comment **OPSCHECK** and I’ll share a one-page rollout scorecard you can run with your team this week.
+Comment **OPSCHECK** and I’ll share a one-page rollout scorecard you can run this week.
 
 ## Sources
 - https://github.blog/changelog/2026-02-18-claude-opus-4-6-is-now-available-in-visual-studio-jetbrains-ides-xcode-and-eclipse/
