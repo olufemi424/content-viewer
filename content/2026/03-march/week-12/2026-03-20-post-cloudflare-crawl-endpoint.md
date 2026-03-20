@@ -1,5 +1,5 @@
 ---
-title: Cloudflare’s new /crawl endpoint can replace your custom site-crawling glue code
+title: Cloudflare's /crawl endpoint: a practical way to cut crawler maintenance overhead
 status: draft
 stage: idea
 platform: facebook
@@ -7,7 +7,7 @@ content_type: talking_head
 pillar: growth
 goal: engagement
 publish_date: 2026-03-20
-cta_keyword: CRAWLCHECK
+cta_keyword: CRAWLAUDIT
 created: 2026-03-20
 modified: 2026-03-20
 tags:
@@ -20,30 +20,33 @@ tags:
 ---
 
 ## Hook
-If you’re still stitching together Puppeteer + queues + parsers just to crawl sites, Cloudflare just shipped a much simpler path.
+If your team still maintains custom crawler glue code, Cloudflare's new `/crawl` API is worth a same-week evaluation.
 
 ## 3 Key Points
-1. **What changed:** Cloudflare announced a new **`/crawl` endpoint** in Browser Rendering (open beta) that can crawl an entire site from one API call and return content as HTML, Markdown, or structured JSON.
-2. **Why it matters:** This removes a lot of homegrown crawler plumbing (URL discovery, rendering, pagination loops, result formatting), especially for RAG pipelines and content monitoring workflows.
-3. **Practical move today:** Run a small bake-off this week: compare your current crawler vs. Cloudflare `/crawl` on the same domain, then measure setup time, crawl coverage, and retry/error handling complexity.
+1. **What changed:** Cloudflare added a `/crawl` endpoint in Browser Rendering (open beta) that starts full-site crawl jobs asynchronously from one API request.
+2. **Why this matters:** It can reduce custom maintenance around URL discovery loops, browser rendering orchestration, retries, and output normalization.
+3. **Practical move today:** Run one controlled comparison on a target domain: your current crawler vs `/crawl`, then compare coverage, error handling, and implementation effort.
 
 ## Full Script (60-90 seconds)
-Quick one for developers building RAG, internal search, or site monitoring pipelines.
+Quick one for developers running ingestion pipelines for docs search, RAG, or content monitoring.
 
-Cloudflare added a new `/crawl` endpoint in Browser Rendering that lets you kick off a full-site crawl with a single API request. It runs asynchronously, gives you a job ID, and returns results in formats like HTML, Markdown, and structured JSON.
+Cloudflare has a new `/crawl` endpoint in Browser Rendering. You submit a crawl request, get a job ID, and poll for results. Output formats include HTML, Markdown, and structured JSON.
 
-Why this is high-signal: most teams don’t struggle with the idea of crawling — they struggle with the glue code around crawling. URL discovery, JavaScript rendering, queue orchestration, retries, normalization, output formatting… it adds up fast.
+The reason this is useful is operational, not hype. Most engineering pain in crawling is rarely the first HTTP request. It's the surrounding system: URL queueing, JavaScript rendering, retries, dedupe logic, and formatting output for downstream pipelines.
 
-The practical win here is reducing that operational overhead. Cloudflare also states the crawler identifies as a bot and respects robots.txt and AI Crawl Control by default, which matters if you care about compliant collection behavior.
+If your current stack is stable, don't rewrite blindly. Do a scoped bake-off on one real domain this week.
 
-If you already have a crawler, don’t rewrite everything blindly. Do a controlled comparison on one target site this week: same crawl scope, same output requirements, then compare implementation time and reliability.
+Measure four things: crawl coverage, failure rate, total implementation time, and post-processing complexity.
 
-If the managed endpoint gives you acceptable coverage with less maintenance burden, that’s an easy engineering trade.
+Also note Cloudflare states crawler identity and robots/AI crawl control behavior in docs. Treat that as a compliance checkpoint before broad rollout.
+
+If results are good, use `/crawl` where managed infrastructure gives leverage. Keep your custom stack only where you need specialized behavior.
 
 ## CTA
-Comment **CRAWLCHECK** and I’ll share a quick evaluation checklist to compare managed crawl APIs vs in-house crawler stacks.
+Comment **CRAWLAUDIT** and I'll share a one-page rubric to evaluate managed crawl APIs against your in-house crawler.
 
 ## Sources
 - https://developers.cloudflare.com
-- https://developers.cloudflare.com/changelog/post/2026-03-10-br-crawl-endpoint/
 - https://developers.cloudflare.com/browser-rendering/rest-api/crawl-endpoint/
+- https://developers.cloudflare.com/changelog/2026-03-10-br-crawl-endpoint/
+- https://developers.cloudflare.com/browser-rendering/
