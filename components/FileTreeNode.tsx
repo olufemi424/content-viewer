@@ -19,7 +19,7 @@ const PRIORITY_SYMBOLS: Record<string, string> = {
 function containsSelected(node: FileNode, selectedFile: string | null): boolean {
   if (!selectedFile || node.type === "file") return false;
   return (node.children ?? []).some(
-    child => child.path === selectedFile || containsSelected(child, selectedFile)
+    (child) => child.path === selectedFile || containsSelected(child, selectedFile)
   );
 }
 
@@ -29,6 +29,7 @@ interface FileTreeNodeProps {
   onFileSelect: (path: string) => void;
   onFolderSelect?: (path: string) => void;
   level: number;
+  forceExpanded?: boolean;
 }
 
 export default function FileTreeNode({
@@ -37,6 +38,7 @@ export default function FileTreeNode({
   onFileSelect,
   onFolderSelect,
   level,
+  forceExpanded = false,
 }: FileTreeNodeProps) {
   const shouldBeOpen = node.type === "folder" && containsSelected(node, selectedFile);
   const [isExpanded, setIsExpanded] = useState(shouldBeOpen);
@@ -44,16 +46,19 @@ export default function FileTreeNode({
   const isSelected = selectedFile === node.path;
 
   // Auto-expand when the selected file moves into this folder's subtree
+  // or when a search/filter is active.
   useEffect(() => {
-    if (shouldBeOpen) setIsExpanded(true);
-  }, [shouldBeOpen]);
+    if (shouldBeOpen || forceExpanded) setIsExpanded(true);
+  }, [shouldBeOpen, forceExpanded]);
 
   if (node.type === "folder") {
+    const expanded = forceExpanded || isExpanded;
+
     return (
       <div>
         <div
           style={{
-            cursor: "pointer",
+            cursor: forceExpanded ? "default" : "pointer",
             padding: "6px 8px",
             paddingLeft: `${indent + 8}px`,
             userSelect: "none",
@@ -61,14 +66,14 @@ export default function FileTreeNode({
             alignItems: "center",
             gap: "6px",
           }}
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() => !forceExpanded && setIsExpanded(!isExpanded)}
           onDoubleClick={() => onFolderSelect?.(node.path)}
           title="Double-click to view folder index"
         >
-          <span>{isExpanded ? "📂" : "📁"}</span>
+          <span>{expanded ? "📂" : "📁"}</span>
           <span>{node.name}</span>
         </div>
-        {isExpanded && node.children && (
+        {expanded && node.children && (
           <div>
             {node.children.map((child) => (
               <FileTreeNode
@@ -78,6 +83,7 @@ export default function FileTreeNode({
                 onFileSelect={onFileSelect}
                 onFolderSelect={onFolderSelect}
                 level={level + 1}
+                forceExpanded={forceExpanded}
               />
             ))}
           </div>
@@ -111,16 +117,18 @@ export default function FileTreeNode({
         </span>
       )}
       {metadata?.status && (
-        <span style={{
-          fontSize: "10px",
-          padding: "1px 5px",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          color: metadata.status === "done" ? "#999" : "#555",
-          background: metadata.status === "done" ? "#f5f5f5" : "white",
-          flexShrink: 0,
-          whiteSpace: "nowrap",
-        }}>
+        <span
+          style={{
+            fontSize: "10px",
+            padding: "1px 5px",
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            color: metadata.status === "done" ? "#999" : "#555",
+            background: metadata.status === "done" ? "#f5f5f5" : "white",
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+          }}
+        >
           {STATUS_LABELS[metadata.status]}
         </span>
       )}

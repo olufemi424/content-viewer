@@ -38,6 +38,13 @@ function filterTree(nodes: FileNode[], query: string, statusFilter: string[], pr
   }, []);
 }
 
+function countFiles(nodes: FileNode[]): number {
+  return nodes.reduce((total, node) => {
+    if (node.type === "file") return total + 1;
+    return total + countFiles(node.children || []);
+  }, 0);
+}
+
 export default function FolderTree({
   tree,
   selectedFile,
@@ -53,14 +60,34 @@ export default function FolderTree({
     () => filterTree(tree, searchQuery, statusFilter, priorityFilter, stageFilter, tagFilter),
     [tree, searchQuery, statusFilter, priorityFilter, stageFilter, tagFilter]
   );
+  const hasActiveSearch = Boolean(
+    searchQuery.trim() || statusFilter.length || priorityFilter.length || stageFilter.length || tagFilter.length
+  );
+  const fileCount = useMemo(() => countFiles(filtered), [filtered]);
 
   return (
     <div style={{ padding: "8px 4px", fontSize: "14px", lineHeight: "1.5" }}>
-      <div style={{ padding: "10px 12px", fontWeight: "bold", borderBottom: "1px solid #e5e5e5", marginBottom: "8px" }}>
-        content/
+      <div
+        style={{
+          padding: "10px 12px",
+          fontWeight: "bold",
+          borderBottom: "1px solid #e5e5e5",
+          marginBottom: "8px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 8,
+        }}
+      >
+        <span>content/</span>
+        <span style={{ fontSize: "11px", color: "#888", fontWeight: 500 }}>
+          {fileCount} result{fileCount === 1 ? "" : "s"}
+        </span>
       </div>
       {filtered.length === 0 && (
-        <div style={{ padding: "12px", color: "#999", fontSize: "13px" }}>No files found</div>
+        <div style={{ padding: "12px", color: "#999", fontSize: "13px" }}>
+          No files found{hasActiveSearch ? " — try a shorter keyword or clear some filters." : ""}
+        </div>
       )}
       {filtered.map((node) => (
         <FileTreeNode
@@ -70,6 +97,7 @@ export default function FolderTree({
           onFileSelect={onFileSelect}
           onFolderSelect={onFolderSelect}
           level={0}
+          forceExpanded={hasActiveSearch}
         />
       ))}
     </div>
