@@ -199,21 +199,52 @@ export default function Home() {
           {isSidebarOpen && (
             <>
               <div style={{ padding: "8px 10px", borderBottom: "1px solid #e5e5e5" }}>
-                <input
-                  type="search"
-                  placeholder="Search…"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "6px 8px",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                    fontSize: "13px",
-                    boxSizing: "border-box",
-                    background: "white",
-                  }}
-                />
+                <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                  <input
+                    type="search"
+                    placeholder="Search filename, title, tags…"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") setSearchQuery("");
+                    }}
+                    aria-label="Search files"
+                    style={{
+                      width: "100%",
+                      padding: "6px 28px 6px 8px",
+                      border: "1px solid #ddd",
+                      borderRadius: "4px",
+                      fontSize: "13px",
+                      boxSizing: "border-box",
+                      background: "white",
+                    }}
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      aria-label="Clear search"
+                      title="Clear search"
+                      style={{
+                        position: "absolute",
+                        right: 6,
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        color: "#777",
+                        fontSize: 14,
+                        padding: 2,
+                        lineHeight: 1,
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+                {searchQuery && (
+                  <div style={{ marginTop: 6, fontSize: 11, color: "#888" }}>
+                    Press Esc to clear search
+                  </div>
+                )}
               </div>
               <FilterPanel
                 allTags={allTags}
