@@ -13,7 +13,6 @@ interface ContentViewerProps {
   prev?: FileNode | null;
   next?: FileNode | null;
   onOpenSidebar?: () => void;
-  onNewFile?: () => void;
   onNavigate?: (path: string) => void;
   onStageUpdate?: (stage: "idea" | "drafted" | "recorded" | "posted" | "analyzed") => void;
 }
@@ -26,7 +25,6 @@ export default function ContentViewer({
   prev,
   next,
   onOpenSidebar,
-  onNewFile,
   onNavigate,
   onStageUpdate,
 }: ContentViewerProps) {
@@ -72,8 +70,7 @@ export default function ContentViewer({
               color: "#666",
             }}
           >
-            Select a file on the left to view its content, or start by creating
-            a new one.
+            Select a file from the sidebar to view its content.
           </p>
 
           <div
@@ -96,20 +93,6 @@ export default function ContentViewer({
               }}
             >
               ☰ Browse files
-            </button>
-            <button
-              onClick={() => onNewFile && onNewFile()}
-              style={{
-                padding: "10px 14px",
-                border: "1px solid #222",
-                borderRadius: 6,
-                backgroundColor: "#111",
-                color: "white",
-                cursor: "pointer",
-                fontSize: 14,
-              }}
-            >
-              + New file
             </button>
           </div>
         </div>

@@ -7,8 +7,6 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 - **Two-panel layout**: Folder tree on left, content on right
 - **Auto-discovery**: Automatically detects new markdown files added to `content/` directory
 - **Simple navigation**: Click files to view, folders to expand/collapse
-- **Guided New Post flow**: Use the "+ New" button to create posts into Year/Month/Week folders
-- **Talking-head post template**: New files are scaffolded with post details + script sections
 - **Stage filters**: Filter sidebar content by execution stage (idea → analyzed)
 - **Today Focus panel**: Quick view of what to draft, record, and post next
 - **Week Dashboard**: Stage breakdown + quick week/root navigation for the selected week folder
@@ -37,13 +35,6 @@ A minimal markdown viewer with folder-based navigation. No colors, no animations
 - Current file is highlighted in gray
 - File path shown in footer
 
-### Creating New Files
-1. Click the "+ New" button in the top right
-2. Enter a filename (will auto-add `.md` extension if not provided)
-3. Select a folder or leave as root
-4. Click "Create"
-5. File will appear in the tree and automatically open
-
 ### Auto-Discovery
 The app automatically refreshes the file tree every 2 seconds. Just add a markdown file to any folder in `content/` and it will appear automatically.
 
@@ -69,14 +60,12 @@ content-viewer/
 │   ├── api/files/          # API routes for file operations
 │   │   ├── list/           # List all files and folders
 │   │   ├── read/           # Read file content
-│   │   └── create/         # Create new file
 │   ├── page.tsx            # Main app page
 │   ├── layout.tsx          # Root layout
 │   └── globals.css         # Minimal global styles
 ├── components/
 │   ├── FolderTree.tsx      # Left sidebar file tree
-│   ├── ContentViewer.tsx   # Right panel markdown viewer
-│   └── NewFileForm.tsx     # Modal for creating files
+│   └── ContentViewer.tsx   # Right panel markdown viewer
 └── types/
     └── index.ts            # TypeScript type definitions
 ```
