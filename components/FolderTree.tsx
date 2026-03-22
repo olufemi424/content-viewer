@@ -10,25 +10,23 @@ interface FolderTreeProps {
   onFileSelect: (path: string) => void;
   onFolderSelect?: (path: string) => void;
   searchQuery?: string;
-  statusFilter?: string[];
   priorityFilter?: string[];
   tagFilter?: string[];
   stageFilter?: string[];
 }
 
 /** Recursively filter tree to only include files matching all active filters. */
-function filterTree(nodes: FileNode[], query: string, statusFilter: string[], priorityFilter: string[], stageFilter: string[], tagFilter: string[]): FileNode[] {
+function filterTree(nodes: FileNode[], query: string, priorityFilter: string[], stageFilter: string[], tagFilter: string[]): FileNode[] {
   const q = query.toLowerCase();
   return nodes.reduce<FileNode[]>((acc, node) => {
     if (node.type === "folder") {
-      const filtered = filterTree(node.children || [], q, statusFilter, priorityFilter, stageFilter, tagFilter);
+      const filtered = filterTree(node.children || [], q, priorityFilter, stageFilter, tagFilter);
       if (filtered.length) acc.push({ ...node, children: filtered });
     } else {
       const m = node.metadata;
       if (q && !node.name.toLowerCase().includes(q) &&
           !m?.title?.toLowerCase().includes(q) &&
           !m?.tags?.some(t => t.toLowerCase().includes(q))) return acc;
-      if (statusFilter.length && (!m?.status || !statusFilter.includes(m.status))) return acc;
       if (priorityFilter.length && (!m?.priority || !priorityFilter.includes(m.priority))) return acc;
       if (stageFilter.length && (!m?.stage || !stageFilter.includes(m.stage))) return acc;
       if (tagFilter.length && !tagFilter.every(t => m?.tags?.includes(t))) return acc;
@@ -51,17 +49,16 @@ export default function FolderTree({
   onFileSelect,
   onFolderSelect,
   searchQuery = "",
-  statusFilter = [],
   priorityFilter = [],
   tagFilter = [],
   stageFilter = [],
 }: FolderTreeProps) {
   const filtered = useMemo(
-    () => filterTree(tree, searchQuery, statusFilter, priorityFilter, stageFilter, tagFilter),
-    [tree, searchQuery, statusFilter, priorityFilter, stageFilter, tagFilter]
+    () => filterTree(tree, searchQuery, priorityFilter, stageFilter, tagFilter),
+    [tree, searchQuery, priorityFilter, stageFilter, tagFilter]
   );
   const hasActiveSearch = Boolean(
-    searchQuery.trim() || statusFilter.length || priorityFilter.length || stageFilter.length || tagFilter.length
+    searchQuery.trim() || priorityFilter.length || stageFilter.length || tagFilter.length
   );
   const fileCount = useMemo(() => countFiles(filtered), [filtered]);
 

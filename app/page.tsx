@@ -21,7 +21,6 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
   const [stageFilter, setStageFilter] = useState<string[]>([]);
   const [tagFilter, setTagFilter] = useState<string[]>([]);
@@ -248,11 +247,9 @@ export default function Home() {
               </div>
               <FilterPanel
                 allTags={allTags}
-                statusFilter={statusFilter}
                 priorityFilter={priorityFilter}
                 tagFilter={tagFilter}
                 stageFilter={stageFilter}
-                onStatusChange={setStatusFilter}
                 onPriorityChange={setPriorityFilter}
                 onStageChange={setStageFilter}
                 onTagChange={setTagFilter}
@@ -264,7 +261,6 @@ export default function Home() {
                   onFileSelect={handleFileSelect}
                   onFolderSelect={(path) => handleNavigate(path)}
                   searchQuery={searchQuery}
-                  statusFilter={statusFilter}
                   priorityFilter={priorityFilter}
                   tagFilter={tagFilter}
                   stageFilter={stageFilter}
