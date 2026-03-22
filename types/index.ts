@@ -45,9 +45,3 @@ export interface FileContent {
   metadata?: Metadata;
 }
 
-export interface CreateFileRequest {
-  folder: string;
-  filename: string;
-  content?: string;
-  metadata?: Metadata;
-}

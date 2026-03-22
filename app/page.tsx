@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import FolderTree from "@/components/FolderTree";
 import ContentViewer from "@/components/ContentViewer";
 import FolderIndex from "@/components/FolderIndex";
-import NewFileForm from "@/components/NewFileForm";
 import FontSwitcher from "@/components/FontSwitcher";
 import FilterPanel from "@/components/FilterPanel";
 import TodayFocusPanel from "@/components/TodayFocusPanel";
@@ -18,7 +17,6 @@ export default function Home() {
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
-  const [showNewFileForm, setShowNewFileForm] = useState(false);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -106,14 +104,6 @@ export default function Home() {
     }
   };
 
-  // Handle new file creation success
-  const handleNewFileSuccess = (path: string) => {
-    loadFileTree();
-    setTimeout(() => {
-      handleFileSelect(path);
-    }, 100);
-  };
-
   const handleCopyFooterLink = async () => {
     if (!selectedFile) return;
     try {
@@ -130,18 +120,6 @@ export default function Home() {
     loadFileTree();
     const interval = setInterval(loadFileTree, 2000);
     return () => clearInterval(interval);
-  }, []);
-
-  // Cmd+N / Ctrl+N to open new file form
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "n") {
-        e.preventDefault();
-        setShowNewFileForm(true);
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
   }, []);
 
   return (
@@ -195,19 +173,6 @@ export default function Home() {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <FontSwitcher />
-          <button
-            onClick={() => setShowNewFileForm(true)}
-            style={{
-              padding: "6px 12px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              backgroundColor: "white",
-              cursor: "pointer",
-              fontSize: "14px",
-            }}
-          >
-            + New
-          </button>
         </div>
       </div>
 
@@ -304,7 +269,6 @@ export default function Home() {
               prev={prev}
               next={next}
               onOpenSidebar={() => setIsSidebarOpen(true)}
-              onNewFile={() => setShowNewFileForm(true)}
               onNavigate={handleNavigate}
               onStageUpdate={handleStageUpdate}
             />
@@ -364,14 +328,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* New file modal */}
-      {showNewFileForm && (
-        <NewFileForm
-          allTags={allTags}
-          onClose={() => setShowNewFileForm(false)}
-          onSuccess={handleNewFileSuccess}
-        />
-      )}
     </div>
   );
 }

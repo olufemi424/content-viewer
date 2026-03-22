@@ -21,24 +21,22 @@ npm start
 A minimal two-panel markdown viewer with **client-side file tree navigation** and **server-side file operations**. The file tree is fetched once on mount and refreshed every 2 seconds using `chokidar` on the backend to detect changes.
 
 ### Data Flow
-1. **Client** (`app/page.tsx`): React component manages UI state (selected file, form visibility, sidebar state)
-2. **API Layer** (`app/api/files/`): Three Next.js route handlers:
+1. **Client** (`app/page.tsx`): React component manages UI state (selected file, sidebar state)
+2. **API Layer** (`app/api/files/`): Route handlers for listing, reading, and updating markdown metadata
    - `GET /api/files/list` - Returns full file tree + folder list from `content/` dir
    - `GET /api/files/read` - Reads markdown file content (query: `path`)
-   - `POST /api/files/create` - Creates new markdown file in specified folder
+   - `PATCH /api/files/update-stage` - Updates a markdown file's `stage` in frontmatter
 3. **Backend**: Uses Node.js `fs` to scan `content/` directory recursively
 
 ### Key Components
 - **FolderTree.tsx** - Renders collapsible folder structure; clicking files fetches content
-- **ContentViewer.tsx** - Displays markdown using `react-markdown`; includes copy button and file path footer
-- **NewFileForm.tsx** - Modal form to create files; triggers API create endpoint
+- **ContentViewer.tsx** - Displays markdown using `react-markdown`; includes navigation and stage update controls
 - **FontSwitcher.tsx** - Client-side font toggle (stored in localStorage)
 
 ### Type System
 All types in `types/index.ts`:
 - `FileNode` - Tree structure (name, path, type, children)
 - `FileContent` - File data (path, content, name)
-- `CreateFileRequest` - Request payload for file creation
 
 ## Key Conventions
 
@@ -48,9 +46,9 @@ All types in `types/index.ts`:
 - Root files have empty `relativePath`
 
 ### API Routes
-- Use standard HTTP methods (GET for reads, POST for writes)
+- Use standard HTTP methods (GET for reads, PATCH for metadata updates)
 - Query parameters for GET requests: `?path=folder/file.md`
-- Body for POST: `{ folder: string, filename: string, content?: string }`
+- Body for stage updates: `{ path: string, stage: "idea" | "drafted" | "recorded" | "posted" | "analyzed" }`
 
 ### Styling
 - **No colors** (black text, white background, gray accents) - maintained in `globals.css`
@@ -64,20 +62,18 @@ All types in `types/index.ts`:
 ### Client State Management
 - Single-page with local React state (no external state library)
 - Auto-refresh of file tree: `setInterval(loadFileTree, 2000)` in `useEffect`
-- Form visibility toggle for create modal
 
 ### File System Operations
 - Skips hidden files (names starting with `.`)
 - Uses Node.js `fs.readdirSync` for scanning, `fs.readFileSync` for reading
-- File creation appends `.md` if not provided by user
 
 ## Testing & Linting
 No linting, testing, or build tools currently configured. Focus on TypeScript type checking via `tsc`.
 
 ## Important File Locations
 - **Main page**: `app/page.tsx`
-- **API routes**: `app/api/files/` (subdirectories: list, read, create)
-- **Components**: `components/` (Tree, Viewer, Form, FontSwitcher)
+- **API routes**: `app/api/files/` (subdirectories: list, read, update-stage)
+- **Components**: `components/` (Tree, Viewer, FontSwitcher, filters/panels)
 - **Content directory**: `../content/` (external to project, must exist)
 - **Types**: `types/index.ts`
 - **Styles**: `app/globals.css`
