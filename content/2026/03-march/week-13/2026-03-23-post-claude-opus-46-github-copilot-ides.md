@@ -21,33 +21,34 @@ tags:
 ---
 
 ## Hook
-If your team uses GitHub Copilot but still treats model selection as “just pick default,” you’re probably leaving quality on the table.
+If your team uses Copilot and still picks models by gut feel, this Opus 4.6 rollout is your sign to switch to a clear model policy.
 
 ## 3 Key Points
-1. **What changed:** GitHub announced that Claude Opus 4.6 is generally available in Copilot across github.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
-2. **What is corroborated:** Anthropic separately announced Claude Opus 4.6 as an upgraded flagship model, and GitHub’s supported-models documentation lists Claude Opus 4.6 as GA in Copilot modes.
-3. **Practical move today:** Don’t flip this on blindly for everyone. Enable it with a small pilot group first, compare output quality and review burden against your current model, then expand with a team guideline for when Opus 4.6 is worth the extra cost/latency.
+1. **What changed:** GitHub’s changelog says Claude Opus 4.6 is generally available in Copilot for GitHub.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
+2. **What is corroborated:** GitHub’s supported-models documentation lists Claude Opus 4.6 as a GA Copilot model, and Anthropic’s release post confirms Opus 4.6 as a new flagship upgrade.
+3. **Practical move today:** Treat this as a rollout decision, not a personal preference toggle—pilot with one squad, compare review burden and merge speed, then publish a team rule for when to use Opus 4.6 versus a faster model.
 
 ## Full Script (60–90 second talking-head)
-Quick tooling update for engineering teams using Copilot.
+Quick update for teams using GitHub Copilot.
 
-GitHub says Claude Opus 4.6 is now generally available in Copilot, not just on github.com, but also in major IDE workflows like JetBrains, Visual Studio, Xcode, and Eclipse.
+GitHub officially rolled out Claude Opus 4.6 across the big IDE surfaces—VS Code, Visual Studio, JetBrains, Xcode, Eclipse—plus GitHub.com and mobile.
 
-That matters because model choice is becoming a real team-level productivity decision, not a personal preference toggle.
+That sounds like just another model update, but it’s actually an operations decision for engineering managers.
 
-Anthropic’s own announcement positions Opus 4.6 as a stronger model for advanced tasks, and GitHub’s supported models page confirms Opus 4.6 is available in Copilot as a GA option.
+GitHub’s own model docs now show Opus 4.6 as generally available, and Anthropic positions Opus 4.6 as a stronger model for complex coding and tool-use workflows.
 
-So here’s the practical play: run a controlled rollout.
+So don’t roll it out with zero guardrails.
 
-Start with a pilot squad for one sprint. Track three things: first-pass code quality, review edit distance, and time-to-merge. If quality improves but latency is higher, define when engineers should use Opus 4.6 versus a faster model.
+Run a one-sprint pilot with a small team. Track first-pass quality, review edit distance, and time-to-merge compared to your current default model.
 
-The teams that win with AI coding tools aren’t the teams with the newest model first — they’re the teams with a clear model policy.
+If Opus 4.6 improves quality but adds latency or cost, define explicit triggers: use Opus 4.6 for architecture-heavy tasks, migrations, and difficult bug hunts; keep a faster model for routine edits.
+
+The win isn’t using the newest model first. The win is having a model policy your whole team can execute consistently.
 
 ## CTA
-Comment **MODELROLLOUT** and I’ll share a simple one-page rollout scorecard you can copy for your next sprint.
+Comment **MODELROLLOUT** and I’ll share a one-page rollout scorecard you can copy for your next sprint.
 
 ## Sources
 - https://github.blog/changelog/2026-02-18-claude-opus-4-6-is-now-available-in-visual-studio-jetbrains-ides-xcode-and-eclipse/
-- https://www.anthropic.com/news
 - https://docs.github.com/en/copilot/reference/ai-models/supported-models
-- https://x.com/mihail_eric/status/2019764891327306210
+- https://www.anthropic.com/news
