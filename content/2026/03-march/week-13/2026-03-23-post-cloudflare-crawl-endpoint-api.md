@@ -1,5 +1,5 @@
 ---
-title: Cloudflare’s new /crawl endpoint can replace fragile scraping scripts with one async API workflow
+title: Cloudflare’s /crawl endpoint is in open beta — and it gives dev teams a cleaner way to crawl whole sites
 status: draft
 stage: idea
 platform: facebook
@@ -21,33 +21,34 @@ tags:
 ---
 
 ## Hook
-If your team still runs brittle scraping scripts page-by-page, Cloudflare just shipped a cleaner pattern: one crawl job, one job ID, and structured outputs you can actually use.
+If your crawler stack keeps breaking every time a site layout changes, Cloudflare’s new `/crawl` API flow is a practical reset: submit one start URL, get a job ID, and pull results asynchronously.
 
 ## 3 Key Points
-1. **What changed:** Cloudflare announced a new Browser Rendering `/crawl` endpoint in open beta that starts from one URL and discovers pages across a site.
-2. **What the docs confirm:** Official docs show crawl jobs are asynchronous (POST to start, GET by job ID), with output options including HTML, Markdown, and JSON, plus limits, status states, and pagination controls.
-3. **Practical move today:** Pilot `/crawl` for one internal use case (docs ingestion, monitoring, or RAG prep), then compare reliability and maintenance cost versus your current crawler stack before wider rollout.
+1. **What changed:** Cloudflare announced a new Browser Rendering `/crawl` endpoint in open beta that can discover and crawl pages from a starting URL.
+2. **What is verified in docs:** Cloudflare’s REST docs confirm a two-step async flow (POST to start, GET by job ID), configurable crawl depth/page limits, and multiple outputs (HTML, Markdown, JSON).
+3. **Operational detail teams should note:** The docs also state crawl jobs can run up to seven days, results are retained for 14 days after completion, and free plans have additional crawl-specific limits.
 
 ## Full Script (60–90 second talking-head)
-Quick dev-tools update for anyone maintaining web crawling pipelines.
+Quick update for teams running scraping or RAG ingestion workflows.
 
-Cloudflare launched a new `/crawl` endpoint in Browser Rendering that lets you submit a single starting URL, then crawl jobs run asynchronously and return site content in formats like HTML, Markdown, or structured JSON.
+Cloudflare’s Browser Rendering product now has a `/crawl` endpoint in open beta. Instead of managing page-by-page scripts, you submit one starting URL, receive a job ID, and poll for results as pages are discovered.
 
-The key operational difference is that this is job-based, not request-per-page chaos.
+The practical upside is cleaner operations: one async job lifecycle instead of dozens of brittle fetch chains.
 
-Cloudflare’s docs show the flow clearly: POST to start the crawl, store the job ID, then GET results as the job progresses. You can control crawl scope with depth, page limits, and URL include/exclude patterns, and the endpoint is documented as respecting robots.txt guidance by default.
+Cloudflare’s docs show you can control crawl scope with depth and page limits, and choose output formats like HTML, Markdown, or JSON depending on your downstream pipeline.
 
-For teams, the practical play is not “rip out everything today.”
+Important detail: this is not “fire and forget forever.” The documentation says crawl jobs have a maximum run time of seven days, and results are kept for 14 days after completion. So teams should design storage and retries intentionally, not assume permanent result retention.
 
-Pick one workflow where your current crawler is noisy — maybe docs indexing or content monitoring. Run the same target site through your existing approach and through `/crawl`, then compare failure rate, engineering maintenance time, and output cleanliness for downstream processing.
+Best rollout move: pilot this on one noisy workflow — docs indexing, competitor-monitoring, or content refresh. Compare failure rate, maintenance effort, and output quality against your current crawler before expanding.
 
-If it reduces your pipeline babysitting, keep it. If it doesn’t, you’ll still leave with real benchmark data instead of tool hype.
+That gives you an engineering decision backed by data, not API hype.
 
 ## CTA
-Comment **CRAWLCHECKLIST** and I’ll share a simple evaluation checklist to compare crawler reliability, output quality, and operating cost in one sprint.
+Comment **CRAWLCHECKLIST** and I’ll share a one-sprint checklist to compare crawler reliability, data quality, and maintenance cost.
 
 ## Sources
 - https://developers.cloudflare.com
 - https://developers.cloudflare.com/changelog/post/2026-03-10-br-crawl-endpoint/
 - https://developers.cloudflare.com/browser-rendering/rest-api/crawl-endpoint/
 - https://developers.cloudflare.com/browser-rendering/rest-api/
+- https://developers.cloudflare.com/ai-crawl-control/
