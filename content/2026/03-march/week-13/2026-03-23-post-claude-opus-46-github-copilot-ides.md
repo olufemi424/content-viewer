@@ -21,29 +21,30 @@ tags:
 ---
 
 ## Hook
-If your team uses Copilot and still picks models by gut feel, this Opus 4.6 rollout is your sign to switch to a clear model policy.
+If your team uses Copilot and still picks models by gut feel, this Opus 4.6 rollout is your sign to set an actual model policy.
 
 ## 3 Key Points
-1. **What changed:** GitHub’s changelog says Claude Opus 4.6 is generally available in Copilot for GitHub.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
-2. **What is corroborated:** GitHub’s supported-models documentation lists Claude Opus 4.6 as a GA Copilot model, and Anthropic’s release post confirms Opus 4.6 as a new flagship upgrade.
-3. **Practical move today:** Treat this as a rollout decision, not a personal preference toggle—pilot with one squad, compare review burden and merge speed, then publish a team rule for when to use Opus 4.6 versus a faster model.
+1. **What changed:** GitHub announced Claude Opus 4.6 is generally available in Copilot across GitHub.com, GitHub Mobile, VS Code, Visual Studio, JetBrains IDEs, Xcode, and Eclipse.
+2. **What is corroborated:** GitHub’s supported-models documentation lists Claude Opus 4.6 as a GA Copilot model, and the changelog notes Business/Enterprise admins must explicitly enable the Opus 4.6 policy.
+3. **Practical move today:** Treat this as an engineering operations rollout—run a short pilot, measure review burden and merge speed, then publish clear team rules for when Opus 4.6 is worth the latency/cost tradeoff.
 
 ## Full Script (60–90 second talking-head)
-Quick update for teams using GitHub Copilot.
+Quick update if your team runs on GitHub Copilot.
 
-GitHub officially rolled out Claude Opus 4.6 across the big IDE surfaces—VS Code, Visual Studio, JetBrains, Xcode, Eclipse—plus GitHub.com and mobile.
+Claude Opus 4.6 is now generally available across the major IDE surfaces—VS Code, Visual Studio, JetBrains, Xcode, Eclipse—plus GitHub.com and mobile.
 
-That sounds like just another model update, but it’s actually an operations decision for engineering managers.
+But this is not just a shiny model update.
 
-GitHub’s own model docs now show Opus 4.6 as generally available, and Anthropic positions Opus 4.6 as a stronger model for complex coding and tool-use workflows.
+GitHub’s changelog also says Copilot Business and Enterprise admins have to enable the Opus 4.6 policy, so this is a rollout decision, not just a personal toggle.
 
-So don’t roll it out with zero guardrails.
+And GitHub’s model docs now list Opus 4.6 in GA status, which means teams can treat it as a stable option in their model mix.
 
-Run a one-sprint pilot with a small team. Track first-pass quality, review edit distance, and time-to-merge compared to your current default model.
+So here’s the practical play: run a one-sprint pilot with one squad. Track first-pass quality, review edit distance, and time-to-merge versus your current default model.
 
-If Opus 4.6 improves quality but adds latency or cost, define explicit triggers: use Opus 4.6 for architecture-heavy tasks, migrations, and difficult bug hunts; keep a faster model for routine edits.
+If quality improves but speed or cost takes a hit, define triggers: use Opus 4.6 for architecture-heavy tasks, gnarly migrations, and hard debugging; keep a faster model for routine edits.
 
-The win isn’t using the newest model first. The win is having a model policy your whole team can execute consistently.
+The win is not “newest model everywhere.”
+The win is a model policy your team can execute consistently.
 
 ## CTA
 Comment **MODELROLLOUT** and I’ll share a one-page rollout scorecard you can copy for your next sprint.
@@ -51,4 +52,3 @@ Comment **MODELROLLOUT** and I’ll share a one-page rollout scorecard you can c
 ## Sources
 - https://github.blog/changelog/2026-02-18-claude-opus-4-6-is-now-available-in-visual-studio-jetbrains-ides-xcode-and-eclipse/
 - https://docs.github.com/en/copilot/reference/ai-models/supported-models
-- https://www.anthropic.com/news
