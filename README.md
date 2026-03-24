@@ -77,6 +77,34 @@ content-viewer/
 - **react-markdown** - Markdown rendering
 - **Node.js fs** - File system operations
 
+## Topic Ingestion API (Reviewer-Gated MVP)
+
+`POST /api/ingest-topics`
+
+- Only topics in `reviewer_approved` state with `reviewerGate.decision=approved` are eligible for writes.
+- Row writes are append-only to Google Sheets.
+- Idempotency is enforced with `idempotencyKey` (payload-level and existing-sheet checks).
+- Ingestion does **not** publish content. `automate-n8n` stays responsible for generation/image/publish.
+
+### Required env vars
+
+```bash
+GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
+GOOGLE_SHEETS_SHEET_NAME=topics
+GOOGLE_SERVICE_ACCOUNT_EMAIL=svc-account@project.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
+
+### Verify script
+
+With app running locally:
+
+```bash
+npm run verify:ingest-topics
+```
+
+The script runs a dry-run payload and checks approved/duplicate/unapproved behavior.
+
 ## Design Principles
 
 - No colors (except gray for accents)
