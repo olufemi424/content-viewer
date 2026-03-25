@@ -2,6 +2,7 @@ export type ContentStatus = 'draft' | 'in-progress' | 'done';
 export type ContentPriority = 'low' | 'medium' | 'high';
 
 export type ContentStage = 'idea' | 'drafted' | 'recorded' | 'posted' | 'analyzed';
+export type TopicState = 'generated' | 'pending_reviewer' | 'reviewer_approved' | 'reviewer_rejected' | 'ingested';
 
 export interface Metadata {
   title?: string;
@@ -28,6 +29,14 @@ export interface Metadata {
   actual_saves?: string;
   actual_profile_visits?: string;
   lesson_learned?: string;
+
+  // Topic-ingestion reviewer gate fields
+  topic_state?: TopicState;
+  reviewer_id?: string;
+  reviewer_decision?: 'approved' | 'rejected';
+  reviewer_reviewed_at?: string;
+  reviewer_notes?: string;
+  idempotency_key?: string;
 }
 
 export interface FileNode {

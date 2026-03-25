@@ -60,6 +60,12 @@ const EXTRA_FIELDS: Array<keyof Metadata> = [
   'actual_saves',
   'actual_profile_visits',
   'lesson_learned',
+  'topic_state',
+  'reviewer_id',
+  'reviewer_decision',
+  'reviewer_reviewed_at',
+  'reviewer_notes',
+  'idempotency_key',
 ];
 
 /** Extract frontmatter metadata and body from markdown content. */
