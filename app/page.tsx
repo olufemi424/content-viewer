@@ -6,33 +6,27 @@ import ContentViewer from "@/components/ContentViewer";
 import FolderIndex from "@/components/FolderIndex";
 import FontSwitcher from "@/components/FontSwitcher";
 import FilterPanel from "@/components/FilterPanel";
-import TodayFocusPanel from "@/components/TodayFocusPanel";
-import WeekDashboardPanel from "@/components/WeekDashboardPanel";
 import { FileNode, FileContent } from "@/types";
 import { flattenFileList, getPrevNext, getFolderChildren } from "@/lib/fileList";
-import { getTodayFocus } from "@/lib/todayFocus";
-import { getWeekDashboard } from "@/lib/weekDashboard";
 
 export default function Home() {
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
   const [stageFilter, setStageFilter] = useState<string[]>([]);
   const [tagFilter, setTagFilter] = useState<string[]>([]);
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<string | null>("");
 
   const flatFiles = useMemo(() => flattenFileList(fileTree), [fileTree]);
   const { prev, next } = useMemo(
     () => selectedFile ? getPrevNext(flatFiles, selectedFile) : { prev: null, next: null },
     [flatFiles, selectedFile]
   );
-  const todayFocus = useMemo(() => getTodayFocus(flatFiles), [flatFiles]);
-  const weekDashboard = useMemo(() => getWeekDashboard(flatFiles, selectedFolder), [flatFiles, selectedFolder]);
 
   // Load file tree
   const loadFileTree = async () => {
@@ -278,8 +272,6 @@ export default function Home() {
             backgroundColor: "white",
           }}
         >
-          <TodayFocusPanel summary={todayFocus} onOpenFile={handleFileSelect} />
-          <WeekDashboardPanel summary={weekDashboard} onOpenFile={handleFileSelect} onNavigate={handleNavigate} />
           {selectedFolder !== null ? (
             <FolderIndex
               folderPath={selectedFolder}
