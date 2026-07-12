@@ -16,18 +16,30 @@ export function buildTalkingHeadTemplate(meta: Metadata): string {
 - CTA Keyword: ${ctaKeyword}
 
 ## Hook
-One bold sentence that stops the scroll.
+Lead with the viewer and the use-case.
+Formula: "If you want to <result>, this <tool/update> is worth watching."
 
-## 3 Key Points
-1. Point one
-2. Point two
-3. Point three
+## Why this matters
+State the practical workflow or outcome this unlocks in 2-4 sentences.
+
+## How it works
+Briefly explain the mechanism in plain English.
+Keep this tight and creator-friendly.
+
+## Proof or use-case
+Show one concrete example workflow the viewer could actually try.
+If needed, add one caution or limitation.
 
 ## CTA
-Ask the audience to comment: "${ctaKeyword}".
+Ask for the comment using "${ctaKeyword}", but tie it to a useful next step.
+Example: "Comment \`${ctaKeyword}\` and I'll send the exact workflow."
+
+## Final record-ready script
+Write the full talking-head script here in a natural spoken voice.
 
 ## Caption
 Write the final caption here.
+Open with the practical payoff, then reinforce the use-case.
 
 ## Recording Notes
 - Camera framing:
