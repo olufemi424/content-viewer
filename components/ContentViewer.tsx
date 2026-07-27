@@ -1,6 +1,7 @@
 "use client";
 
-import ReactMarkdown from "react-markdown";
+import React from "react";
+import { ComarkClient } from "@comark/react";
 import { Metadata, FileNode } from "@/types";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import TableOfContents from "@/components/TableOfContents";
@@ -196,9 +197,10 @@ export default function ContentViewer({
           ))}
         </div>
       )}
-      <ReactMarkdown
+      <ComarkClient
+        markdown={content}
         components={{
-          h1: ({ children }) => (
+          h1: ({ children }: { children: React.ReactNode }) => (
             <h1
               style={{
                 fontSize: "2em",
@@ -210,7 +212,7 @@ export default function ContentViewer({
               {children}
             </h1>
           ),
-          h2: ({ children }) => (
+          h2: ({ children }: { children: React.ReactNode }) => (
             <h2
               style={{
                 fontSize: "1.5em",
@@ -222,7 +224,7 @@ export default function ContentViewer({
               {children}
             </h2>
           ),
-          h3: ({ children }) => (
+          h3: ({ children }: { children: React.ReactNode }) => (
             <h3
               style={{
                 fontSize: "1.25em",
@@ -234,88 +236,58 @@ export default function ContentViewer({
               {children}
             </h3>
           ),
-          p: ({ children }) => (
-            <p
-              style={{
-                marginBottom: "1em",
-                lineHeight: "1.6",
-              }}
-            >
-              {children}
-            </p>
+          p: ({ children }: { children: React.ReactNode }) => (
+            <p style={{ marginBottom: "1em", lineHeight: "1.6" }}>{children}</p>
           ),
-          ul: ({ children }) => (
-            <ul
-              style={{
-                marginBottom: "1em",
-                paddingLeft: "2em",
-              }}
-            >
-              {children}
-            </ul>
+          ul: ({ children }: { children: React.ReactNode }) => (
+            <ul style={{ marginBottom: "1em", paddingLeft: "2em" }}>{children}</ul>
           ),
-          ol: ({ children }) => (
-            <ol
-              style={{
-                marginBottom: "1em",
-                paddingLeft: "2em",
-              }}
-            >
-              {children}
-            </ol>
+          ol: ({ children }: { children: React.ReactNode }) => (
+            <ol style={{ marginBottom: "1em", paddingLeft: "2em" }}>{children}</ol>
           ),
-          li: ({ children }) => (
+          li: ({ children }: { children: React.ReactNode }) => (
             <li style={{ marginBottom: "0.25em" }}>{children}</li>
           ),
-          code: ({ inline, children }: any) => {
-            if (inline) {
-              return (
-                <code
-                  style={{
-                    backgroundColor: "#f0f0f0",
-                    padding: "2px 6px",
-                    borderRadius: "3px",
-                    fontSize: "0.9em",
-                  }}
-                >
-                  {children}
-                </code>
-              );
-            }
-            return (
-              <code
-                style={{
-                  display: "block",
-                  backgroundColor: "#f5f5f5",
-                  padding: "16px",
-                  borderRadius: "4px",
-                  marginBottom: "1em",
-                  overflowX: "auto",
-                  fontSize: "0.9em",
-                  lineHeight: "1.4",
-                }}
-              >
-                {children}
-              </code>
-            );
-          },
-          pre: ({ children }) => (
-            <pre style={{ marginBottom: "1em" }}>{children}</pre>
+          // Inline code only — block code inside <pre> bypasses custom component mapping
+          code: ({ children }: { children: React.ReactNode }) => (
+            <code
+              style={{
+                backgroundColor: "#f0f0f0",
+                padding: "2px 6px",
+                borderRadius: "3px",
+                fontSize: "0.9em",
+              }}
+            >
+              {children}
+            </code>
           ),
-          a: ({ href, children }) => (
+          // Block code fences render as <pre><code>…</code></pre>; style the pre
+          pre: ({ children }: { children: React.ReactNode }) => (
+            <pre
+              style={{
+                backgroundColor: "#f5f5f5",
+                padding: "16px",
+                borderRadius: "4px",
+                marginBottom: "1em",
+                overflowX: "auto",
+                fontSize: "0.9em",
+                lineHeight: "1.4",
+              }}
+            >
+              {children}
+            </pre>
+          ),
+          a: ({ href, children }: { href?: string; children: React.ReactNode }) => (
             <a
               href={href}
-              style={{
-                color: "#000",
-                textDecoration: "underline",
-              }}
+              style={{ color: "#000", textDecoration: "underline" }}
               target="_blank"
               rel="noopener noreferrer"
             >
               {children}
             </a>
           ),
-          blockquote: ({ children }) => (
+          blockquote: ({ children }: { children: React.ReactNode }) => (
             <blockquote
               style={{
                 borderLeft: "4px solid #e5e5e5",
@@ -328,7 +300,7 @@ export default function ContentViewer({
               {children}
             </blockquote>
           ),
-          table: ({ children }) => (
+          table: ({ children }: { children: React.ReactNode }) => (
             <table
               style={{
                 borderCollapse: "collapse",
@@ -339,7 +311,7 @@ export default function ContentViewer({
               {children}
             </table>
           ),
-          th: ({ children }) => (
+          th: ({ children }: { children: React.ReactNode }) => (
             <th
               style={{
                 border: "1px solid #e5e5e5",
@@ -352,20 +324,13 @@ export default function ContentViewer({
               {children}
             </th>
           ),
-          td: ({ children }) => (
-            <td
-              style={{
-                border: "1px solid #e5e5e5",
-                padding: "8px",
-              }}
-            >
+          td: ({ children }: { children: React.ReactNode }) => (
+            <td style={{ border: "1px solid #e5e5e5", padding: "8px" }}>
               {children}
             </td>
           ),
         }}
-      >
-        {content}
-      </ReactMarkdown>
+      />
 
       {/* Prev / Next navigation */}
       {(prev || next) && (
