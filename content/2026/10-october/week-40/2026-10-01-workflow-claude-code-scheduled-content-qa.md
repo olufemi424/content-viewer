@@ -68,6 +68,22 @@ The approval point is immediately before the agent commits, opens a ready-for-re
 - **Measurement:** Compare routine QA minutes and accepted proposals over four runs.
 - **Close:** Position the workflow as an operating system for a backlog, not an autonomous publisher.
 
+## Final Record-Ready Script
+
+Your content backlog does not need another writer. It needs a weekly QA operator.
+
+A small content team can spend an hour checking frontmatter, repeated topics, broken source links, unsupported claims, and draft status. That work is repetitive, but the final judgment still belongs to a human.
+
+Use Claude Code’s scheduled tasks to inspect the repository on a recurring schedule. The agent reads your project rules and recent content, checks the structure and likely duplicates, and produces an evidence-first QA report.
+
+Then it prepares the smallest proposed patch or pull request. You review the diff, source links, and uncertain claims before anything is committed, merged, or published.
+
+The workflow is simple: schedule the inspection, make the report visible, keep the proposed changes reviewable, and reserve the consequential decision for a person.
+
+Track the minutes spent on routine QA and how many proposals are accepted without meaning-changing edits. The goal is not autonomous publishing. The goal is faster, safer review.
+
+DM WORKFLOW for a free workflow audit.
+
 ## CTA
 
 DM WORKFLOW for a free workflow audit.
