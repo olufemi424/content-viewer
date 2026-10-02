@@ -17,22 +17,22 @@ tags:
   - worktrees
 ---
 
-## Audience + Difficulty
+## Audience + difficulty
 
 - **Audience:** solo builders and technical operators managing several coding tasks at once
 - **Difficulty:** intermediate
 
-## Why Now
+## Why now (1 sentence)
 
 OpenAI used DevDay 2026 to spotlight a refreshed Codex CLI interface for managing parallel work inside the terminal.
 
-## Hook Options
+## 3 hook options (<12 words each)
 
 1. **Your terminal just became an agent control room.**
 2. **Faster coding agents still need traffic control.**
 3. **Run parallel coding tasks without branch chaos.**
 
-## Final Record-Ready Script
+## Final record-ready script
 
 ### Hook
 
@@ -50,11 +50,11 @@ The useful pattern is isolation: give each task its own agent session and Git wo
 
 OpenAI’s launch post specifically shows the new interface and parallel-work management. A practical test is simple: send one agent after a failing test and another after a small UI change, review both diffs, and merge only the result you trust.
 
-### CTA
+### CTA type + exact line
 
 Comment **PARALLEL** if you want the two-agent test checklist.
 
-## Shot List by Timestamp
+## Shot list by timestamp (A-roll/B-roll)
 
 - **0:00–0:04 — A-roll:** Deliver the hook direct to camera; terminal blurred behind you.
 - **0:04–0:14 — B-roll:** Show the official Codex CLI refresh post, then a full-screen terminal view.
@@ -62,7 +62,7 @@ Comment **PARALLEL** if you want the two-agent test checklist.
 - **0:28–0:39 — A-roll + screen capture:** Review two diffs; accept one and reject the other.
 - **0:39–0:45 — A-roll:** Deliver the CTA with the keyword on screen.
 
-## On-Screen Text Cues
+## On-screen text cues
 
 - “Terminal → agent control room”
 - “1 task = 1 isolated worktree”
@@ -70,7 +70,7 @@ Comment **PARALLEL** if you want the two-agent test checklist.
 - “Review every diff”
 - “Comment: PARALLEL”
 
-## Caption Options
+## Caption options
 
 ### Short
 
@@ -80,18 +80,18 @@ Codex CLI’s real upgrade is not more autonomy. It is a cleaner way to supervis
 
 OpenAI refreshed Codex CLI with a full-screen interface and better parallel-work management. The practical workflow for solo builders: isolate each task in its own agent session and Git worktree, monitor both from one place, then review every diff before merging. Parallel execution can save waiting time—but human review still owns the final code.
 
-## CTA
+## CTA type + exact line
 
 - **Type:** comment keyword
 - **Exact line:** Comment **PARALLEL** if you want the two-agent test checklist.
 
-## Thumbnail Text Options
+## Thumbnail text options (3)
 
 1. AGENT CONTROL ROOM
 2. TWO AGENTS. ONE TERMINAL.
 3. PARALLEL WITHOUT CHAOS
 
-## Risk Check
+## Risk check (claims needing cautious phrasing)
 
 - Say OpenAI **refreshed** Codex CLI and highlighted parallel-work management; do not imply every underlying feature first shipped at DevDay.
 - Present the two-agent workflow as a recommended test, not a measured productivity guarantee.
