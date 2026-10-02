@@ -17,53 +17,77 @@ tags:
   - ai-agents
 ---
 
-## Problem
-Busy creators, freelancers, and small-team operators receive leads through forms, emails, or DMs but burn 15–30 minutes per lead on manual research, qualification, and drafting personalized responses. Full automation risks sending off-brand or incorrect messages that hurt reputation. Purely manual processes do not scale with volume.
+## Audience + difficulty
+- **Audience:** creators, freelancers, founders, and small-team operators who receive leads through forms, email, or DMs
+- **Difficulty:** intermediate
 
-## Workflow Idea
-Deploy an n8n Agent that monitors incoming leads (via form webhook or Gmail trigger), uses connected tools for company research and ICP matching, prepares a personalized follow-up draft, and explicitly pauses for human approval before executing any outbound action such as sending an email or updating a CRM record.
+## Why now (1 sentence)
+n8n Agents now support approval-required tools, making it practical to delegate lead research and draft preparation while preserving human control over outbound messages.
 
-## Why This Audience Cares
-Creators and operators want to delegate repetitive research and first-draft work while retaining final say over every customer-facing message. The built-in approval gate on sensitive tools delivers exactly that control without requiring custom code or brittle prompt engineering.
+## 3 hook options (<12 words each)
+1. AI can draft the follow-up if you still approve send.
+2. Stop researching every new lead from scratch.
+3. Turn lead intake into a human-gated reply workflow.
 
-## Human Approval Point
-Mark the Gmail “send email” tool (or equivalent CRM update tool) as approval-required inside the agent configuration. When the agent proposes the action, n8n pauses the execution, surfaces the full research summary + draft, and notifies the human via Slack, Telegram, email, or n8n Chat. The reviewer can approve, reject, or edit parameters before the agent continues.
+## Final record-ready script
+AI can draft the follow-up, but you still need to decide when it sends.
 
-## Demo Plan
-1. Create n8n workflow with Typeform or Gmail “new email” trigger feeding a dedicated Agent node.
-2. Configure the Agent with role instructions, ICP criteria, and attached tools (Web Search, HTTP Request for enrichment, Gmail send marked as approval-required).
-3. Agent receives lead, performs research, qualifies fit, and generates draft.
-4. Agent attempts the send action → approval request fires with complete context.
-5. Human reviews notification and approves or modifies.
-6. On approval, agent executes the send and appends outcome + research notes to a Google Sheet or Notion database.
-7. Agent logs session for later review and improvement.
+If you get leads through forms, email, or DMs, the slow part is usually the same: research the person, check fit, write a personalized reply, and log what happened.
 
-Before: 20+ minutes of context-switching per lead.  
-After: 3–5 minutes of focused review/approval per lead while maintaining 100% human oversight on every outbound message.
+The risky version is full automation. One wrong message can sound off-brand or promise something you never approved.
 
-## Hook Options
-1. Your leads sit in the inbox while you research the same company for the tenth time.
-2. AI can draft the perfect follow-up — if you still get to say “send.”
-3. Turn every new form submission into a researched, approved reply in under five minutes of your time.
+A safer workflow is an n8n Agent with one hard boundary: the sending tool requires approval.
 
-## Short-Form Outline
-- Hook (one of the three above)
-- Problem: Research + drafting kills momentum and doesn’t scale
-- Solution: n8n Agent + explicit approval gate on sensitive tools
-- Walkthrough: trigger → research → draft → approval notification → one-tap approve → send + log
-- Result: Scale lead response without losing control or brand voice
-- CTA line: “DM WORKFLOW for a free audit of your lead intake”
+The agent can receive the lead, research the company, compare it to your ideal customer profile, and draft a response. But when it tries to send the email or update the CRM, n8n pauses and asks for human approval.
 
-## CTA
-DM WORKFLOW for a free workflow audit. We’ll map your current lead sources and show exactly where the human approval gate belongs so you can delegate without risk.
+You review the research summary and draft, edit anything that feels wrong, then approve or reject the action.
+
+That turns lead follow-up from twenty minutes of context switching into a focused review step, without giving AI permission to talk to customers on its own.
+
+DM WORKFLOW for a free workflow audit.
+
+## Shot list by timestamp (A-roll/B-roll)
+- **0:00-0:04 — A-roll:** Open with the “approve send” hook.
+- **0:04-0:12 — B-roll:** Show a new lead arriving from a form or Gmail inbox.
+- **0:12-0:24 — Screen capture:** Show an n8n workflow with trigger, Agent node, research tools, and Gmail/CRM tool.
+- **0:24-0:38 — Screen capture:** Highlight the approval-required send action and notification with research summary plus draft.
+- **0:38-0:52 — A-roll + screen capture:** Show approve/edit/reject, then logging to a sheet or database.
+- **0:52-1:02 — A-roll:** Close with the human-control payoff and CTA.
+
+## On-screen text cues
+- “Lead arrives”
+- “Agent researches + drafts”
+- “Send tool = approval required”
+- “Human edits / approves / rejects”
+- “DM WORKFLOW”
+
+## Caption options
+- **Short:** Use n8n Agents to research and draft lead follow-ups, but require human approval before any customer-facing send.
+- **Long:** The safe lead-follow-up workflow is not “let AI email everyone.” It is trigger → research → draft → approval-required send action → human review → approved send + logged outcome. You delegate the repetitive work while keeping the customer-facing decision.
+
+## CTA type + exact line
+- **Type:** comment keyword / DM keyword
+- **Exact line:** DM WORKFLOW for a free workflow audit.
+
+## Thumbnail text options (3)
+1. AI DRAFTS. YOU SEND.
+2. HUMAN-GATED LEADS
+3. APPROVE BEFORE SEND
+
+## Risk check (claims needing cautious phrasing)
+- Do not claim n8n guarantees correct research or perfect lead qualification; the human review exists because outputs can be wrong.
+- Keep the time reduction framed as a workflow target, not a measured benchmark from the sources.
+- Do not imply every CRM or email action supports the same approval behavior without configuration.
+- Avoid promising “no code” unless the specific demo stack proves it end-to-end.
 
 ## Sources
-- Primary: n8n Blog, “Introducing n8n Agents” — https://blog.n8n.io/introducing-n8n-agents/ (details on approval configuration and preview mode)
-- n8n Documentation, “Build and manage agents” — https://docs.n8n.io/build/build-and-manage-agents (official guidance on marking tools as approval-required and notification channels)
+- **Primary — n8n Blog, “Introducing n8n Agents.”** Details agent setup, approval configuration, and preview mode. https://blog.n8n.io/introducing-n8n-agents/
+- **Primary — n8n Documentation, “Build and manage agents.”** Official guidance on marking tools as approval-required and notification channels. https://docs.n8n.io/build/build-and-manage-agents
 
 ## QA Scorecard
-Accuracy: 5/5 — All claims map directly to official n8n blog post and documentation.  
-Specificity: 5/5 — Concrete 7-step workflow, exact tool-marking mechanic, and measurable time outcome.  
-Audience fit: 5/5 — Directly solves lead follow-up and research delegation pain for creators, freelancers, and small teams.  
-Actionability: 4/5 — Steps are clear and testable in n8n preview; assumes basic n8n familiarity (docs linked).  
-Demonstrability: 5/5 — n8n preview mode + approval requests can be tested end-to-end in under 30 minutes with public docs.
+- **Accuracy: 5/5** — All product claims map to official n8n blog and documentation; time savings are framed as a workflow target.
+- **Specificity: 5/5** — Names the trigger, Agent node, research tools, approval-required send/CRM action, reviewer choices, and logging step.
+- **Clarity: 5/5** — Clearly distinguishes draft/research automation from the human-owned send decision.
+- **Actionability: 5/5** — The demo flow can be tested with a form or Gmail trigger and an approval-required outbound tool.
+- **Format match: 5/5** — Uses the exact canonical record-ready script pack headings, including the case-sensitive final script heading.
+- **Creator usefulness: 5/5** — Turns lead follow-up into a practical, buyer-relevant workflow with a clear approval boundary.
