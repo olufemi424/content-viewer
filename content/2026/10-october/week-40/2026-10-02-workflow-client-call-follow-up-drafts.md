@@ -69,6 +69,24 @@ Approval happens after extraction and before any email is sent, task is assigned
 - **Measurement:** Track approval time, corrections, unsupported commitments caught, and timely follow-ups across four calls.
 - **Close:** Invite viewers to audit the first handoff in their own client workflow instead of automating the whole relationship.
 
+## Final Record-Ready Script
+
+Your post-call problem is not writing the email. It is remembering what you actually promised.
+
+After a client call, you have to replay the transcript, extract decisions, identify owners and dates, write the follow-up, and update the next-action system. One wrong commitment can damage trust.
+
+Instead, build a transcript-to-draft workflow. First, pass the transcript into a structured schema with decisions, action items, owners, due dates, confidence, and evidence quotes.
+
+Then render a review queue that places every proposed commitment beside the exact quote that supports it. Generate the follow-up email and task suggestions, but do not send, assign, or update the CRM yet.
+
+The human reviews the evidence, corrects names and dates, removes unsupported language, and approves only what matches the call. Save the approved message as a draft, then send it manually.
+
+Measure the time from transcript to approved draft, corrections made, unsupported commitments caught, and timely follow-ups across four calls.
+
+The goal is not to automate the relationship. It is to make the handoff faster and safer.
+
+DM WORKFLOW for a free workflow audit.
+
 ## CTA
 
 DM WORKFLOW for a free workflow audit.
