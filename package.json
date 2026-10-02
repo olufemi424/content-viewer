@@ -6,7 +6,8 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "verify:ingest-topics": "node scripts/verify-ingest-topics.mjs"
+    "verify:ingest-topics": "node scripts/verify-ingest-topics.mjs",
+    "validate:content-schema": "node scripts/validate-content-schema.mjs"
   },
   "dependencies": {
     "@comark/react": "^0.5.1",
