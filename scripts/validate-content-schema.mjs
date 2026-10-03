@@ -18,6 +18,23 @@ const REQUIRED_HEADINGS = [
   '## QA Scorecard',
 ];
 
+const FINAL_SCRIPT_HEADING = '## Final record-ready script';
+const FINAL_SCRIPT_MIN_WORDS = 50;
+const FINAL_SCRIPT_MIN_CHARS = 250;
+
+const PLACEHOLDER_FINAL_SCRIPT_PATTERNS = [
+  /^tbd$/i,
+  /^todo$/i,
+  /^to do$/i,
+  /^placeholder$/i,
+  /^n\/?a$/i,
+  /^none$/i,
+  /^coming soon$/i,
+  /^draft forthcoming$/i,
+  /^insert (the )?final (record-ready )?script( here)?$/i,
+  /^final (record-ready )?script (goes )?here$/i,
+];
+
 function usage() {
   console.error('Usage: node scripts/validate-content-schema.mjs [--changed <base-ref>] [content/file.md ...]');
 }
@@ -111,11 +128,68 @@ function validateFile(file) {
     }
   }
 
-  if (!content.includes('\n## Final record-ready script\n')) {
-    errors.push(`${normalized}: missing case-sensitive heading "## Final record-ready script"`);
+  const finalScriptBody = sectionBody(content, FINAL_SCRIPT_HEADING);
+  if (finalScriptBody === null) {
+    errors.push(`${normalized}: missing case-sensitive heading "${FINAL_SCRIPT_HEADING}"`);
+  } else {
+    const bodyError = validateFinalRecordReadyScript(finalScriptBody);
+    if (bodyError) {
+      errors.push(`${normalized}: ${FINAL_SCRIPT_HEADING} ${bodyError}`);
+    }
   }
 
   return errors;
+}
+
+function sectionBody(content, heading) {
+  const headingPattern = new RegExp(`(?:^|\\n)${escapeRegExp(heading)}[ \\t]*\\r?\\n`);
+  const match = content.match(headingPattern);
+  if (!match || match.index === undefined) {
+    return null;
+  }
+
+  const bodyStart = match.index + match[0].length;
+  const nextHeadingIndex = content.slice(bodyStart).search(/\r?\n## /);
+  if (nextHeadingIndex === -1) {
+    return content.slice(bodyStart);
+  }
+  return content.slice(bodyStart, bodyStart + nextHeadingIndex);
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function validateFinalRecordReadyScript(body) {
+  const trimmed = body.trim();
+  if (!trimmed) {
+    return 'must contain a substantive script body, not an empty section';
+  }
+
+  const prose = trimmed
+    .replace(/<!--[^]*?-->/g, ' ')
+    .split(/\r?\n/)
+    .map((line) => line.replace(/^#{1,6}\s+/, '').trim())
+    .filter(Boolean)
+    .join(' ')
+    .replace(/[*_`>#\-[\]()]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!prose) {
+    return 'must contain script prose, not only subsection headings or formatting';
+  }
+
+  if (PLACEHOLDER_FINAL_SCRIPT_PATTERNS.some((pattern) => pattern.test(prose))) {
+    return `must contain a substantive script body, not placeholder text: "${prose}"`;
+  }
+
+  const wordCount = prose.match(/\b[\p{L}\p{N}][\p{L}\p{N}'’:-]*\b/gu)?.length ?? 0;
+  if (wordCount < FINAL_SCRIPT_MIN_WORDS || prose.length < FINAL_SCRIPT_MIN_CHARS) {
+    return `must be substantive; found ${wordCount} word(s) and ${prose.length} character(s), expected at least ${FINAL_SCRIPT_MIN_WORDS} words and ${FINAL_SCRIPT_MIN_CHARS} characters`;
+  }
+
+  return null;
 }
 
 const filesToCheck = parseArgs(process.argv.slice(2)).filter(isContentMarkdown);

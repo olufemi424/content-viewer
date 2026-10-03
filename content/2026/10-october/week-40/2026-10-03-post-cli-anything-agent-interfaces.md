@@ -34,23 +34,15 @@ CLI-Anything is drawing fresh attention as an open-source way to give agents str
 
 ## Final record-ready script
 
-### Hook
-
 Stop making agents click pixels like humans.
 
-### Why this matters
+Most browser and desktop agents fail for boring reasons: a button moves, a menu collapses, or the screenshot parser guesses wrong. CLI-Anything is trying a different path. Instead of asking an agent to pretend it has eyes and hands, it wraps real software in a structured command-line interface.
 
-Browser and desktop agents often break when a button moves or a layout changes. CLI-Anything takes a different route: give the agent a structured command-line interface to the real software.
+That means an agent can run one-shot commands, stay inside an interactive session, read machine-readable JSON, and use undo or redo when the harness supports it. The CLI-Hub catalog already lists more than 40 harnesses for tools like Blender, GIMP, LibreOffice, Audacity, and OBS.
 
-### Mechanism
+The operator lesson is simple: do not start with full autonomy. Start with one bounded export task. Let the agent call the harness, inspect the JSON result and the output file, then require a human approval step before anything gets published, overwritten, or connected to credentials.
 
-Its framework generates stateful CLI harnesses with one-shot commands, interactive sessions, machine-readable JSON, and undo and redo. The project also publishes a hub where agents can discover and install existing harnesses.
-
-### Proof/use case
-
-The official catalog lists more than 40 harnesses, including tools for Blender, GIMP, LibreOffice, Audacity, and OBS. So a practical test is to give an agent one bounded export task, inspect the JSON result and output file, then keep human approval before publishing or overwriting anything.
-
-### CTA
+So the shift is not “agents replace your judgment.” It is “agents get safer controls, and you keep the release gate.”
 
 Comment **HARNESS** if you want the agent-interface checklist.
 
