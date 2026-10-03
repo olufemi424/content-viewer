@@ -19,7 +19,10 @@ That means an agent can run one-shot commands, stay inside an interactive sessio
 
 Comment HARNESS if you want the agent-interface checklist.`;
 
-const invalidScript = `Hook: Stop making agents click pixels like humans.
+const invalidScripts = [
+  {
+    title: 'plain outline labels',
+    script: `Hook: Stop making agents click pixels like humans.
 
 Why this matters: Browser and desktop agents fail when buttons move, menus collapse, or screenshots are misread, so operators need a safer interface than pixel clicking.
 
@@ -27,7 +30,23 @@ Mechanism: CLI-Anything wraps real software in stateful command-line harnesses w
 
 Proof/use case: The catalog lists harnesses for Blender, GIMP, LibreOffice, Audacity, and OBS, which makes one bounded export task a realistic test.
 
-CTA: Comment HARNESS if you want the checklist.`;
+CTA: Comment HARNESS if you want the checklist.`,
+  },
+  {
+    title: 'Markdown-emphasized outline labels',
+    script: `**Hook:** Stop making agents click pixels.
+
+**Why this matters:** Most browser and desktop agents fail when buttons move, panels collapse, or screenshots are misread. A structured command interface gives an agent one-shot commands, interactive sessions, machine-readable JSON, and controlled undo or redo where supported. Start with one bounded export task, inspect the output file, and require human approval before publishing, overwriting, or connecting credentials. Comment HARNESS if you want the checklist.
+
+**CTA:** Comment HARNESS.`,
+  },
+  {
+    title: 'Markdown-emphasized A-roll cue',
+    script: `**A-roll:** Deliver this directly to camera.
+
+Most browser and desktop agents fail when buttons move, panels collapse, or screenshots are misread. A structured command interface gives an agent one-shot commands, interactive sessions, machine-readable JSON, and controlled undo or redo where supported. Start with one bounded export task, inspect the output file, and require human approval before publishing, overwriting, or connecting credentials. Comment HARNESS if you want the checklist.`,
+  },
+];
 
 function exec(command, args, options = {}) {
   return execFileSync(command, args, { cwd: options.cwd ?? worktree, encoding: 'utf8', stdio: options.stdio ?? 'pipe', env: options.env ?? process.env });
@@ -152,17 +171,22 @@ try {
   exec('git', ['checkout', '-b', 'content/gate-test']);
 
   const contentFile = join(worktree, 'content/2026/10-october/week-40/2026-10-03-post-gate-fixture.md');
-  writeFileSync(contentFile, contentWithFinalScript(invalidScript));
-  exec('git', ['add', relative(worktree, contentFile)]);
-  exec('git', ['commit', '-m', 'invalid content fixture']);
-  const invalid = runGate(['create', '--title', 'Invalid should not call gh']);
-  assert(invalid.status !== 0, `invalid content should block PR creation\nstdout:\n${invalid.stdout}\nstderr:\n${invalid.stderr}`);
-  assert(!existsSync(ghLog) || readFileSync(ghLog, 'utf8').trim() === '', 'invalid content should produce zero gh invocations');
-  assert(invalid.stderr.includes('changed-content validation'), `invalid run should reach changed-content validation and fail closed\n${invalid.stderr}`);
 
+  for (const invalidScript of invalidScripts) {
+    rmSync(ghLog, { force: true });
+    writeFileSync(contentFile, contentWithFinalScript(invalidScript.script));
+    exec('git', ['add', relative(worktree, contentFile)]);
+    exec('git', ['commit', '--allow-empty', '-m', `invalid content fixture: ${invalidScript.title}`]);
+    const invalid = runGate(['create', '--title', invalidScript.title]);
+    assert(invalid.status !== 0, `${invalidScript.title} should block PR creation\nstdout:\n${invalid.stdout}\nstderr:\n${invalid.stderr}`);
+    assert(!existsSync(ghLog) || readFileSync(ghLog, 'utf8').trim() === '', `${invalidScript.title} should produce zero gh invocations`);
+    assert(invalid.stderr.includes('changed-content validation'), `${invalidScript.title} should reach changed-content validation and fail closed\n${invalid.stderr}`);
+  }
+
+  rmSync(ghLog, { force: true });
   writeFileSync(contentFile, contentWithFinalScript(validScript));
   exec('git', ['add', relative(worktree, contentFile)]);
-  exec('git', ['commit', '--amend', '--no-edit']);
+  exec('git', ['commit', '--allow-empty', '-m', 'valid content fixture']);
   const valid = runGate(['create', '--title', 'Valid content PR', '--body', 'Validated']);
   assert(valid.status === 0, `valid content should reach fake gh after validation\nstdout:\n${valid.stdout}\nstderr:\n${valid.stderr}`);
   const log = readFileSync(ghLog, 'utf8').trim().split(/\r?\n/).filter(Boolean);

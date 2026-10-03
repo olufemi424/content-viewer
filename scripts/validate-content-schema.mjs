@@ -22,8 +22,17 @@ const FINAL_SCRIPT_HEADING = '## Final record-ready script';
 const FINAL_SCRIPT_MIN_WORDS = 50;
 const FINAL_SCRIPT_MIN_CHARS = 250;
 const FINAL_SCRIPT_DISALLOWED_SUBHEADING_PATTERN = /^#{3,6}\s+/m;
-const FINAL_SCRIPT_DISALLOWED_OUTLINE_LABEL_PATTERN = /^(?:hook|why this matters|mechanism|proof\s*\/\s*use case|proof|use case|cta)\s*:/gim;
-const FINAL_SCRIPT_DISALLOWED_STAGE_CUE_PATTERN = /^(?:a-roll|b-roll)\b(?:\s*[:—–-]|\s*$)/gim;
+const OPTIONAL_LEADING_MARKDOWN_EMPHASIS = String.raw`(?:[*_]{1,3})?`;
+const OPTIONAL_MARKDOWN_EMPHASIS_BEFORE_DELIMITER = String.raw`(?:[*_]{1,3})?`;
+const OPTIONAL_MARKDOWN_EMPHASIS_AFTER_DELIMITER = String.raw`(?:[*_]{1,3})?`;
+const FINAL_SCRIPT_DISALLOWED_OUTLINE_LABEL_PATTERN = new RegExp(
+  String.raw`^${OPTIONAL_LEADING_MARKDOWN_EMPHASIS}(?:hook|why this matters|mechanism|proof\s*\/\s*use case|proof|use case|cta)${OPTIONAL_MARKDOWN_EMPHASIS_BEFORE_DELIMITER}\s*:${OPTIONAL_MARKDOWN_EMPHASIS_AFTER_DELIMITER}`,
+  'gim',
+);
+const FINAL_SCRIPT_DISALLOWED_STAGE_CUE_PATTERN = new RegExp(
+  String.raw`^${OPTIONAL_LEADING_MARKDOWN_EMPHASIS}(?:a-roll|b-roll)\b${OPTIONAL_MARKDOWN_EMPHASIS_BEFORE_DELIMITER}(?:\s*[:—–-]${OPTIONAL_MARKDOWN_EMPHASIS_AFTER_DELIMITER}|\s*$)`,
+  'gim',
+);
 const FINAL_SCRIPT_DISALLOWED_FULL_LINE_DIRECTION_PATTERN = /^\s*(?:\[[^\n\[\]]{3,120}\]|\([^\n()]{3,120}\))\s*$/gm;
 
 const PLACEHOLDER_FINAL_SCRIPT_PATTERNS = [
