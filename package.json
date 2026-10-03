@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "verify:ingest-topics": "node scripts/verify-ingest-topics.mjs",
-    "test:content-schema": "node scripts/validate-content-schema.test.mjs",
+    "test:content-schema": "node scripts/validate-content-schema.test.mjs && node scripts/content-pr-generation-boundary.test.mjs",
     "validate:content-schema": "node scripts/validate-content-schema.mjs"
   },
   "dependencies": {

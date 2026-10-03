@@ -21,6 +21,7 @@ const REQUIRED_HEADINGS = [
 const FINAL_SCRIPT_HEADING = '## Final record-ready script';
 const FINAL_SCRIPT_MIN_WORDS = 50;
 const FINAL_SCRIPT_MIN_CHARS = 250;
+const FINAL_SCRIPT_DISALLOWED_SUBHEADING_PATTERN = /^#{3,6}\s+/m;
 
 const PLACEHOLDER_FINAL_SCRIPT_PATTERNS = [
   /^tbd$/i,
@@ -164,6 +165,10 @@ function validateFinalRecordReadyScript(body) {
   const trimmed = body.trim();
   if (!trimmed) {
     return 'must contain a substantive script body, not an empty section';
+  }
+
+  if (FINAL_SCRIPT_DISALLOWED_SUBHEADING_PATTERN.test(trimmed)) {
+    return 'must be a single spoken script body, not an outline with subsection headings';
   }
 
   const prose = trimmed

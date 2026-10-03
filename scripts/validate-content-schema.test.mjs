@@ -66,6 +66,7 @@ const cases = [
   { name: 'whitespace.md', body: '   \n\t  ', shouldPass: false },
   { name: 'placeholder.md', body: 'TBD', shouldPass: false },
   { name: 'headings-only.md', body: '### Hook\n\n### CTA', shouldPass: false },
+  { name: 'sectioned-outline.md', body: '### Hook\n\nStop making agents click pixels like humans.\n\n### Why this matters\n\nMost browser and desktop agents break when a button moves or a layout changes. CLI-Anything takes a more durable route by wrapping real software in stateful command-line harnesses.\n\n### Mechanism\n\nAn agent can call one-shot commands, stay in an interactive session, read JSON output, and use undo or redo when the harness supports it.\n\n### CTA\n\nComment HARNESS if you want the checklist.', shouldPass: false },
   { name: 'too-short.md', body: 'A short non-placeholder line.', shouldPass: false },
 ];
 

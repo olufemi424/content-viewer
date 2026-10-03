@@ -6,6 +6,7 @@ on:
       - 'content/**/*.md'
       - 'scripts/validate-content-schema.mjs'
       - 'scripts/validate-content-schema.test.mjs'
+      - 'scripts/content-pr-generation-boundary.test.mjs'
       - 'package.json'
       - '.github/workflows/validate-content-schema.yml'
 
