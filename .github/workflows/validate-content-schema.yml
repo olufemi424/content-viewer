@@ -5,6 +5,10 @@ on:
     paths:
       - 'content/**/*.md'
       - 'scripts/validate-content-schema.mjs'
+      - 'scripts/validate-content-schema.test.mjs'
+      - 'scripts/content-pr-generation-boundary.test.mjs'
+      - 'scripts/content-pr-gate.mjs'
+      - 'scripts/content-pr-gate.test.mjs'
       - 'package.json'
       - '.github/workflows/validate-content-schema.yml'
 
@@ -18,4 +22,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm run test:content-schema
       - run: npm run validate:content-schema -- --changed origin/${{ github.base_ref }}
