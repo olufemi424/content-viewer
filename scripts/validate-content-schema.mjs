@@ -22,6 +22,9 @@ const FINAL_SCRIPT_HEADING = '## Final record-ready script';
 const FINAL_SCRIPT_MIN_WORDS = 50;
 const FINAL_SCRIPT_MIN_CHARS = 250;
 const FINAL_SCRIPT_DISALLOWED_SUBHEADING_PATTERN = /^#{3,6}\s+/m;
+const FINAL_SCRIPT_DISALLOWED_OUTLINE_LABEL_PATTERN = /^(?:hook|why this matters|mechanism|proof\s*\/\s*use case|proof|use case|cta)\s*:/gim;
+const FINAL_SCRIPT_DISALLOWED_STAGE_CUE_PATTERN = /^(?:a-roll|b-roll)\b(?:\s*[:—–-]|\s*$)/gim;
+const FINAL_SCRIPT_DISALLOWED_FULL_LINE_DIRECTION_PATTERN = /^\s*(?:\[[^\n\[\]]{3,120}\]|\([^\n()]{3,120}\))\s*$/gm;
 
 const PLACEHOLDER_FINAL_SCRIPT_PATTERNS = [
   /^tbd$/i,
@@ -169,6 +172,18 @@ function validateFinalRecordReadyScript(body) {
 
   if (FINAL_SCRIPT_DISALLOWED_SUBHEADING_PATTERN.test(trimmed)) {
     return 'must be a single spoken script body, not an outline with subsection headings';
+  }
+
+  if (FINAL_SCRIPT_DISALLOWED_OUTLINE_LABEL_PATTERN.test(trimmed)) {
+    return 'must be a single spoken script body, not an outline with plain section labels';
+  }
+
+  if (FINAL_SCRIPT_DISALLOWED_STAGE_CUE_PATTERN.test(trimmed)) {
+    return 'must be a spoken script body, not production directions with A-roll/B-roll cues';
+  }
+
+  if (FINAL_SCRIPT_DISALLOWED_FULL_LINE_DIRECTION_PATTERN.test(trimmed)) {
+    return 'must be a spoken script body, not bracketed or parenthetical stage directions';
   }
 
   const prose = trimmed
