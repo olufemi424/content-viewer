@@ -20,18 +20,8 @@ tags:
   - visual-storytelling
 ---
 
-## Audience + difficulty
-Creators, freelancers, founders, agencies, and small teams. Difficulty: beginner-to-intermediate; the workflow needs a reference-aware image/video tool and a basic editor.
+## Final Result
 
-## Why now (1 sentence)
-Creators want a repeatable way to turn one brief into a recognizable character video without redesigning the protagonist in every shot.
-
-## 3 hook options (<12 words each)
-1. One brief, three scenes, same AI character.
-2. Stop recreating your AI character in every shot.
-3. The secret is a reference pack, not a longer prompt.
-
-## Final record-ready script
 A finished 20–30 second vertical character video in which the same AI-created character appears in three different shots: a close-up, a full-body scene, and a moving final shot. The final screen shows the three clips playing in sequence with the character’s face, wardrobe anchor, and visual style staying recognizably consistent.
 
 **Exact input:** one short creative brief, for example: “Create a 25-second vertical ad for a fictional coffee brand. Follow Maya, a warm, silver-haired barista, from opening the shop to serving a customer. Keep her face, red apron, and warm morning palette consistent across three shots.”
@@ -42,46 +32,12 @@ A finished 20–30 second vertical character video in which the same AI-created 
 
 **First-three-seconds visual:** open on the completed three-shot video or a split-screen of the same character in all three scenes. Do not begin with a blank prompt box.
 
-## Shot list by timestamp (A-roll/B-roll)
-- 0:00–0:03: show the completed three-shot video or split-screen.
-- 0:03–0:15: show the brief and character sheet.
-- 0:15–0:35: show the shot table and approved keyframes.
-- 0:35–0:58: show image-to-video generation and drift review.
-- 0:58–1:08: show continuity lock, edit, captions, and export.
-- 1:08–1:12: return to the final result and CTA.
-
-## On-screen text cues
-- `1 brief → 3 shots → 1 consistent character`
-- `Lock identity. Change the scene.`
-- `Reference sheet → keyframes → motion`
-- `Review for drift before export`
-
-## Caption options
-- Short: One brief can become a three-shot character video when you lock the identity first.
-- Long: Build the character sheet, approve still keyframes, animate one shot at a time, and compare the results before export. The workflow is repeatable because the identity block stays fixed while the scene direction changes.
-
-## CTA type + exact line
-- Type: comment/DM keyword.
-- Exact line: **DM `WORKFLOW` for a free workflow audit, and follow for more creative AI workflows.**
-
-## Thumbnail text options (3)
-1. SAME CHARACTER, 3 SCENES
-2. ONE BRIEF → AI VIDEO
-3. STOP CHARACTER DRIFT
-
-## Risk check (claims needing cautious phrasing)
-- Do not promise perfect or guaranteed consistency; describe the reference workflow as drift reduction.
-- Do not imply every listed tool has identical reference controls or availability.
-- Treat YouTube views as point-in-time observations, not normalized demand benchmarks.
-- X post-level retrieval and metrics were unavailable; do not claim a positive X metric.
-- Keep generated characters and client assets rights-cleared before commercial use.
-
-### Why People Want This
+## Why People Want This
 The result is instantly legible: one brief becomes a character people can reuse in ads, explainers, social series, product demos, or episodic stories. Creators and small teams do not mainly want another model comparison; they want a repeatable way to stop the face, clothing, and visual identity from drifting between shots.
 
 The workflow also has a clear buyer use. A freelancer or agency can deliver a short branded character spot from a client brief. A founder can create a recurring product mascot. A creator can build a series without redesigning the protagonist every time. The important qualification is that consistency is a workflow target, not a guarantee: references, locked details, and human review reduce drift but do not eliminate it.
 
-### Demand Evidence
+## Demand Evidence
 
 | Signal | Verified detail | What it proves |
 |---|---|---|
@@ -95,7 +51,7 @@ The workflow also has a clear buyer use. A freelancer or agency can deliver a sh
 
 **Demand confidence: Medium.** The gate passes through three specific independent YouTube tutorials with visible view counts, strong Reddit discussion, and corroborating official product/workflow sources. It remains Medium—not High—because X post-level metrics were unavailable and YouTube counts are point-in-time observations.
 
-### Tools and Inputs
+## Tools and Inputs
 
 - **Creative brief:** one paragraph containing the character identity, action, audience, duration, aspect ratio, and desired mood.
 - **Reference/image tool:** Google Flow, OpenArt, Kling, Luma, or another tool that accepts reference images or reusable elements. Use the tool available to the viewer; the reference-pack method is the transferable idea.
@@ -104,7 +60,7 @@ The workflow also has a clear buyer use. A freelancer or agency can deliver a sh
 - **Editor:** CapCut, Premiere, DaVinci Resolve, or the tool’s built-in editor for sequencing, captions, sound, and export.
 - **Input assets:** the brief, a character sheet with 3–5 approved views, a style reference, and optional product/logo asset with usage permission.
 
-### Step-by-Step Workflow
+## Step-by-Step Workflow
 
 1. **Write one production brief.** Define the character’s identity, wardrobe anchor, action, setting, visual style, duration, and 9:16 output. Keep the story small enough to demonstrate in three shots.
 2. **Generate the character sheet.** Create a clean front/three-quarter/full-body reference with stable details: face shape, hair, age range, outfit colors, accessories, and expression range. Generate several variations, then approve one sheet before moving on.
@@ -115,12 +71,12 @@ The workflow also has a clear buyer use. A freelancer or agency can deliver a sh
 7. **Assemble the final video.** Sequence the approved shots, add a simple sound bed or voiceover, keep captions inside safe margins, and export 1080×1920 vertical. Use a clear filename such as `maya-coffee-spot-v1-approved.mp4`.
 8. **Package the reusable system.** Save the character sheet, final prompts, approved keyframes, and shot table beside the video. The visible deliverable is the finished clip; the saved assets make the workflow repeatable for the next episode or client revision.
 
-### Finishing Detail
+## Finishing Detail
 Create a **continuity lock** before generating motion: a small reference card that lists the character’s non-negotiables—face, hair, wardrobe anchor, accessory, palette, and age range. Put this card beside the three approved keyframes during review. Then fix the first shot’s opening frame so the character is recognizable immediately.
 
 That detail improves quality more than adding adjectives to every prompt. It also makes client work easier to review: the viewer can compare the finished shots against an explicit identity checklist instead of arguing about whether the character “feels” the same.
 
-### Use Cases
+## Use Cases
 
 - **Creators:** build a recurring mascot, host, or fictional protagonist for a short-form series.
 - **Freelancers/agencies:** turn one client brief into a branded vertical spot and a reusable character system.
@@ -129,14 +85,14 @@ That detail improves quality more than adding adjectives to every prompt. It als
 - **Education and training:** use one illustrated presenter across lessons while keeping the visual language stable.
 - **E-commerce:** show a product interaction through a consistent character rather than unrelated generated people.
 
-### Hook Options
+## Hook Options
 
 1. **Outcome-led:** “Want to create a consistent AI character video from one brief? Let me show you how.”
 2. **Before/after:** “One brief, three scenes, same character—here is the workflow.”
 3. **Pain-led:** “The fastest way to break an AI video is to recreate the character from scratch in every shot.”
 4. **Quality-led:** “The secret is not a longer prompt—it is an approved reference pack and a continuity check.”
 
-### Short-Form Outline
+## Short-Form Outline
 
 - **0:00–0:03 — Final result first:** Play the completed three-shot vertical video or show a split-screen of the same character in all scenes. On-screen text: `1 brief → 3 shots → 1 consistent character`.
 - **0:03–0:08 — Promise:** “Want to create a consistent AI character video from one brief? Let me show you how.”
@@ -148,7 +104,7 @@ That detail improves quality more than adding adjectives to every prompt. It als
 - **0:58–1:08 — Finishing detail:** Show the continuity lock beside the approved keyframes, then add captions/sound and export 1080×1920.
 - **1:08–1:12 — Payoff and CTA:** Return to the final video and show the reusable asset folder. CTA: “DM WORKFLOW for a free workflow audit.”
 
-### Final record-ready script (expanded production script)
+## Final Record-Ready Script
 
 Want to create a consistent AI character video from one brief? Let me show you how.
 
@@ -188,7 +144,9 @@ Here is the finishing detail: make a continuity lock. It is a short list of the 
 
 Now you have a finished character video—and the reusable assets for the next episode, product ad, or client revision. DM `WORKFLOW` for a free workflow audit, and follow for more creative AI workflows.
 
-### CTA
+## CTA
+
+DM `WORKFLOW` for a free workflow audit, and follow for more creative AI workflows.
 
 ## Sources
 
