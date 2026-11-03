@@ -17,21 +17,16 @@ No code changes are needed to the existing Next.js app. This is a parallel setup
 
 ### Content Structure
 
+The tree below is illustrative — new months and weeks are added continuously.
+LeafWiki will always reflect whatever is currently on disk.
+
 ```
 content/
-  2026/
-    01-january/
-    02-february/
-    03-march/
-      week-10/
-        2026-03-02-post-9to5-content-system.md
+  <year>/
+    <month>/
+      <week>/
+        <date>-<slug>.md
         ...
-      week-12/
-      week-13/
-    04-april/
-      week-14/
-      week-15/
-      ...
   meta/
   show/
   templates/
@@ -55,8 +50,8 @@ tags:
 ### LeafWiki Key Facts
 
 - Single Go binary or Docker image
-- Stores pages as Markdown files on disk inside a `data/` directory
-- Has a **ZIP-based bulk importer** (Admin UI → Import) that accepts a zip of markdown files
+- Stores pages as Markdown files on disk inside a `data/` directory — mounting `content/` directly keeps it always in sync
+- Has a ZIP-based bulk importer (Admin UI → Import) as an alternative to direct mounting
 - Supports Obsidian-style `[[wiki links]]` rewriting on import
 - Tree navigation follows folder structure
 - Auth can be fully disabled for local use with `--disable-auth`
@@ -67,27 +62,34 @@ tags:
 
 ### Step 1 — Run LeafWiki via Docker
 
+Mount `content/` directly as LeafWiki's data directory. This means LeafWiki
+always reads whatever is on disk — no zip, no re-import needed when new files
+are added.
+
 ```bash
 docker run -d \
   --name leafwiki \
   -p 8080:8080 \
-  -v ~/leafwiki-data:/app/data \
+  -v "$(pwd)/content:/app/data" \
   ghcr.io/perber/leafwiki:latest \
   --jwt-secret=localdev \
-  --admin-password=admin123 \
   --allow-insecure=true \
   --disable-auth
 ```
+
+Run from the repo root so `$(pwd)/content` resolves correctly.
 
 **What each flag does:**
 
 | Flag | Purpose |
 |---|---|
-| `-v ~/leafwiki-data:/app/data` | Persists all wiki data to `~/leafwiki-data` on your machine |
+| `-v "$(pwd)/content:/app/data"` | Mounts `content/` directly — new files appear automatically |
 | `--jwt-secret=localdev` | Required — any string works for local use |
-| `--admin-password=admin123` | Sets the initial admin password |
 | `--allow-insecure=true` | Required for plain HTTP (no SSL) |
 | `--disable-auth` | Skips login entirely — anyone on localhost can read/edit |
+
+> **Note:** LeafWiki may write metadata or config files back into the mounted
+> directory. Add any such files to `.gitignore` if they appear in `content/`.
 
 Verify it's running:
 
@@ -100,86 +102,33 @@ Open `http://localhost:8080` in your browser. You should see the LeafWiki UI.
 
 ---
 
-### Step 2 — Prepare the Content ZIP
+### Step 2 — Verify
 
-LeafWiki's importer accepts a `.zip` of markdown files. The folder structure inside
-the zip becomes the page tree.
+After the container starts, confirm everything is working:
 
-From the repo root, run:
-
-```bash
-cd /path/to/content-viewer
-
-zip -r /tmp/content-import.zip content/ \
-  --exclude "content/.DS_Store" \
-  --exclude "content/*/.DS_Store" \
-  --exclude "content/**/.DS_Store"
-```
-
-**Verify the zip looks right:**
-
-```bash
-unzip -l /tmp/content-import.zip | head -30
-```
-
-You should see paths like:
-```
-content/2026/03-march/week-12/2026-03-23-post-cloudflare-crawl-endpoint-api.md
-content/show/episode-001.md
-...
-```
+- [ ] Tree nav on the left shows your folder hierarchy
+- [ ] Clicking a file renders its markdown content
+- [ ] Frontmatter appears at the top of each page (LeafWiki renders it as a
+  code block — acceptable for browsing)
+- [ ] Folders like `show/` and `meta/` appear as tree nodes
 
 ---
 
-### Step 3 — Import Content into LeafWiki
+### Step 3 — Ongoing Use
 
-1. Open `http://localhost:8080`
-2. Click the **Admin** icon (gear/settings) in the sidebar
-3. Navigate to **Import**
-4. Upload `/tmp/content-import.zip`
-5. Select **"Rewrite Obsidian-style wiki links"** if prompted (safe to enable even if files don't use them)
-6. Click **Import**
+Because `content/` is mounted directly, **new files are available immediately**
+without any action. Just add files and reload the browser.
 
-LeafWiki will walk the zip's folder tree, create a page hierarchy matching the
-folder structure, and populate each page with the file's markdown content
-(frontmatter is preserved as-is in the page body).
-
----
-
-### Step 4 — Verify the Import
-
-After import, confirm:
-
-- [ ] Tree nav on the left shows `2026 → 03-march → week-12 → ...`
-- [ ] Clicking a page renders the markdown correctly
-- [ ] Frontmatter is visible at the top of the page (LeafWiki does not parse YAML frontmatter — it renders it as a code block, which is acceptable for browsing)
-- [ ] Tags from the `show/` and `meta/` folders appear as separate tree nodes
-
----
-
-### Step 5 — Ongoing Use (Point at any folder)
-
-To use LeafWiki with a **different content folder** in the future, just:
-
-1. Zip the new folder
-2. Repeat Step 3
-
-Or, for a fully fresh instance pointed at new content:
+To point LeafWiki at a **different folder**, stop and restart with a new volume path:
 
 ```bash
-# Stop existing instance
 docker stop leafwiki && docker rm leafwiki
-
-# Wipe data (optional — skip to keep history)
-rm -rf ~/leafwiki-data
-
-# Restart with same command from Step 1
-docker run -d ...
+# Then re-run Step 1 with the new path
 ```
 
 ---
 
-### Step 6 (Optional) — Docker Compose for Repeatability
+### Step 4 (Optional) — Docker Compose for Repeatability
 
 Create `docker-compose.yml` in the project root (do not commit — add to `.gitignore`):
 
@@ -192,11 +141,10 @@ services:
       - "8080:8080"
     environment:
       - LEAFWIKI_JWT_SECRET=localdev
-      - LEAFWIKI_ADMIN_PASSWORD=admin123
       - LEAFWIKI_ALLOW_INSECURE=true
       - LEAFWIKI_DISABLE_AUTH=true
     volumes:
-      - ${HOME}/leafwiki-data:/app/data
+      - ./content:/app/data
     restart: unless-stopped
 ```
 
@@ -213,9 +161,9 @@ docker compose up -d
 | Issue | Workaround |
 |---|---|
 | YAML frontmatter renders as a raw code block | Acceptable for preview use; no action needed |
-| LeafWiki assigns its own internal page ordering | Re-order pages manually in the UI after import if sequence matters |
-| Re-importing does not update existing pages — it creates duplicates | Stop container, wipe `~/leafwiki-data`, restart, re-import |
-| `README.md` files in folders become pages named "README" | Rename them to `index.md` before zipping if you want cleaner names |
+| LeafWiki assigns its own internal page ordering | Re-order pages manually in the UI if sequence matters |
+| LeafWiki may write config/metadata files into `content/` | Check `content/` after first run and add any new files to `.gitignore` |
+| `README.md` files in folders become pages named "README" | Rename them to `index.md` if you want cleaner page names |
 
 ---
 

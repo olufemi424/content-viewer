@@ -46,7 +46,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
       paddingLeft: "16px",
       maxHeight: "calc(100vh - 120px)",
       overflowY: "auto",
-    }}>
+    }} className="toc-panel">
       <div style={{ fontWeight: 600, color: "#555", marginBottom: "8px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         On this page
       </div>

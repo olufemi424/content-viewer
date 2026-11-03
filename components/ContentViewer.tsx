@@ -102,7 +102,7 @@ export default function ContentViewer({
   }
 
   return (
-    <div style={{ display: "flex", padding: "40px 40px 40px 40px", gap: "32px", maxWidth: "1100px", margin: "0 auto" }}>
+    <div className="content-layout">
       {/* Main content */}
       <div style={{ flex: 1, minWidth: 0 }}>
         {filePath && onNavigate && (
@@ -334,14 +334,7 @@ export default function ContentViewer({
 
       {/* Prev / Next navigation */}
       {(prev || next) && (
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "48px",
-          paddingTop: "24px",
-          borderTop: "1px solid #e5e5e5",
-          gap: "12px",
-        }}>
+        <div className="prev-next">
           {prev ? (
             <button onClick={() => onNavigate?.(prev.path)} style={navBtnStyle("left")}>
               <span style={{ fontSize: "12px", color: "#999", display: "block", marginBottom: "2px" }}>← Previous</span>

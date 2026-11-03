@@ -14,7 +14,9 @@ export default function Home() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(
+    typeof window !== "undefined" ? window.innerWidth > 640 : true
+  );
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
@@ -116,27 +118,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        flexDirection: "column",
-      }}
-    >
+    <div className="app-shell">
       {/* Header */}
-      <div
-        style={{
-          padding: "12px 16px",
-          borderBottom: "1px solid #e5e5e5",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "sticky",
-          top: 0,
-          backgroundColor: "white",
-          zIndex: 10,
-        }}
-      >
+      <div className="app-header">
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
             onClick={() => setIsSidebarOpen((v) => !v)}
@@ -154,13 +138,7 @@ export default function Home() {
           >
             ☰
           </button>
-          <h1
-            style={{
-              margin: 0,
-              fontSize: "18px",
-              fontWeight: "bold",
-            }}
-          >
+          <h1 style={{ margin: 0, fontSize: "18px", fontWeight: "bold" }}>
             Content OS
           </h1>
         </div>
@@ -170,25 +148,18 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <div
-        style={{
-          display: "flex",
-          flex: 1,
-          overflow: "hidden",
-        }}
-      >
-        {/* Left sidebar - File tree */}
-        <div
-          style={{
-            width: isSidebarOpen ? "260px" : "0px",
-            borderRight: isSidebarOpen ? "1px solid #e5e5e5" : "none",
-            overflow: "hidden",
-            backgroundColor: "#fafafa",
-            transition: "width 200ms ease",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+      <div className="app-body">
+        {/* Mobile overlay — tapping it closes the sidebar */}
+        {isSidebarOpen && (
+          <div
+            className="sidebar-overlay"
+            onClick={() => setIsSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Left sidebar */}
+        <div className={`app-sidebar${isSidebarOpen ? "" : " closed"}`}>
           {isSidebarOpen && (
             <>
               <div style={{ padding: "8px 10px", borderBottom: "1px solid #e5e5e5" }}>
@@ -252,8 +223,14 @@ export default function Home() {
                 <FolderTree
                   tree={fileTree}
                   selectedFile={selectedFile}
-                  onFileSelect={handleFileSelect}
-                  onFolderSelect={(path) => handleNavigate(path)}
+                  onFileSelect={(path) => {
+                    handleFileSelect(path);
+                    if (window.innerWidth <= 640) setIsSidebarOpen(false);
+                  }}
+                  onFolderSelect={(path) => {
+                    handleNavigate(path);
+                    if (window.innerWidth <= 640) setIsSidebarOpen(false);
+                  }}
                   searchQuery={searchQuery}
                   priorityFilter={priorityFilter}
                   tagFilter={tagFilter}
@@ -264,14 +241,8 @@ export default function Home() {
           )}
         </div>
 
-        {/* Right panel - Content viewer or Folder index */}
-        <div
-          style={{
-            flex: 1,
-            overflow: "auto",
-            backgroundColor: "white",
-          }}
-        >
+        {/* Right panel */}
+        <div className="app-content">
           {selectedFolder !== null ? (
             <FolderIndex
               folderPath={selectedFolder}
@@ -297,37 +268,9 @@ export default function Home() {
 
       {/* Footer */}
       {selectedFile && (
-        <div
-          style={{
-            padding: "8px 16px",
-            borderTop: "1px solid #e5e5e5",
-            fontSize: "12px",
-            color: "#666",
-            backgroundColor: "#fafafa",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              flex: 1,
-              minWidth: 0,
-            }}
-          >
-            <span
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "inline-block",
-              }}
-              title={selectedFile}
-            >
-              {selectedFile}
-            </span>
+        <div className="app-footer">
+          <div className="footer-path">
+            <span title={selectedFile}>{selectedFile}</span>
             <button
               onClick={handleCopyFooterLink}
               style={{
@@ -337,6 +280,7 @@ export default function Home() {
                 fontSize: 14,
                 color: "#444",
                 padding: 2,
+                flexShrink: 0,
               }}
               aria-label="Copy file path to clipboard"
               title="Copy path"
@@ -346,7 +290,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
