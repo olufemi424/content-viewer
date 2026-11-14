@@ -33,7 +33,7 @@ export default function Home() {
   // Load file tree
   const loadFileTree = async () => {
     try {
-      const response = await fetch("/api/files/list");
+      const response = await fetch("/data/tree.json");
       const data = await response.json();
       setFileTree(data.tree || []);
       setAllTags(data.allTags || []);
@@ -47,7 +47,7 @@ export default function Home() {
   const loadFileContent = async (path: string) => {
     try {
       const response = await fetch(
-        `/api/files/read?path=${encodeURIComponent(path)}`
+        `/data/files/${path.split("/").map(encodeURIComponent).join("/")}.json`
       );
       const data = await response.json();
       setFileContent(data);
@@ -61,22 +61,6 @@ export default function Home() {
     setSelectedFile(path);
     setSelectedFolder(null);
     loadFileContent(path);
-  };
-
-  const handleStageUpdate = async (stage: "idea" | "drafted" | "recorded" | "posted" | "analyzed") => {
-    if (!selectedFile) return;
-    try {
-      const response = await fetch('/api/files/update-stage', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ path: selectedFile, stage }),
-      });
-      if (!response.ok) return;
-      await loadFileTree();
-      await loadFileContent(selectedFile);
-    } catch (error) {
-      console.error('Failed to update stage:', error);
-    }
   };
 
   // Handle navigation from breadcrumbs, prev/next, or folder index
@@ -110,11 +94,9 @@ export default function Home() {
     }
   };
 
-  // Auto-refresh file tree every 2 seconds
+  // Load once (static site)
   useEffect(() => {
     loadFileTree();
-    const interval = setInterval(loadFileTree, 2000);
-    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -260,7 +242,6 @@ export default function Home() {
               next={next}
               onOpenSidebar={() => setIsSidebarOpen(true)}
               onNavigate={handleNavigate}
-              onStageUpdate={handleStageUpdate}
             />
           )}
         </div>

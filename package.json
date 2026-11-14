@@ -5,16 +5,14 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start",
-    "verify:ingest-topics": "node scripts/verify-ingest-topics.mjs",
     "test:content-schema": "node scripts/validate-content-schema.test.mjs && node scripts/content-pr-generation-boundary.test.mjs && node scripts/content-pr-gate.test.mjs",
-    "validate:content-schema": "node scripts/validate-content-schema.mjs"
+    "validate:content-schema": "node scripts/validate-content-schema.mjs",
+    "prebuild": "node scripts/build-static-data.mjs",
+    "predev": "node scripts/build-static-data.mjs"
   },
   "dependencies": {
     "@comark/react": "^0.5.1",
-    "chokidar": "^4.0.3",
     "comark": "^0.5.1",
-    "googleapis": "^150.0.1",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
