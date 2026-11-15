@@ -1,3 +1,16 @@
+# Content Viewer
+
+Static, login-protected site over the markdown in `content/`. Agents add content
+via PRs; merging to `main` redeploys.
+
+- `npm run dev` - local preview (port 3001)
+- `npm run build` - static export to `out/`
+- `npm run test:content-schema` / `npm run validate:content-schema`
+- Hosting: `docs/hosting.md`. Automation history and the content contract:
+  `docs/automation/README.md`.
+
+> The sections below this line are legacy and partly stale.
+
 # Content Viewer App
 
 A minimal markdown viewer with folder-based navigation. No colors, no animations—just text.
