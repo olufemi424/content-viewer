@@ -14,9 +14,9 @@ export default function Home() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(
-    typeof window !== "undefined" ? window.innerWidth > 640 : true
-  );
+  // Start closed so server HTML and first client render match (no hydration
+  // mismatch); open on wide screens after mount.
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
@@ -94,6 +94,19 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (window.innerWidth > 640) setIsSidebarOpen(true);
+  }, []);
+
+  // Escape closes the drawer
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsSidebarOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   // Load once (static site)
   useEffect(() => {
     loadFileTree();
@@ -108,6 +121,7 @@ export default function Home() {
             onClick={() => setIsSidebarOpen((v) => !v)}
             aria-label="Toggle navigation"
             aria-pressed={isSidebarOpen}
+            className="touch-target"
             style={{
               padding: "6px 10px",
               border: "1px solid #ccc",
@@ -144,6 +158,15 @@ export default function Home() {
         <div className={`app-sidebar${isSidebarOpen ? "" : " closed"}`}>
           {isSidebarOpen && (
             <>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  className="sidebar-close"
+                  onClick={() => setIsSidebarOpen(false)}
+                  aria-label="Close navigation"
+                >
+                  ✕
+                </button>
+              </div>
               <div style={{ padding: "8px 10px", borderBottom: "1px solid #e5e5e5" }}>
                 <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                   <input
@@ -263,6 +286,7 @@ export default function Home() {
                 padding: 2,
                 flexShrink: 0,
               }}
+              className="touch-target"
               aria-label="Copy file path to clipboard"
               title="Copy path"
             >

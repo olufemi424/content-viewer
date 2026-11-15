@@ -20,7 +20,7 @@ export default function FolderIndex({ folderPath, children, onFileSelect, onFold
   const files = children.filter(n => n.type === 'file');
 
   return (
-    <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ padding: "clamp(16px, 5vw, 40px)", maxWidth: "800px", margin: "0 auto" }}>
       <h1 style={{ fontSize: "1.6em", fontWeight: 700, marginBottom: "8px" }}>
         {folderPath ? folderPath.split('/').pop() : 'content'}
       </h1>
@@ -55,9 +55,9 @@ export default function FolderIndex({ folderPath, children, onFileSelect, onFold
               const priority = file.metadata?.priority;
               const tags = file.metadata?.tags;
               return (
-                <button key={file.path} onClick={() => onFileSelect(file.path)} style={fileRow}>
-                  <span style={{ flex: 1, textAlign: "left", fontWeight: 450 }}>{title}</span>
-                  <span style={{ display: "flex", gap: "6px", alignItems: "center", flexShrink: 0 }}>
+                <button key={file.path} className="file-row" onClick={() => onFileSelect(file.path)} style={fileRow}>
+                  <span className="file-row-main">{title}</span>
+                  <span className="file-row-meta">
                     {priority && <span style={{ fontSize: "11px", color: "#aaa" }}>{priority}</span>}
                     {tags?.slice(0, 2).map(t => (
                       <span key={t} style={{ fontSize: "10px", padding: "1px 5px", background: "#f0f0f0", borderRadius: "8px", color: "#666" }}>#{t}</span>
