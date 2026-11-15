@@ -24,4 +24,4 @@ policy on both the production and preview hostnames.
 ## Current setup
 - Pages project: `content-viewer` (https://content-viewer-6hq.pages.dev)
 - Custom domain: `content.olufemiaf.com` (CNAME in Vercel DNS -> pages.dev)
-- Access: protect both hostnames above plus `*.content-viewer-6hq.pages.dev`.
+- Access: app `content-viewer` (policy `owner-only`, email allow) covers content.olufemiaf.com, content-viewer-6hq.pages.dev and *.content-viewer-6hq.pages.dev.
