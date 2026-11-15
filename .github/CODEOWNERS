@@ -1,0 +1,7 @@
+# Hosting and deploy are owner-controlled; agents must not change these without review.
+/.github/workflows/ @olufemi424
+/wrangler.toml @olufemi424
+/next.config.ts @olufemi424
+/scripts/build-static-data.mjs @olufemi424
+/scripts/verify-static-build.mjs @olufemi424
+/docs/hosting.md @olufemi424
