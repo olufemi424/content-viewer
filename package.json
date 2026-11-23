@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
+    "test": "npm run test:content-schema",
     "test:content-schema": "node scripts/validate-content-schema.test.mjs && node scripts/content-pr-generation-boundary.test.mjs && node scripts/content-pr-gate.test.mjs",
     "validate:content-schema": "node scripts/validate-content-schema.mjs",
     "prebuild": "node scripts/build-static-data.mjs",

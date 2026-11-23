@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import FolderTree from "@/components/FolderTree";
 import ContentViewer from "@/components/ContentViewer";
 import FolderIndex from "@/components/FolderIndex";
@@ -23,6 +23,7 @@ export default function Home() {
   const [stageFilter, setStageFilter] = useState<string[]>([]);
   const [tagFilter, setTagFilter] = useState<string[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<string | null>("");
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const flatFiles = useMemo(() => flattenFileList(fileTree), [fileTree]);
   const { prev, next } = useMemo(
@@ -98,6 +99,12 @@ export default function Home() {
   useEffect(() => {
     loadFileTree();
   }, []);
+
+  // Content pane keeps its scroll offset across item changes; reset before paint.
+  useLayoutEffect(() => {
+    const pane = contentRef.current;
+    if (pane) pane.scrollTop = 0;
+  }, [selectedFile, selectedFolder]);
 
   return (
     <div className="app-shell">
@@ -224,7 +231,7 @@ export default function Home() {
         </div>
 
         {/* Right panel */}
-        <div className="app-content">
+        <div className="app-content" ref={contentRef}>
           {selectedFolder !== null ? (
             <FolderIndex
               folderPath={selectedFolder}
