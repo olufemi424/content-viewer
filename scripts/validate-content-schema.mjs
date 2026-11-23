@@ -48,6 +48,10 @@ const PLACEHOLDER_FINAL_SCRIPT_PATTERNS = [
   /^final (record-ready )?script (goes )?here$/i,
 ];
 
+const MAX_WORDS_PER_LINE = 25;
+const MAX_CHARS_PER_LINE = 160;
+const MAX_SENTENCES_PER_LINE = 2;
+
 function usage() {
   console.error('Usage: node scripts/validate-content-schema.mjs [--changed <base-ref>] [content/file.md ...]');
 }
@@ -216,6 +220,28 @@ function validateFinalRecordReadyScript(body) {
   const wordCount = prose.match(/\b[\p{L}\p{N}][\p{L}\p{N}'’:-]*\b/gu)?.length ?? 0;
   if (wordCount < FINAL_SCRIPT_MIN_WORDS || prose.length < FINAL_SCRIPT_MIN_CHARS) {
     return `must be substantive; found ${wordCount} word(s) and ${prose.length} character(s), expected at least ${FINAL_SCRIPT_MIN_WORDS} words and ${FINAL_SCRIPT_MIN_CHARS} characters`;
+  }
+
+  // Fail-closed per-physical-line spoken beat check (teleprompter-ready)
+  const lines = trimmed.split(/\r?\n/);
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) continue;
+    // tolerate URLs and common abbreviations to avoid false positives
+    if (/https?:\/\//.test(line) || /www\./.test(line) || /\b(?:e\.g|i\.e|U\.S|vs|etc|Dr|Mr|Ms|Mrs)\./.test(line)) {
+      continue;
+    }
+    const lineWords = line.match(/\b[\p{L}\p{N}][\p{L}\p{N}'’:-]*\b/gu)?.length ?? 0;
+    if (lineWords > MAX_WORDS_PER_LINE) {
+      return `must have one short spoken beat per physical line (max ${MAX_WORDS_PER_LINE} words); found ${lineWords} in: "${line.slice(0, 50)}..."`;
+    }
+    if (line.length > MAX_CHARS_PER_LINE) {
+      return `must have one short spoken beat per physical line (max ${MAX_CHARS_PER_LINE} chars); found ${line.length} in: "${line.slice(0, 50)}..."`;
+    }
+    const sentenceCount = (line.match(/[.!?]+(?=\s|$|["'’\)\]])/g) || []).length;
+    if (sentenceCount > MAX_SENTENCES_PER_LINE) {
+      return `must have one short spoken beat per physical line (<= ${MAX_SENTENCES_PER_LINE} sentences); found ${sentenceCount} in: "${line.slice(0, 50)}..."`;
+    }
   }
 
   return null;

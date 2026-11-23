@@ -38,7 +38,19 @@ Cursor’s August 27, 2026 update removed the connected-repository requirement f
 3. Stop scaffolding repos for ideas clients reject.
 
 ## Final record-ready script
-Stop scaffolding repos for ideas clients reject. In Cursor Cloud Agents, choose Start from scratch and paste one approved, non-sensitive brief with three acceptance checks. Cursor creates a draft Origin repo in the background while the agent builds. Open the live preview, test the core flow, and compare it with those checks. If it misses, revise or reject it. If it passes, you—not the agent—create a private Origin repo and keep building. Already using Cloud Agents and Origin? Comment DRAFT for the three-check prototype card.
+Stop scaffolding repos for ideas clients reject.
+
+In Cursor Cloud Agents, choose Start from scratch and paste one approved, non-sensitive brief with three acceptance checks.
+
+Cursor creates a draft Origin repo in the background while the agent builds.
+
+Open the live preview, test the core flow, and compare it with those checks.
+
+If it misses, revise or reject it.
+
+If it passes, you—not the agent—create a private Origin repo and keep building.
+
+Already using Cloud Agents and Origin? Comment DRAFT for the three-check prototype card.
 
 ## Shot list by timestamp (A-roll/B-roll)
 - **0:00–0:03 — A-roll:** Drop an empty repository template off-screen; hold up a one-page client brief.
