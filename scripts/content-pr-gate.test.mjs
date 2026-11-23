@@ -13,9 +13,23 @@ const ghLog = join(testRoot, 'gh.log');
 
 const validScript = `Stop making agents click pixels like humans.
 
-Most browser and desktop agents fail for boring reasons: a button moves, a menu collapses, or the screenshot parser guesses wrong. CLI-Anything is trying a different path. Instead of asking an agent to pretend it has eyes and hands, it wraps real software in a structured command-line interface.
+Most browser and desktop agents fail for boring reasons.
+A button moves.
+A menu collapses.
+Or the screenshot parser guesses wrong.
+CLI-Anything is trying a different path.
+Instead of asking an agent to pretend it has eyes and hands.
+It wraps real software in a structured command-line interface.
 
-That means an agent can run one-shot commands, stay inside an interactive session, read machine-readable JSON, and use undo or redo when the harness supports it. The useful operator lesson is simple: start with one bounded export task, inspect the output, and keep human approval before anything gets published, overwritten, or connected to credentials.
+That means an agent can run one-shot commands.
+Stay inside an interactive session.
+Read machine-readable JSON.
+Use undo or redo when the harness supports it.
+The useful operator lesson is simple.
+Start with one bounded export task.
+Inspect the output.
+Keep human approval before anything gets published.
+Overwritten or connected to credentials.
 
 Comment HARNESS if you want the agent-interface checklist.`;
 

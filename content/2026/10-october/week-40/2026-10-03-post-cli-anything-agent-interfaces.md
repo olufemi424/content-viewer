@@ -36,13 +36,31 @@ CLI-Anything is drawing fresh attention as an open-source way to give agents str
 
 Stop making agents click pixels like humans.
 
-Most browser and desktop agents fail for boring reasons: a button moves, a menu collapses, or the screenshot parser guesses wrong. CLI-Anything is trying a different path. Instead of asking an agent to pretend it has eyes and hands, it wraps real software in a structured command-line interface.
+Most browser and desktop agents fail for boring reasons.
+A button moves.
+A menu collapses.
+Or the screenshot parser guesses wrong.
+CLI-Anything is trying a different path.
+Instead of asking an agent to pretend it has eyes and hands.
+It wraps real software in a structured command-line interface.
 
-That means an agent can run one-shot commands, stay inside an interactive session, read machine-readable JSON, and use undo or redo when the harness supports it. The CLI-Hub catalog already lists more than 40 harnesses for tools like Blender, GIMP, LibreOffice, Audacity, and OBS.
+That means an agent can run one-shot commands.
+Stay inside an interactive session.
+Read machine-readable JSON.
+Use undo or redo when the harness supports it.
+The CLI-Hub catalog already lists more than 40 harnesses.
+Tools like Blender, GIMP, LibreOffice, Audacity, and OBS.
 
-The operator lesson is simple: do not start with full autonomy. Start with one bounded export task. Let the agent call the harness, inspect the JSON result and the output file, then require a human approval step before anything gets published, overwritten, or connected to credentials.
+The operator lesson is simple.
+Do not start with full autonomy.
+Start with one bounded export task.
+Let the agent call the harness.
+Inspect the JSON result and the output file.
+Require a human approval step before anything gets published.
+Overwritten or connected to credentials.
 
-So the shift is not “agents replace your judgment.” It is “agents get safer controls, and you keep the release gate.”
+So the shift is not “agents replace your judgment.”
+It is “agents get safer controls, and you keep the release gate.”
 
 Comment **HARNESS** if you want the agent-interface checklist.
 
