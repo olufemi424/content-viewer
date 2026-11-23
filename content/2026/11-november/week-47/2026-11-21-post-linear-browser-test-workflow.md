@@ -38,7 +38,17 @@ Linear’s August 20, 2026 release added configurable coding environments, brows
 3. Stop reviewing UI fixes without browser evidence.
 
 ## Final record-ready script
-A diff is not proof your interface works. For one reproducible UI bug, give Linear Agent the issue, expected behavior, and a configured test environment—never production credentials. It can run the app, reproduce the flow, implement the change, then retest it in a browser with before-and-after screenshots. Your review gate is simple: inspect the diff, confirm the failing state, and verify the passing state matches the issue. If any proof is missing, reject the draft pull request. Already managing a small product team in Linear? Comment TEST for the browser-evidence checklist.
+A diff is not proof your interface works.
+
+For one reproducible UI bug, give Linear Agent the issue, expected behavior, and a configured test environment—never production credentials.
+
+It can run the app, reproduce the flow, implement the change, then retest it in a browser with before-and-after screenshots.
+
+Your review gate is simple: inspect the diff, confirm the failing state, and verify the passing state matches the issue.
+
+If any proof is missing, reject the draft pull request.
+
+Already managing a small product team in Linear? Comment TEST for the browser-evidence checklist.
 
 ## Shot list by timestamp (A-roll/B-roll)
 - **0:00–0:03 — A-roll:** Hold a code diff beside a visibly broken button; shake your head.

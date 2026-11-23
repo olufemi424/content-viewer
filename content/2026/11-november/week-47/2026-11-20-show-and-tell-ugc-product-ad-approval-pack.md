@@ -43,8 +43,21 @@ Two recent high-view tutorials show strong attention to AI UGC ads, while public
 3. Build the UGC ad, then keep the approval decision human.
 
 ## Final record-ready script
+This is the finished pack: a vertical UGC ad, the product reference grid, the script, two cutdowns, and a review checklist.
 
-This is the finished pack: a vertical UGC ad, the product reference grid, the script, two cutdowns, and a review checklist. I started with one approved product image, the claims we are allowed to make, and the audience. First, I made a reference grid so the label, shape, and color stayed visible from several angles. Next, I wrote a short hook, demo, and CTA, then generated one master clip with a synthetic creator. From that approved master, I made the 9:16 and shorter versions. Before delivery, I checked the product, spoken claims, captions, music rights, and disclosure. A person approves the final files. Comment UGC for the checklist.
+I started with one approved product image, the claims we are allowed to make, and the audience.
+
+First, I made a reference grid so the label, shape, and color stayed visible from several angles.
+
+Next, I wrote a short hook, demo, and CTA, then generated one master clip with a synthetic creator.
+
+From that approved master, I made the 9:16 and shorter versions.
+
+Before delivery, I checked the product, spoken claims, captions, music rights, and disclosure.
+
+A person approves the final files.
+
+Comment UGC for the checklist.
 
 ## Shot list by timestamp (A-roll/B-roll)
 

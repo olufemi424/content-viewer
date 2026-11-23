@@ -39,7 +39,19 @@ GitHub made Copilot pull-request approvals generally available on October 28, 20
 3. Speed up reviews without surrendering merge judgment.
 
 ## Final record-ready script
-Let AI approve docs, not your auth code. GitHub Copilot approvals are now generally available, but the safe workflow starts narrow. In a test repository, keep approvals off globally, enable them for one low-risk path like docs, and preserve your required checks. Open a docs-only pull request, inspect Copilot’s review, then push one test commit. GitHub says that new commit dismisses the approval, so request a fresh review. A human still decides whether to merge. Already managing protected GitHub repositories? Comment SCOPE for the rollout checklist.
+Let AI approve docs, not your auth code.
+
+GitHub Copilot approvals are now generally available, but the safe workflow starts narrow.
+
+In a test repository, keep approvals off globally, enable them for one low-risk path like docs, and preserve your required checks.
+
+Open a docs-only pull request, inspect Copilot’s review, then push one test commit.
+
+GitHub says that new commit dismisses the approval, so request a fresh review.
+
+A human still decides whether to merge.
+
+Already managing protected GitHub repositories? Comment SCOPE for the rollout checklist.
 
 ## Shot list by timestamp (A-roll/B-roll)
 - **0:00–0:03 — A-roll:** Hold cards labeled `docs/**` and `auth/**`; approve only the first.

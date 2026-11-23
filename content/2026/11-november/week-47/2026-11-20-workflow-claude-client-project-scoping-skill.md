@@ -39,13 +39,37 @@ Anthropic's current custom-skills documentation says a focused `SKILL.md` can te
 3. Catch scope creep before it becomes unpaid work.
 
 ## Final record-ready script
-This is the result: one client-call transcript turned into an internal project scope with deliverables, a timeline, budget assumptions, missing information, and scope-creep flags.
+This is the result: one client-call transcript turned into an internal project scope.
 
-Start with a redacted transcript and your real playbook: standard deliverables, turnaround ranges, rate assumptions, revision rules, and the format you want to save. In Claude, create a focused skill for project scoping, either with Skill Creator or a `SKILL.md` you write yourself. Tell it what to extract, what to flag, what it must never invent, and where the finished scope should go.
+It includes deliverables, a timeline, budget assumptions, missing information, and scope-creep flags.
 
-Run the same transcript twice. First, ask for a scope without the skill. Then run it with the skill enabled. Compare the deliverables, timeline, assumptions, and open questions. The useful difference is not prettier prose. It is whether the document catches the missing footage, unclear approval owner, unrealistic deadline, or extra deliverable hiding inside the call.
+Start with a redacted transcript and your real playbook.
 
-Now review every number and every assumption. Change anything Claude inferred incorrectly. Treat the budget as a draft input, not a quote, and do not send a client message or create a commitment from it automatically. Once the scope is approved, use it as the starting point for your proposal and kickoff checklist.
+Use standard deliverables, turnaround ranges, rate assumptions, revision rules, and the format you want to save.
+
+In Claude, create a focused skill for project scoping, either with Skill Creator or a `SKILL.md` you write yourself.
+
+Tell it what to extract, what to flag, what it must never invent, and where the finished scope should go.
+
+Run the same transcript twice.
+
+First, ask for a scope without the skill.
+
+Then run it with the skill enabled.
+
+Compare the deliverables, timeline, assumptions, and open questions.
+
+The useful difference is not prettier prose.
+
+It is whether the document catches the missing footage, unclear approval owner, unrealistic deadline, or extra deliverable hiding inside the call.
+
+Now review every number and every assumption.
+
+Change anything Claude inferred incorrectly.
+
+Treat the budget as a draft input, not a quote, and do not send a client message or create a commitment from it automatically.
+
+Once the scope is approved, use it as the starting point for your proposal and kickoff checklist.
 
 If you repeat the same client task more than twice, comment SCOPE for the skill-building checklist.
 
