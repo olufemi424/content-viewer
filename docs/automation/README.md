@@ -26,11 +26,13 @@ analyzed), `platform` (pipe-separated), `content_type`, `pillar`, `goal`,
 `tags[]`.
 
 Required headings: Audience + difficulty; Why now (1 sentence); 3 hook options
-(<12 words each); Final record-ready script (>=50 words, >=250 chars, no
-placeholders, no sub-headings/"Hook:" labels/A-roll cues/bracketed directions);
-Shot list by timestamp (A-roll/B-roll); On-screen text cues; Caption options;
-CTA type + exact line; Thumbnail text options (3); Risk check; Sources;
-QA Scorecard.
+(<12 words each); Final record-ready script (one short spoken beat per physical line:
+max 25 words / 160 chars / <=2 sentences per line; blank lines separate beats;
+>=50 words total, >=250 chars, no placeholders, no sub-headings/"Hook:" labels/A-roll
+cues/bracketed directions); Shot list by timestamp (A-roll/B-roll); On-screen text
+cues; Caption options; CTA type + exact line; Thumbnail text options (3); Risk check;
+Sources; QA Scorecard. Generator instructions: preserve wording; only insert line
+breaks to make each physical line a readable spoken beat.
 
 ## Retired parts (knowledge only)
 - **External scheduler / n8n (`automate-n8n`)**: generated the scripts and

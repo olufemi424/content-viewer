@@ -93,6 +93,7 @@ export default function FileTreeNode({
   }
 
   const { metadata } = node;
+  const fileDate = node.name.match(/^\d{4}-\d{2}-\d{2}/)?.[0];
 
   return (
     <div
@@ -108,8 +109,11 @@ export default function FileTreeNode({
       }}
       onClick={() => onFileSelect(node.path)}
     >
-      <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-        {node.name}
+      <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+        <span className="tree-file-title" title={node.name}>
+          {metadata?.title || node.name.replace(/\.md$/, "")}
+        </span>
+        {fileDate && <span className="tree-file-date">{fileDate}</span>}
       </span>
       {metadata?.priority && (
         <span style={{ fontSize: "11px", color: metadata.priority === "high" ? "#555" : "#999", flexShrink: 0 }}>

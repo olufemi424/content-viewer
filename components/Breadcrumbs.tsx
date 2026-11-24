@@ -20,7 +20,7 @@ export default function Breadcrumbs({ path, onNavigate }: BreadcrumbsProps) {
       color: "#888",
       marginBottom: "20px",
     }}>
-      <button onClick={() => onNavigate('')} style={linkStyle}>
+      <button className="crumb" onClick={() => onNavigate('')} style={linkStyle}>
         content
       </button>
       {parts.map((part, i) => {
@@ -32,7 +32,7 @@ export default function Breadcrumbs({ path, onNavigate }: BreadcrumbsProps) {
             {isLast ? (
               <span style={{ color: "#333" }}>{part.replace(/\.md$/, '')}</span>
             ) : (
-              <button onClick={() => onNavigate(segmentPath)} style={linkStyle}>
+              <button className="crumb" onClick={() => onNavigate(segmentPath)} style={linkStyle}>
                 {part}
               </button>
             )}

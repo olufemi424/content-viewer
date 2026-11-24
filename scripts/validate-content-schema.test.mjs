@@ -10,9 +10,22 @@ const validator = join(repoRoot, 'scripts/validate-content-schema.mjs');
 const finalScript = `
 Stop making agents click pixels like humans.
 
-Most browser and desktop agents break for boring reasons: a button moves, a panel collapses, or the screenshot parser guesses wrong. CLI-Anything takes a more durable route. It wraps real software in stateful command-line harnesses, so an agent can call one-shot commands, stay in an interactive session, read JSON output, and use undo or redo when the harness supports it.
+Most browser and desktop agents break for boring reasons.
+A button moves.
+A panel collapses.
+Or the screenshot parser guesses wrong.
+CLI-Anything takes a more durable route.
+It wraps real software in stateful command-line harnesses.
+An agent can call one-shot commands.
+Stay in an interactive session.
+Read JSON output.
+Use undo or redo when the harness supports it.
 
-The useful operator move is not to remove humans. It is to give the agent one bounded export task, inspect the JSON result and artifact, then require approval before anything gets published, overwritten, or connected to credentials.
+The useful operator move is not to remove humans.
+It is to give the agent one bounded export task.
+Inspect the JSON result and artifact.
+Then require approval before anything gets published.
+Overwritten or connected to credentials.
 `;
 
 const sections = {
@@ -77,6 +90,7 @@ const cases = [
   { name: 'parenthetical-stage-direction.md', body: '(Cut to B-roll of the export folder.)\n\nMost browser and desktop agents break for boring reasons: a button moves, a panel collapses, or the screenshot parser guesses wrong. CLI-Anything takes a more durable route. It wraps real software in stateful command-line harnesses, so an agent can call one-shot commands, stay in an interactive session, read JSON output, and use undo or redo when the harness supports it.\n\nThe useful operator move is to give the agent one bounded export task, inspect the result, and require approval before anything gets published.', shouldPass: false },
   { name: 'normal-parenthetical-prose.md', body: `${finalScript.trim()}\n\nThat approval boundary (especially before publishing) is what keeps the automation useful instead of risky.`, shouldPass: true },
   { name: 'too-short.md', body: 'A short non-placeholder line.', shouldPass: false },
+  { name: 'paragraph-block.md', body: 'Most browser and desktop agents break for boring reasons: a button moves, a panel collapses, or the screenshot parser guesses wrong. CLI-Anything takes a more durable route. It wraps real software in stateful command-line harnesses, so an agent can call one-shot commands, stay in an interactive session, read JSON output, and use undo or redo when the harness supports it. The useful operator move is not to remove humans. It is to give the agent one bounded export task, inspect the JSON result and artifact, then require approval before anything gets published, overwritten, or connected to credentials.', shouldPass: false },
 ];
 
 try {
